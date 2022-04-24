@@ -1,13 +1,13 @@
-package com.my.thesis.jwtappthesis;
+package com.my.thesis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JwtappthesisApplication {
+public class ThesisApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JwtappthesisApplication.class, args);
+		SpringApplication.run(ThesisApplication.class, args);
 	}
 
 }

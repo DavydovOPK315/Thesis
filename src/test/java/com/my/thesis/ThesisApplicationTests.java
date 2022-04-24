@@ -1,10 +1,10 @@
-package com.my.thesis.jwtappthesis;
+package com.my.thesis;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JwtappthesisApplicationTests {
+class ThesisApplicationTests {
 
 	@Test
 	void contextLoads() {
