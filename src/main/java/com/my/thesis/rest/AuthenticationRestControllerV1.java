@@ -33,8 +33,10 @@ public class AuthenticationRestControllerV1 {
         this.userService = userService;
     }
 
+    @RequestMapping(value = "/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto){
         try {
+
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = userService.findByUsername(username);
@@ -43,7 +45,7 @@ public class AuthenticationRestControllerV1 {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
             }
 
-            String token = jwtTokenProvider.createToken("username", user.getRoles());
+            String token = jwtTokenProvider.createToken(username, user.getRoles());
 
             Map<Object,Object> response = new HashMap<>();
             response.put("username", username);
