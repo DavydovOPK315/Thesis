@@ -32,6 +32,7 @@ public class JwtTokenProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -70,12 +71,23 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
+//    public String resolveToken(HttpServletRequest req) {
+//        String bearerToken = req.getHeader("Authorization");
+//        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+//            return bearerToken.substring(7, bearerToken.length());
+//        }
+//        return null;
+//    }
+
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-            return bearerToken.substring(7, bearerToken.length());
+
+        String token = (String) req.getSession().getAttribute("token");
+
+        if (token != null){
+            return token;
         }
         return null;
+
     }
 
     public boolean validateToken(String token) {

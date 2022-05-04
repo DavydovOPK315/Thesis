@@ -3,12 +3,14 @@ package com.my.thesis.model;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass    // создавать таблицу не нужно
 @Data // fot getters and setters
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
     @Id
