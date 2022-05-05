@@ -8,15 +8,16 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "main_studios")
 @Data
-public class Role extends BaseEntity{
+public class Studio extends BaseEntity {
 
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    @OneToMany
+    @JoinColumn(name = "studio_id")
+    List<Product> products;
 }
