@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
@@ -23,10 +22,8 @@ public class JwtTokenFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        System.out.println("Filter request header ==> " + ((HttpServletRequest) servletRequest).getSession().getAttribute("token"));
-        System.out.println("Filter response header ==> " + ((HttpServletResponse) servletResponse).getHeader("Authorization"));
-
-
+//        System.out.println("Filter request header ==> " + ((HttpServletRequest) servletRequest).getSession().getAttribute("token"));
+//        System.out.println("Filter response header ==> " + ((HttpServletResponse) servletResponse).getHeader("Authorization"));
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
@@ -37,9 +34,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-//        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-//        httpServletResponse.setHeader(
-//                "Authorization", "Bearer_" + token);
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

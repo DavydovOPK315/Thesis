@@ -5,8 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 @Entity
@@ -23,15 +21,15 @@ public class Product extends BaseEntity{
     @Column(name = "description")
     private String description;
 
-    @NotEmpty(message = "Count should not be empty")
+//    @NotEmpty(message = "Count should not be empty")
     @Column(name = "count")
     private Long count;
 
-    @NotEmpty(message = "Price should not be empty")
+//    @NotEmpty(message = "Price should not be empty")
     @Column(name = "price")
     private Double price;
 
-    @NotEmpty(message = "Year should not be empty")
+//    @NotEmpty(message = "Year should not be empty")
     @Column(name = "year")
     private Long year;
 

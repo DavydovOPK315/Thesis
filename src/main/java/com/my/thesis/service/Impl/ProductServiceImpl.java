@@ -1,12 +1,14 @@
 package com.my.thesis.service.Impl;
 
 import com.my.thesis.dto.ProductDto;
+import com.my.thesis.dto.ProductDtoOut;
 import com.my.thesis.model.*;
 import com.my.thesis.repository.*;
 import com.my.thesis.service.ImageService;
 import com.my.thesis.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,8 +62,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        List<Product> result = productRepository.findAll();
+    public List<ProductDtoOut> getAll() {
+        List<Product> productList = productRepository.findAll();
+        List<ProductDtoOut> result = new ArrayList<>();
+
+        String os;
+        String studio;
+        String category;
+        String image;
+
+
+        for (Product product: productList) {
+
+            // can get os, studio and other from product
+            os = product.getOs().getName();
+            studio = product.getStudio().getName();
+            category = product.getCategories().get(0).getName();
+            image = imageService.downloadImage(product.getImage());
+            result.add(ProductDtoOut.fromProductToProductDto(product,os, studio, category, image));
+        }
+
         log.info("IN getALL - {} products found", result.size());
         return result;
     }

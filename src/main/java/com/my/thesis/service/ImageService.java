@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImageService {
     Image uploadImage(MultipartFile multipartImage);
 
-    Resource downloadImage(Image image);
+    String downloadImage(Image image);
 }

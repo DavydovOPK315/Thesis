@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 
 @Service
 @Slf4j
@@ -22,9 +23,12 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image uploadImage(MultipartFile multipartImage) {
 
+
+
         Image dbImage = new Image();
         dbImage.setName(multipartImage.getName());
         try {
+//            System.out.println("Bytes: " + multipartImage.getBytes());
             dbImage.setContent(multipartImage.getBytes());
         } catch (IOException e) {
             log.warn("IN uploadImage - no image found {}", multipartImage);
@@ -34,10 +38,18 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Resource downloadImage(Image image) {
+    public String downloadImage(Image image) {
 
-        byte[] result = image.getContent();
+        byte[] byteData = image.getContent();
 
-        return new ByteArrayResource(result);
+        return Base64.getMimeEncoder().encodeToString(byteData);
     }
+
+//    @Override
+//    public Resource downloadImage(Image image) {
+//
+//        byte[] result = image.getContent();
+//
+//        return new ByteArrayResource(result);
+//    }
 }

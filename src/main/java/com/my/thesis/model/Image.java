@@ -10,9 +10,8 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class Image {
 
-    @NotEmpty
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @NotEmpty

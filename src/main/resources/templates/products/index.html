@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All products</title>
+
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg .tg-4eph {
+            background-color: #f9f9f9
+        }
+    </style>
+</head>
+<body>
+<p>All products:</p>
+
+<!--<div th:each="product : ${products}">-->
+<!--    <a th:href="@{/product/{id}(id=${product.getName()})}" th:text="${product.getCount()}">product</a>-->
+<!--    <div>-->
+<!--        <p>lalal</p>-->
+<!--        <img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="500" height="600"/>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+
+<table class="tg">
+    <tr>
+        <th width="80">Name</th>
+        <th width="120">Description</th>
+        <th width="120">Count</th>
+        <th width="120">Price</th>
+        <th width="120">Year</th>
+        <th width="120">Os</th>
+        <th width="120">Studio</th>
+        <th width="120">Category</th>
+        <th width="150" th:height="150">Image</th>
+    </tr>
+
+    <div th:each="product : ${products}">
+        <tr>
+            <td th:text="${product.getName()}"></td>
+            <td th:text="${product.getDescription()}"></td>
+            <td th:text="${product.getCount()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getYear()}"></td>
+            <td th:text="${product.getOs()}"></td>
+            <td th:text="${product.getStudio()}"></td>
+            <td th:text="${product.getCategory()}"></td>
+            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150"/></td>
+        </tr>
+    </div>
+</table>
+
+
+<!--   <div th:text="${products}"></div> -->
+
+</body>
+</html>

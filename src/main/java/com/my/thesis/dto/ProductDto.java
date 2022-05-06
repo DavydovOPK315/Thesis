@@ -2,27 +2,38 @@ package com.my.thesis.dto;
 
 import com.my.thesis.model.*;
 import lombok.Data;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotEmpty;
 
 @Data
 public class ProductDto {
 
+//    @NotEmpty
     private String name;
 
+//    @NotEmpty
     private String description;
 
-    private Long count;
+//    @NotEmpty
+    private String count;
 
-    private Double price;
+//    @NotEmpty
+    private String price;
 
-    private Long year;
+//    @NotEmpty
+    private String year;
 
+//    @NotEmpty
     private String os;
 
+//    @NotEmpty
     private String studio;
 
     private MultipartFile image;
 
+//    @NotEmpty
     private String category;
 
     public Product toProduct() {
@@ -30,11 +41,10 @@ public class ProductDto {
 
         product.setName(name);
         product.setDescription(description);
-        product.setCount(count);
-        product.setPrice(price);
-        product.setYear(year);
+        product.setCount(Long.valueOf(count));
+        product.setPrice(Double.valueOf(price));
+        product.setYear(Long.valueOf(year));
 
         return product;
     }
-
 }

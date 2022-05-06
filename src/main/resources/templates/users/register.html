@@ -20,7 +20,7 @@
         <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Last name error</div>
         <br/>
         <label for="email">Enter email: </label>
-        <input type="text" th:field="*{email}" id="email">
+        <input type="email" th:field="*{email}" id="email">
         <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
         <br/>
         <label for="password">Enter password: </label>
