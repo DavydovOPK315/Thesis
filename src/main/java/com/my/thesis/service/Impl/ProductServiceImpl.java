@@ -2,13 +2,13 @@ package com.my.thesis.service.Impl;
 
 import com.my.thesis.dto.ProductDto;
 import com.my.thesis.dto.ProductDtoOut;
+import com.my.thesis.dto.ProductEditDto;
 import com.my.thesis.model.*;
 import com.my.thesis.repository.*;
 import com.my.thesis.service.ImageService;
 import com.my.thesis.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,35 +21,25 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final OsRepository osRepository;
     private final StudioRepository studioRepository;
-    private final ImageDbRepository imageDbRepository;
-    private final CategoryRepository categoryRepository;
     private final ImageService imageService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, OsRepository osRepository, StudioRepository studioRepository, ImageDbRepository imageDbRepository, CategoryRepository categoryRepository, ImageService imageService) {
+    public ProductServiceImpl(ProductRepository productRepository, OsRepository osRepository, StudioRepository studioRepository, ImageService imageService) {
         this.productRepository = productRepository;
         this.osRepository = osRepository;
         this.studioRepository = studioRepository;
-        this.imageDbRepository = imageDbRepository;
-        this.categoryRepository = categoryRepository;
         this.imageService = imageService;
     }
 
-
-//    public Product save(Product product, String os, String studio, String image, List<String> categoryList) {
     @Override
     public Product save(ProductDto productDto) {
 
         Product product = productDto.toProduct();
 
-
         Os os_object = osRepository.findByName(productDto.getOs());
         Studio studio_object = studioRepository.findByName(productDto.getStudio());
         Image image = imageService.uploadImage(productDto.getImage());
-        List<Category> categories = new ArrayList<>();
-//        categoryList.forEach(category -> categories.add(categoryRepository.findByName(category)));
-        categories.add(categoryRepository.findByName(productDto.getCategory()));
-
+        List<Category> categories = productDto.getCategoriesDto();
 
         product.setOs(os_object);
         product.setStudio(studio_object);
@@ -58,28 +48,49 @@ public class ProductServiceImpl implements ProductService {
         product.setStatus(Status.ACTIVE);
 
         Product result = productRepository.save(product);
+        log.info("IN save - product was saved {}", result.getName());
         return result;
     }
+
+    @Override
+    public Product save(Product product) {
+        Product result = productRepository.save(product);
+        log.info("IN save - product was saved {}", result.getName());
+        return result;
+    }
+
+//    @Override
+//    public List<ProductDtoOut> getAll() {
+//        List<Product> productList = productRepository.findAll();
+//        List<ProductDtoOut> result = new ArrayList<>();
+//
+//        String os;
+//        String studio;
+//        List<Category> categoryList;
+//        String image;
+//
+//        for (Product product: productList) {
+//
+//            os = product.getOs().getName();
+//            studio = product.getStudio().getName();
+//            categoryList = product.getCategories();
+//            image = imageService.downloadImage(product.getImage());
+//
+//            result.add(ProductDtoOut.fromProductToProductDtoOut(product,os, studio, categoryList, image));
+//        }
+//
+//        log.info("IN getALL - {} products found", result.size());
+//        return result;
+//    }
 
     @Override
     public List<ProductDtoOut> getAll() {
         List<Product> productList = productRepository.findAll();
         List<ProductDtoOut> result = new ArrayList<>();
 
-        String os;
-        String studio;
-        String category;
-        String image;
-
 
         for (Product product: productList) {
-
-            // can get os, studio and other from product
-            os = product.getOs().getName();
-            studio = product.getStudio().getName();
-            category = product.getCategories().get(0).getName();
-            image = imageService.downloadImage(product.getImage());
-            result.add(ProductDtoOut.fromProductToProductDto(product,os, studio, category, image));
+            result.add(ProductDtoOut.fromProductToProductDtoOut(product, imageService));
         }
 
         log.info("IN getALL - {} products found", result.size());
@@ -111,6 +122,14 @@ public class ProductServiceImpl implements ProductService {
         log.info("IN findById - product: {} successfully found by id", result.getName());
         return result;
     }
+
+    @Override
+    public Product update(Long id, Product product) {
+//        return productRepository.merge(id, product);
+
+        return save(product);
+    }
+
 
     @Override
     public void delete(Long id) {

@@ -2,13 +2,14 @@ package com.my.thesis.dto;
 
 import com.my.thesis.model.*;
 import lombok.Data;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class ProductDto {
+
+    private Long id;
 
 //    @NotEmpty
     private String name;
@@ -34,7 +35,9 @@ public class ProductDto {
     private MultipartFile image;
 
 //    @NotEmpty
-    private String category;
+//    private String category;
+
+    private List<Category> categoriesDto;
 
     public Product toProduct() {
         Product product = new Product();

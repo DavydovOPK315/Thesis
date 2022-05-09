@@ -10,11 +10,15 @@ public interface ProductService {
 
     Product save(ProductDto productDto);
 
+    Product save(Product product);
+
     List<ProductDtoOut> getAll();
 
     Product findByName(String name);
 
     Product findById(Long id);
+
+    Product update(Long id, Product product);
 
     void delete(Long id);
 }

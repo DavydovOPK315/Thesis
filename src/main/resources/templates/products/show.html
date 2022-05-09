@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All products</title>
+    <title>Product</title>
 
     <style type="text/css">
         .tg {
@@ -45,7 +45,7 @@
     </style>
 </head>
 <body>
-<p>All products:</p>
+<p>Product: </p>
 
 <table class="tg">
     <tr>
@@ -60,9 +60,8 @@
         <th width="150" th:height="150">Image</th>
     </tr>
 
-    <div th:each="product : ${products}">
         <tr>
-            <td> <a th:href="@{/products/{id}(id=${product.getId()})}" th:text="${product.getName()}"></a></td>
+            <td th:text="${product.getName()}"></td>
             <td th:text="${product.getDescription()}"></td>
             <td th:text="${product.getCount()}"></td>
             <td th:text="${product.getPrice()}"></td>
@@ -75,9 +74,21 @@
                 </ul>
             </td>
 
-            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150"/></td>
+            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150" alt="picture"/></td>
+
+            <td>
+                <form th:method="Get" th:action="@{/products/{id}/edit(id=${product.getId()})}">
+                    <input type="submit" value="Edit product"/>
+                </form>
+            </td>
+            <td>
+                <form th:method="Get" th:action="@{/products/delete/{id}(id=${product.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
         </tr>
-    </div>
 </table>
+<br/>
+    <a th:href="@{/products}">All products</a>
 </body>
 </html>

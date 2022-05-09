@@ -5,8 +5,6 @@ import com.my.thesis.repository.ImageDbRepository;
 import com.my.thesis.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,18 +21,18 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image uploadImage(MultipartFile multipartImage) {
 
-
-
         Image dbImage = new Image();
         dbImage.setName(multipartImage.getName());
         try {
-//            System.out.println("Bytes: " + multipartImage.getBytes());
             dbImage.setContent(multipartImage.getBytes());
         } catch (IOException e) {
             log.warn("IN uploadImage - no image found {}", multipartImage);
         }
 
-        return imageDbRepository.save(dbImage);
+//            imageDbRepository.save(dbImage);
+
+
+        return dbImage;
     }
 
     @Override
@@ -45,11 +43,13 @@ public class ImageServiceImpl implements ImageService {
         return Base64.getMimeEncoder().encodeToString(byteData);
     }
 
-//    @Override
-//    public Resource downloadImage(Image image) {
-//
-//        byte[] result = image.getContent();
-//
-//        return new ByteArrayResource(result);
-//    }
+    @Override
+    public Image findById(Long id) {
+        return imageDbRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Image findByContent(byte[] content){
+        return imageDbRepository.findByContent(content);
+    }
 }
