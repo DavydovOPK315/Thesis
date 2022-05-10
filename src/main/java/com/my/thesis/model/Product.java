@@ -5,12 +5,13 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "main_products")
 @Data
-public class Product extends BaseEntity{
+public class Product extends BaseEntity implements Serializable {
 
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 45, message = "Name should be between 2 and 30 characters")

@@ -7,13 +7,14 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 @Data
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Serializable {
 
     @NotEmpty(message = "Username should not be empty")
     @Size(min = 2, max = 30, message = "Username should be between 2 and 30 characters")

@@ -1,7 +1,6 @@
 package com.my.thesis.rest;
 
 import com.my.thesis.dto.AuthenticationRequestDto;
-import com.my.thesis.model.Status;
 import com.my.thesis.model.User;
 import com.my.thesis.security.jwt.JwtTokenProvider;
 import com.my.thesis.service.UserService;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/users")
@@ -39,7 +39,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping(value = "/login")
     public String index(@ModelAttribute("user") AuthenticationRequestDto user) {
         return "users/login";
     }
@@ -61,9 +61,12 @@ public class UserController {
             model.addAttribute("token", token);
 
             HttpSession session = request.getSession();
+            session.setAttribute("userId", user.getId());
             session.setAttribute("token", token);
 
-            return "result";
+            HashMap<Long,Long> basketMap = new HashMap<>();
+
+            return "redirect:/shop";
         }catch (AuthenticationException e){
             throw new BadCredentialsException("Invalid username or password");
         }

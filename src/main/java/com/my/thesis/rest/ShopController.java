@@ -1,12 +1,7 @@
 package com.my.thesis.rest;
 
-import com.my.thesis.dto.ProductDto;
-import com.my.thesis.dto.ProductDtoOut;
-import com.my.thesis.dto.ProductEditDto;
-import com.my.thesis.model.Category;
-import com.my.thesis.model.Os;
-import com.my.thesis.model.Product;
-import com.my.thesis.model.Studio;
+import com.my.thesis.dto.*;
+import com.my.thesis.model.*;
 import com.my.thesis.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,29 +11,33 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebMethod;
-import javax.validation.Valid;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequestMapping("/products")
-public class ProductController {
+@RequestMapping("/shop")
+public class ShopController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
     private final OsService osService;
     private final StudioService studioService;
     private final ImageService imageService;
+    private final BasketService basketService;
+    private final UserService userService;
 
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService, OsService osService, StudioService studioService, ImageService imageService) {
+    public ShopController(ProductService productService, CategoryService categoryService, OsService osService, StudioService studioService, ImageService imageService, BasketService basketService, UserService userService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.osService = osService;
         this.studioService = studioService;
         this.imageService = imageService;
+        this.basketService = basketService;
+        this.userService = userService;
     }
 
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
@@ -46,15 +45,68 @@ public class ProductController {
         List<ProductDtoOut> productList = productService.getAll();
 
         model.addAttribute("products", productList);
-        return "products/index";
+        return "shop/index";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("products/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         ProductDtoOut productDtoOut = ProductDtoOut.fromProductToProductDtoOut(productService.findById(id), imageService);
         model.addAttribute("product", productDtoOut);
-        return "products/show";
+        model.addAttribute("basketDto", new BasketDto());
+        return "shop/show";
     }
+
+    @RequestMapping(value = "/basket/{id}", method = RequestMethod.POST)
+    public String addProductToBasket(@PathVariable("id") Long productId, @ModelAttribute("basketDto") BasketDto basketDto, BindingResult bindingResult, HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()){
+            log.warn("Problem with data in adding product to basket");
+            return "shop/show";
+        }
+
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+
+        Basket basket = new Basket();
+        basket.setProductId(productId);
+        basket.setUserId(userId);
+        basket.setCount(basketDto.getCountProduct());
+
+
+        System.out.println(" user id =======> " + userId);
+        System.out.println(" product id =======> " + productId);
+
+        basketService.save(basket);
+
+        return "redirect:/shop/basket";
+    }
+
+    @RequestMapping(value = "/basket", method = RequestMethod.GET)
+    public String showBasket(Model model, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<Basket> basketList = basketService.findAllByUserId(userId);
+
+        List<BasketOutDto> resultBasketList = basketList.stream()
+                .map(basket -> BasketOutDto.fromProductToBasketOutDto(productService.findById(basket.getProductId()), imageService, basket.getCount()))
+                .collect(Collectors.toList());
+
+        model.addAttribute("resultBasketList", resultBasketList);
+
+        return "shop/basket";
+    }
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping("/new")
     public String newProduct(Model model){
@@ -62,7 +114,7 @@ public class ProductController {
         insertInModelCategoryOsStudio(model);
         model.addAttribute("productDto", new ProductDto());
 
-        return "products/new";
+        return "shop/new";
     }
 
     @PostMapping("/save")
@@ -70,11 +122,11 @@ public class ProductController {
 
         if (bindingResult.hasErrors()){
             log.warn("Problem with data in adding product");
-            return "products/new";
+            return "shop/new";
         }
 
         productService.save(productDto);
-        return "redirect:/products";
+        return "redirect:/shop";
     }
 
 //    @GetMapping("/{id}/edit")
@@ -101,7 +153,7 @@ public class ProductController {
         ProductEditDto productEditDto = ProductEditDto.fromProductToProductEditDto(product, imageService);
         model.addAttribute("productEditDto", productEditDto);
 
-        return "products/edit";
+        return "shop/edit";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
@@ -110,7 +162,7 @@ public class ProductController {
                          @PathVariable("id") Long id) {
 
         if (bindingResult.hasErrors()) {
-            return "products/edit";
+            return "shop/edit";
         }
 
         Product product = ProductEditDto.toProduct(productEditDto, productService, imageService, osService, studioService, categoryService);
@@ -119,13 +171,13 @@ public class ProductController {
 //        productService.update(id, product);
 
         productService.save(product);
-        return "redirect:/products";
+        return "redirect:/shop";
     }
 
     @RequestMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         productService.delete(id);
-        return "redirect:/products";
+        return "redirect:/shop";
     }
 
     private void insertInModelCategoryOsStudio(Model model) {
