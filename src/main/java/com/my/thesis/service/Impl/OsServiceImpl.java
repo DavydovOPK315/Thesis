@@ -43,9 +43,11 @@ public class OsServiceImpl implements OsService {
         List<Os> result = osRepository.findAll();
 
         if (result.isEmpty()) {
-            log.warn("In getAll - no os found");
+            log.warn("IN getAll - no os found");
             return null;
         }
+
+        log.info("IN getAll oss were found {}", result.size());
 
         return result;
     }

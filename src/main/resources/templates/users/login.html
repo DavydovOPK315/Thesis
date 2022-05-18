@@ -5,45 +5,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet"> <!--Font All pages-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style_button.css"> <!--Button All pages-->
+    <link rel="stylesheet" href="/css2/style_button.css"> <!--Button All pages-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/style_login.css"> <!--login page-->
+    <link rel="stylesheet" type="text/css" href="/css2/style_login.css"> <!--login page-->
     <!--Font All pages-->
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css"> <!--All pages-->
+    <link rel="stylesheet" type="text/css" href="/css2/base.css"> <!--All pages-->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> <!--Menu All pages-->
 
 
-    <title>GameShop</title>
+    <title>Login</title>
 </head>
 <body>
-<!--<header>-->
-<div class="container">
-    <a href="home"><img src="/static/images/Gameshop.png" height="40" alt="Логотип" class="header__logo"/></a>
-    <div class="menu">
-        <div class="icon-close">
-            <img src="/static/images/x.png" height="30">
-
+<header>
+    <div class="content">
+        <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
+        <div class="menu">
+            <div class="icon-close">
+                <img src="/css2/photo/x.png">
+            </div>
         </div>
-        <nav>
-            <a href="catalog" class="nav-link">Catalog</a>
-            <!--                {% if user.is_authenticated %}-->
-            <!--                <a href="cart" class="nav-link bag">Basket</a>-->
-            <!--                {% endif %}-->
-
-        </nav>
+        <div class="icon-menu">
+            <img src="/css2/photo/Hamburger.png" height="40">
+        </div>
     </div>
-    <div class="icon-menu">
-        <img src="/static/images/Hamburger.png" height="40"></div>
-    <!--        {% if user.is_authenticated %}-->
-    <!--        <a href="account" class=" btn">Account</a>-->
-    <!--        {% else %}-->
-    <a href="login" class=" btn">Log In</a>
-    <!--        {% endif %}-->
-
-    <!--</header>-->
-
-</div>
+</header>
 
 <main>
     <div class="frame">
@@ -53,76 +39,29 @@
             </ul>
         </div>
         <div>
-
-            <!--            <div class="errors">-->
-            <!--                {% if form.errors %}-->
-            <!--                <p class="text-error">Your username and password didn't match. Please try again.</p>-->
-            <!--                {% endif %}-->
-            <!--                {% if next %}-->
-            <!--                {% if user.is_authenticated %}-->
-            <!--                <p class="text-error">Your account doesn't have access to this page. To proceed,-->
-            <!--                    please login with an account that has access.</p>-->
-            <!--                {% else %}-->
-            <!--                <p class="text-error">Please login to see this page.</p>-->
-            <!--                {% endif %}-->
-            <!--                {% endif %}-->
-            <!--            </div>-->
-            <form class="form-login" th:action="@{/users/login}" th:method="POST" th:object="${user}" name="form">
-                <!--                {% csrf_token %}-->
+            <div class="errors" th:if="${formError}">
+                <p class="text-error" th:text="${formError}"></p>
+            </div>
+            <form class="form-login" th:action="@{/users/auth}" th:method="POST" th:object="${user}" name="form">
                 <label id="username">Username</label>
-                <input th:field="*{username}" name="username" class="form-styling" type="text" placeholder="Username"/>
+                <input th:field="*{username}" name="username" class="form-styling" type="text" min="4"
+                       placeholder="Username"/>
                 <label id="password">Password</label>
-                <input th:field="*{password}" class="form-styling" type="password" name="password" placeholder="Password"/>
+                <input th:field="*{password}" class="form-styling" type="password" minlength="4" name="password"
+                       placeholder="Password"/>
 
                 <div class="butn-animate">
                     <button type="submit" class="butn-login">Log in</button>
                 </div>
-                <div class="frame-end"><a class="forget" href="/accounts/password_reset/">Forgot your password? |</a>
-                    <a class="forget2" href="/accounts/password_reset/">Forgot password? |</a>
-                    <a class="sign-up" href="../signup/">Sign up</a></div>
+                <div class="frame-end">
+                    <a class="sign-up" th:href="@{/users/register}">Register</a>
+                </div>
             </form>
         </div>
     </div>
-    <a id="refresh" value="Refresh" onClick="history.go()">
-        <svg class="refreshicon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-             width="25px" height="25px" viewBox="0 0 322.447 322.447" style="enable-background:new 0 0 322.447 322.447;"
-             xml:space="preserve">
-       <path d="M321.832,230.327c-2.133-6.565-9.184-10.154-15.75-8.025l-16.254,5.281C299.785,206.991,305,184.347,305,161.224
-              c0-84.089-68.41-152.5-152.5-152.5C68.411,8.724,0,77.135,0,161.224s68.411,152.5,152.5,152.5c6.903,0,12.5-5.597,12.5-12.5
-              c0-6.902-5.597-12.5-12.5-12.5c-70.304,0-127.5-57.195-127.5-127.5c0-70.304,57.196-127.5,127.5-127.5
-              c70.305,0,127.5,57.196,127.5,127.5c0,19.372-4.371,38.337-12.723,55.568l-5.553-17.096c-2.133-6.564-9.186-10.156-15.75-8.025
-              c-6.566,2.134-10.16,9.186-8.027,15.751l14.74,45.368c1.715,5.283,6.615,8.642,11.885,8.642c1.279,0,2.582-0.198,3.865-0.614
-              l45.369-14.738C320.371,243.946,323.965,236.895,321.832,230.327z"/>
-  </svg>
-    </a>
-    <!--    {% endblock %}-->
 </main>
-</div>
-
-<footer>
-
-    <div class="title__logo">GameShop</div>
-    <div class="info">
-        <div class="mail">Ukraine~Kharkiv</div>
-        <div class="mail">E-mail: game@gmail.com</div>
-        <div class="number">(050)022 4468</div>
-        <div class="number">(099)131 1464</div>
-    </div>
-
-    <nav class="nav">
-
-    </nav>
-    <div class="social">
-        <div><img src="/static/images/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
-        <div><img src="/static/images/instagram-pink.png" width="50" height="50" alt="Логотип"/></div>
-        <div><img src="/static/images/twitter-pink.png" width="50" height="50" alt="Логотип"/></div>
-        <div><img src="/static/images/youtube-pink.png" width="50" height="50" alt="Логотип"/></div>
-    </div>
-
-</footer>
-<script src="/static/js/jquery.bxslider.js"></script>
-<script src="/static/js/jquery.bxslider.min.js"></script>
-<script src="/static/js/new.js"></script>
+<script src="/js/jquery.bxslider.js"></script>
+<script src="/js/jquery.bxslider.min.js"></script>
+<script src="/js/new.js"></script>
 </body>
 </html>

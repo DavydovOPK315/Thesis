@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create order</title>
+</head>
+<body>
+<form enctype="multipart/form-data" th:method="POST" th:action="@{/shop/order/save}" th:object="${order}">
+    <label for="phone">Enter phone: </label>
+    <input type="tel" th:field="*{phone}" id="phone" th:min="10" th:max="45">
+    <br/>
+    <br/>
+    <label for="addressDelivery">Enter address delivery: </label>
+    <input type="text" th:field="*{addressDelivery}" id="addressDelivery" th:min="10" th:max="200">
+    <br/>
+    <br/>
+    <label for="comment">Enter comment: </label>
+    <input type="text" th:field="*{comment}" id="comment" th:max="200">
+    <br/>
+    <br/>
+
+    <input type="submit" value="Create the order!">
+</form>
+</body>
+</html>

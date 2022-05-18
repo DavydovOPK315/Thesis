@@ -21,4 +21,11 @@ public class Studio extends BaseEntity implements Serializable {
     @OneToMany
     @JoinColumn(name = "studio_id")
     List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Studio[" +
+                "name='" + name +
+                ']';
+    }
 }

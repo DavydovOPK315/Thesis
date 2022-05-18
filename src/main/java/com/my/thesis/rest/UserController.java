@@ -21,12 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -44,17 +42,21 @@ public class UserController {
         return "users/login";
     }
 
-    @PostMapping(value = "/login")
-    public String login(Model model, AuthenticationRequestDto requestDto, HttpServletRequest request){
+    @PostMapping(value = "/auth")
+    public String login(@ModelAttribute("formError") String formError, @ModelAttribute("user") AuthenticationRequestDto requestDto,Model model, HttpServletRequest request){
         try {
 
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = userService.findByUsername(username);
 
-            if (user == null){
-                throw new UsernameNotFoundException("User with username: " + username + " not found");
-            }
+
+            // not needed, if incorrect authentication worked earlier
+//            if (user == null){
+//                model.addAttribute("formError", "User with username: " + username + " not found");
+////                throw new UsernameNotFoundException("User with username: " + username + " not found");
+//                return "users/login";
+//            }
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
@@ -64,11 +66,11 @@ public class UserController {
             session.setAttribute("userId", user.getId());
             session.setAttribute("token", token);
 
-            HashMap<Long,Long> basketMap = new HashMap<>();
-
             return "redirect:/shop";
         }catch (AuthenticationException e){
-            throw new BadCredentialsException("Invalid username or password");
+            model.addAttribute("formError", "Your username and password didn't match. Please try again.");
+            return "users/login";
+//            throw new BadCredentialsException("Invalid username or password");
         }
     }
 
@@ -85,6 +87,6 @@ public class UserController {
         }
 
         userService.register(user);
-        return "redirect:/users";
+        return "redirect:/users/login";
     }
 }

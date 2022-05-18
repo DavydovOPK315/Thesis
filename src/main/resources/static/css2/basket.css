@@ -1,0 +1,377 @@
+.basket{
+  display: flex;
+  flex-direction: column;
+  background: var(--light-green);
+  width: 70%;
+  min-height: 720px;
+  align-items: center;
+overflow-y: hidden;
+
+}
+
+.empty-h{
+  color:white;
+  font-size: 30px;
+}
+
+.form-styling{
+  outline: none;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  width: 40px;
+  background: rgba(95, 116, 111, 0.2);
+}
+
+.form__style{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.button__update{
+  color: var(--pink-color);
+  background: var(--dark--green);
+  height: 30px;
+  width: 70px;
+  border-radius: 30px;
+  letter-spacing: 2px;
+  border: 3px solid var(--dark--green);
+  outline: none;
+}
+.empty_cart{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+:root{
+--pink-color: #be9a9a;
+--light-green: #5f746f;
+--dark--green: #2c3e42;}
+
+article{
+  display: flex;
+
+  margin: 0;
+  top: 0;
+}
+
+.empty_cart{
+margin: 50px;
+height: 400px;
+  text-align: center;
+}
+.empty-h{
+  margin-top:100px;
+
+}
+
+.total__price{
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  width: 90%;
+  margin: 60px 0px 60px 0px;
+  border-top: 4px outset  var(--dark--green);
+  padding: 20px;
+}
+
+.infor__value__price{
+  color: var(--pink-color);
+}
+
+
+.infor__value__price{
+  font-size: 50px;
+}
+
+.infor__price{
+  font-size: 50px;
+}
+.close{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ticket__infor{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 30px 0px 20px;
+
+}
+
+.information{
+display: flex;
+justify-content: space-around;
+align-items: center;
+text-align: center;
+
+}
+
+.basket h1{
+  margin-top: 120px;
+  color: var(--dark--green);
+  font-size: 40px;
+}
+.ticket{
+ box-shadow: 0 10px 18px var(--dark--green), 0 10px 10px var(--dark--green);
+	flex-direction: column;
+    border-radius: 40px;
+	display: flex;
+  padding: 30px;
+box-shadow: 10px 8px 8px   var(--dark--green), 0 10px 10px var(--dark--green);
+	width: 450px;
+	margin-right: 25px ;
+	margin-bottom: 25px ;
+
+	color: #000;
+background-color: #ffffff;
+}
+
+.name_info{
+  font-size: 30px;
+  color: --dark--green;
+}
+
+.person__name__information, .person__surname__information,
+.date__start__information, .date__finish__information{
+color: var(--dark--green);
+font-size: 20px;
+margin: 0px 0px 3px 0px;
+}
+
+.name, .surname, .start__date, .finish__date{
+  color: var(--pink-color);
+  font-size: 17px;
+  margin-bottom: 15px;
+}
+.num{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+    margin: 8px 20px 20px 0px;
+}
+.price__tickets{
+  font-size: 18px;
+  color: var(--light-green);
+}
+
+.price__ticket{
+  font-size: 27px;
+  color: var(--dark--green);
+
+}
+
+hr{
+  background-color: var(--pink-color);
+  height:2px;
+  border: none;
+  margin: 12px 35px 12px 35px;
+}
+
+.gradient_btn_Basket{
+display: none;
+}
+
+.buttons{
+  position: fixed;
+  left: 77%;
+  bottom: 10%;
+  top:10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+@media screen and (max-width: 550px) and (min-width: 100px)
+{
+.main__date{
+  display: none;
+}
+.gradient-btn_Basket{
+  display: none;
+}
+
+
+.infor__value__price{
+  font-size: 25px;
+}
+
+.infor__price{
+  font-size: 25px;
+}
+
+
+
+.basket{
+
+  background: none;
+  width: 100%;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.buttons{
+  position: static;
+ flex-direction: row;
+flex-wrap: wrap;}
+
+article{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.close img{
+  height: 28px;
+}
+.gradient_btn_Basket {
+  transform: translate(0, 10%);
+  width: 130px;
+  height: 30px;
+  text-align: center;
+  line-height:25px;
+  font-size: 11px;
+margin-bottom: 40px;
+
+margin-left: 20px;
+  color: #2c3e42;
+  background:  #be9a9a;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 6px;
+  transition: .5s;
+  border: 4px solid #2c3e42;
+  border-radius: 60px;
+  box-shadow: 10px 5px 10px #5f746f;
+  overflow: hidden;
+display: inline;
+
+}
+
+
+
+.ticket{
+  width: 300px;
+}
+
+.logo__image{width: 80px;}
+
+.img__kharkiv_map{
+  width: 50px;
+  height: 50px;
+}
+.img__kharkiv{
+  width: 50px;
+  height: 50px;
+}
+.ticket__infor{
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+.num{
+  margin-bottom: 0px;
+}
+.person__name__information, .person__surname__information,
+.date__start__information, .date__finish__information{
+
+font-size: 13px;
+margin: 0px 0px 3px 0px;
+}
+
+.name, .surname, .start__date, .finish__date{
+
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+
+
+}
+
+@media screen and (max-width: 1000px) and (min-width: 550px)
+{
+.main__date{
+  display: none;
+}
+.gradient-btn_Basket{
+  display: none;
+}
+
+
+.total__price{
+
+  border-top: 4px outset  var(--light-green);
+
+}
+
+
+
+
+.infor__value__price{
+  font-size: 35px;
+}
+
+.infor__price{
+  font-size: 35px;
+}
+
+
+.basket{
+
+  background: none;
+  width: 100%;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.buttons{
+  position: static;
+ flex-direction: row;
+flex-wrap: wrap;}
+
+article{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.close img{
+  height: 28px;
+}
+.gradient_btn_Basket {
+  transform: translate(0, 10%);
+  width: 170px;
+  height: 40px;
+  text-align: center;
+  line-height:35px;
+  font-size: 11px;
+margin-bottom: 40px;
+
+margin-left: 20px;
+  color: #2c3e42;
+  background:  #be9a9a;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 6px;
+  transition: .5s;
+  border: 4px solid #2c3e42;
+  border-radius: 60px;
+  box-shadow: 10px 5px 10px #5f746f;
+  overflow: hidden;
+display: inline;
+
+}
+
+
+
+
+
+
+}

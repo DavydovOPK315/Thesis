@@ -1,5 +1,6 @@
 package com.my.thesis.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.Category;
 import com.my.thesis.model.Product;
 import com.my.thesis.service.ImageService;
@@ -7,6 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDtoOut {
 
     private Long id;
@@ -46,21 +48,4 @@ public class ProductDtoOut {
 
         return productDtoOut;
     }
-
-//    public static ProductDtoOut fromProductToProductDtoOut(Product product, String os, String studio,  List<Category> categoryList, String imageOut) {
-//        ProductDtoOut productDtoOut = new com.my.thesis.dto.ProductDtoOut();
-//
-//        productDtoOut.setId(product.getId());
-//        productDtoOut.setName(product.getName());
-//        productDtoOut.setDescription(product.getDescription());
-//        productDtoOut.setCount(product.getCount());
-//        productDtoOut.setPrice(product.getPrice());
-//        productDtoOut.setYear(product.getYear());
-//        productDtoOut.setOs(os);
-//        productDtoOut.setStudio(studio);
-//        productDtoOut.setImage(imageOut);
-//        productDtoOut.setCategoryList(categoryList);
-//
-//        return productDtoOut;
-//    }
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg .tg-4eph {
+            background-color: #f9f9f9
+        }
+    </style>
+</head>
+<body>
+<p>Your order: </p>
+
+<table class="tg">
+    <tr>
+        <th width="80">Order №</th>
+        <th width="80">Date</th>
+        <th width="80">Address delivery</th>
+        <th width="120">Comment</th>
+        <th width="120">Phone</th>
+        <th width="120">Total price</th>
+    </tr>
+
+    <tr>
+        <td th:text="${order.getId()}"></td>
+        <td th:text="${order.getCreated()}"></td>
+        <td th:text="${order.getAddressDelivery()}"></td>
+        <td th:text="${order.getComment()}"></td>
+        <td th:text="${order.getPhone()}"></td>
+        <td th:text="${totalPrice}"></td>
+
+    </tr>
+</table>
+<br/>
+<a th:href="@{/shop}">All products</a>
+</body>
+</html>

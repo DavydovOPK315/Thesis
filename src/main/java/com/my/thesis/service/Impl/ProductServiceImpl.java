@@ -1,8 +1,8 @@
 package com.my.thesis.service.Impl;
 
+import com.my.thesis.dto.ProductByFilters;
 import com.my.thesis.dto.ProductDto;
 import com.my.thesis.dto.ProductDtoOut;
-import com.my.thesis.dto.ProductEditDto;
 import com.my.thesis.model.*;
 import com.my.thesis.repository.*;
 import com.my.thesis.service.ImageService;
@@ -10,9 +10,11 @@ import com.my.thesis.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -59,40 +61,12 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
-//    @Override
-//    public List<ProductDtoOut> getAll() {
-//        List<Product> productList = productRepository.findAll();
-//        List<ProductDtoOut> result = new ArrayList<>();
-//
-//        String os;
-//        String studio;
-//        List<Category> categoryList;
-//        String image;
-//
-//        for (Product product: productList) {
-//
-//            os = product.getOs().getName();
-//            studio = product.getStudio().getName();
-//            categoryList = product.getCategories();
-//            image = imageService.downloadImage(product.getImage());
-//
-//            result.add(ProductDtoOut.fromProductToProductDtoOut(product,os, studio, categoryList, image));
-//        }
-//
-//        log.info("IN getALL - {} products found", result.size());
-//        return result;
-//    }
-
     @Override
     public List<ProductDtoOut> getAll() {
         List<Product> productList = productRepository.findAll();
-        List<ProductDtoOut> result = new ArrayList<>();
+        List<ProductDtoOut> result;
 
-
-        for (Product product: productList) {
-            result.add(ProductDtoOut.fromProductToProductDtoOut(product, imageService));
-        }
-
+        result = transformToProductDtoOut(productList);
         log.info("IN getALL - {} products found", result.size());
         return result;
     }
@@ -101,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
     public Product findByName(String name) {
         Product result = productRepository.findByName(name);
 
-        if (result == null){
+        if (result == null) {
             log.warn("IN findByName - no product found {}", name);
             return null;
         }
@@ -114,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(Long id) {
         Product result = productRepository.findById(id).orElse(null);
 
-        if (result == null){
+        if (result == null) {
             log.warn("IN findById - no product found {}", id);
             return null;
         }
@@ -124,16 +98,124 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(Long id, Product product) {
-//        return productRepository.merge(id, product);
+    public List<ProductDtoOut> findAllOrderByYear() {
+        List<Product> productList = productRepository.findAllOrderByYear();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
 
-        return save(product);
+        log.info("IN findAllOrderByYear was found {} products", productList.size());
+        return result;
     }
 
+    @Override
+    public List<ProductDtoOut> findAllOrderByYearDesc() {
+        List<Product> productList = productRepository.findAllOrderByYearDesc();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByYearDesc was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllOrderByPrice() {
+        List<Product> productList = productRepository.findAllOrderByPrice();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByPrice was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllOrderByPriceDesc() {
+        List<Product> productList = productRepository.findAllOrderByPriceDesc();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByPriceDesc was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters) {
+        List<Category> categoryListFilter = productByFilters.getCategoryListFilter();
+
+        List<Os> oss = new ArrayList<>();
+        String osName = productByFilters.getOsFilter();
+        if (osName == null) {
+            oss = osRepository.findAll();
+        } else {
+            oss.add(osRepository.findByName(osName));
+        }
+
+        List<Studio> studios = new ArrayList<>();
+        String studioName = productByFilters.getStudioFilter();
+        if (studioName == null) {
+            studios = studioRepository.findAll();
+        } else {
+            studios.add(studioRepository.findByName(studioName));
+        }
+
+        Double priceMin = productByFilters.getPriceMin();
+        if (priceMin == null) priceMin = 0D;
+
+        Double priceMax = productByFilters.getPriceMax();
+        if (priceMax == null) priceMax = 10000D;
+
+        Long yearMin = productByFilters.getYearMin();
+        if (yearMin == null) yearMin = 2000L;
+
+        Long yearMax = productByFilters.getYearMax();
+        if (yearMax == null) yearMax = 2022L;
+
+        System.out.println("Oss size ==> " + oss.size());
+        System.out.println("Studios size ==> " + studios.size());
+        System.out.println("Price min ==> " + productByFilters.getPriceMin());
+        System.out.println("Count of category ==> " + categoryListFilter.size());
+
+        List<Product> productList = productRepository.findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(oss, studios, priceMin, priceMax, yearMin, yearMax);
+
+        // compare productList with required categories
+        List<Product> filteredProducts = new ArrayList<>();
+
+        if (!categoryListFilter.isEmpty()) {
+            for (Product product : productList) {
+                if (product.getCategories().size() < categoryListFilter.size()) continue;
+                if (product.getCategories().containsAll(categoryListFilter))
+                    filteredProducts.add(product);
+            }
+        } else {
+            filteredProducts = productList;
+        }
+        List<ProductDtoOut> result = transformToProductDtoOut(filteredProducts.stream().sorted((o1, o2) -> (int) (o1.getPrice() - o2.getPrice())).collect(Collectors.toList()));
+
+        log.info("IN findAllByCategoriesInAndOsAndStudioAndPriceBetweenAndYearBetween was found {} products", productList.size());
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public void updateProductCount(Long productId, Long count) {
+        productRepository.updateProductCount(productId, count);
+        log.info("IN updateProductCount product count updated on {}", count);
+    }
 
     @Override
     public void delete(Long id) {
         productRepository.deleteById(id);
         log.info("IN delete - product successfully deleted by id: {}", id);
+    }
+
+    private List<ProductDtoOut> transformToProductDtoOut(List<Product> productList) {
+        List<ProductDtoOut> result = new ArrayList<>();
+
+        if (productList.isEmpty()) {
+            log.warn("IN transformToProductDtoOut - productList is empty");
+            return null;
+        }
+
+        for (Product product : productList) {
+            result.add(ProductDtoOut.fromProductToProductDtoOut(product, imageService));
+        }
+
+        log.info("IN transformToProductDtoOut - result size: {}", result.size());
+        return result;
     }
 }

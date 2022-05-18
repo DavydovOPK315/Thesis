@@ -20,5 +20,12 @@ public class Os extends BaseEntity implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "os_id")
-    List<Product> products;
+    private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Os[" +
+                "name='" + name +
+                ']';
+    }
 }

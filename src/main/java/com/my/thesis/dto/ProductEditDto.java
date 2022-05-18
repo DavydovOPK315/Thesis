@@ -1,5 +1,6 @@
 package com.my.thesis.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.*;
 import com.my.thesis.service.*;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductEditDto {
     private Long id;
 
@@ -36,7 +38,7 @@ public class ProductEditDto {
 
 
     public static ProductEditDto fromProductToProductEditDto(Product product, ImageService imageService) {
-        ProductEditDto productEditDto = new com.my.thesis.dto.ProductEditDto();
+        ProductEditDto productEditDto = new ProductEditDto();
         StringBuilder resultCategories = new StringBuilder();
 
         productEditDto.setId(product.getId());
@@ -69,7 +71,6 @@ public class ProductEditDto {
         product.setYear(productEditDto.getYear());
 
         if (!productEditDto.getImageIn().isEmpty()) {
-            System.out.println("Not empty");
             Image imageCheck = imageService.uploadImage(productEditDto.getImageIn());
             product.setImage(imageCheck);
         }
@@ -84,9 +85,8 @@ public class ProductEditDto {
                 .map(s -> categoryService.findById(Long.valueOf(s)))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-//                .collect(Collectors.toCollection(ArrayList::new));
-        product.setCategories(categoryList);
 
+        product.setCategories(categoryList);
         return product;
     }
 }

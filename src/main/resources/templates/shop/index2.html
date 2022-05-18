@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="/css2/core-style.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="content">
+        <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
+        <div class="menu">
+            <div class="icon-close">
+                <img src="/css2/photo/x.png">
+            </div>
+            <nav>
+                <a href="#" class="nav-link">How it works</a>
+                <a href="#" class="nav-link">Prices</a>
+                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">FAQ</a>
+                <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+            </nav>
+        </div>
+        <div class="icon-menu">
+            <img src="css2/photo/Hamburger.png" height="40">
+        </div>
+
+        <div th:if="${userId}">
+            <a th:href="@{/shop}" class=" btn">Profile</a>
+        </div>
+        <div th:unless="${userId}">
+            <a th:href="@{/users/login}" class=" btn">Log In</a>
+        </div>
+
+    </div>
+</header>
+<div class="container">
+    <section class="shop_grid_area mt-40">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3">
+                <form th:action="@{/shop/products/filters/composite}" method="get" th:method="GET"
+                      th:object="${filters}">
+                    <div class="shop_sidebar_area">
+                        <div class="widget catagories mb-50">
+                            <h6 class="widget-title mb-30" data-toggle="collapse" data-target="#catagories">
+                                Categories</h6>
+                            <div class="widget-desc collapse show" id="catagories">
+                                <div class="form-check" th:field="*{categoryListFilter}"
+                                     th:each="category : ${categories}">
+                                    <input class="form-check-input" type="checkbox"
+                                           th:field="*{categoryListFilter}"
+                                           th:value="${category.getId()}"
+                                           th:text="${category.getName()}" id="category">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget operating_system mb-50">
+                            <h6 class="widget-title mb-30" data-toggle="collapse" data-target="#operating_system">
+                                Operating System</h6>
+                            <div class="widget-desc collapse show" id="operating_system">
+                                <div class="form-check" th:field="*{osFilter}" th:each="os : ${oss}">
+                                    <input class="form-check-input" type="radio"
+                                           th:field="*{osFilter}"
+                                           th:value="${os.getName()}"
+                                           th:text="${os.getName()}" th:id="${os.getName()}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget studios mb-50">
+                            <h6 class="widget-title mb-30" data-toggle="collapse" data-target="#studios">Studios</h6>
+                            <div class="widget-desc collapse show" id="studios">
+                                <div class="form-check" th:field="*{studioFilter}" th:each="studio : ${studios}">
+                                    <input class="form-check-input" type="radio"
+                                           th:field="*{studioFilter}"
+                                           th:value="${studio.getName()}"
+                                           th:text="${studio.getName()}" th:id="${studio.getName()}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget price mb-50">
+                            <p class="widget-title mb-30">Price</p>
+                            <div class="widget-desc">
+                                <input class="form-check-input" type="number" min="0" max="10000" step="0.01"
+                                       th:field="*{priceMin}"
+                                       placeholder="0 ₴"
+                                       id="priceMin">
+                                <br>
+                                <input class="form-check-input" type="number" min="0" max="10000" step="0.01"
+                                       th:field="*{priceMax}"
+                                       placeholder="10000 ₴"
+                                       id="priceMax">
+
+                                <!--                                <div class="slider-range">-->
+                                <!--                                    <div data-min="60" data-max="11000" data-unit="₴"-->
+                                <!--                                         class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"-->
+                                <!--                                         data-value-min="60" data-value-max="11000" data-label-result="">-->
+                                <!--                                        <div class="ui-slider-range ui-widget-header ui-corner-all"></div>-->
+                                <!--                                        <span class="ui-slider-handle ui-state-default ui-corner-all"-->
+                                <!--                                              tabindex="0"></span>-->
+                                <!--                                        <span class="ui-slider-handle ui-state-default ui-corner-all"-->
+                                <!--                                              tabindex="0"></span>-->
+                                <!--                                    </div>-->
+                                <!--                                    -->
+                                <!--                                    <div class="range-price">60₴ - 11000₴</div>-->
+                                <!--                                </div>-->
+                            </div>
+                        </div>
+
+                        <div class="widget year mb-50">
+                            <p class="widget-title mb-30">Year</p>
+                            <div class="widget-desc">
+                                <input class="form-check-input" type="number" min="2000" max="2022"
+                                       th:field="*{yearMin}"
+                                       placeholder="2000"
+                                       id="yearMin">
+                                <br/>
+                                <input class="form-check-input" type="number" min="2000" max="2022"
+                                       th:field="*{yearMax}"
+                                       placeholder="2022"
+                                       id="yearMax">
+                            </div>
+
+                            <!--                            <div class="slider-range">-->
+                            <!--                                <div data-min="2000" data-max="2022"-->
+                            <!--                                     class="slider-range-year ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"-->
+                            <!--                                     data-value-min="2000" data-value-max="2022">-->
+                            <!--                                    <div class="ui-slider-range ui-widget-header ui-corner-all"></div>-->
+                            <!--                                    <span class="ui-slider-handle ui-state-default ui-corner-all"-->
+                            <!--                                          tabindex="0"></span>-->
+                            <!--                                    <span class="ui-slider-handle ui-state-default ui-corner-all"-->
+                            <!--                                          tabindex="0"></span>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="range-year">2000 - 2020</div>-->
+                            <!--                            </div>-->
+
+
+                        </div>
+                    </div>
+                    <div class="button__more">
+                        <input type="submit" value="Search" id="btnSubmit">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="shop_grid_product_area">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="product-topbar d-flex align-items-center justify-content-between">
+                                <div class="product-sorting d-flex">
+                                    <!--                                    <p>Sort by:</p>-->
+
+                                    <!--                                    <a th:href="@{/shop/products/filter/{filter}(filter=Newest)}">Newest</a>-->
+                                    <!--                                    <a th:href="@{/shop/products/filter/{filter}(filter=Oldest)}">Oldest</a>-->
+                                    <!--                                    <a th:href="@{/shop/products/filter/{filter}(filter=Min)}">Price: min - max</a>-->
+                                    <!--                                    <a th:href="@{/shop/products/filter/{filter}(filter=Price: Max)}">Price: max - min</a>-->
+
+
+                                    <!--                                    <form th:action="@{/shop/products/filter}" th:object="${myFilter}" method="get" id="myFilter">-->
+                                    <!--                                        <select onclick="myFunction()" name="filters" id="myRange" form="myFilter">-->
+                                    <!--                                            <option value="Newest" th:value="*{name}" onclick="myFunction()">-->
+                                    <!--                                                    Newest-->
+                                    <!--                                            </option>-->
+                                    <!--                                            <option value="Oldest" th:value="*{name}" onclick="myFunction()">-->
+                                    <!--                                                    Oldest-->
+                                    <!--                                            </option>-->
+                                    <!--                                            <option value="Price: min - max" th:value="*{name}" onclick="myFunction()">-->
+                                    <!--                                                    Price: min - max-->
+                                    <!--                                            </option>-->
+                                    <!--                                            <option value="Price: max - min" th:value="*{name}" onclick="myFunction()">-->
+                                    <!--                                                    Price: max - min-->
+                                    <!--                                            </option>-->
+                                    <!--                                        </select>-->
+                                    <!--                                    </form>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Sort by:</p>
+
+                    <a th:href="@{/shop/products/filter/Newest}">Newest </a>
+                    <a th:href="@{/shop/products/filter/Oldest}"> | Oldest | </a>
+                    <a th:href="@{/shop/products/filter/Min}"> Price: min - max |</a>
+                    <a th:href="@{/shop/products/filter/Max}"> Price: max - min</a>
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <!--                     list of products-->
+
+                    <div th:if="${#lists.isEmpty(products)}"><h2>No products found</h2></div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-4 guide_all_images" th:each="product : ${products}">
+                            <div class="single-product-wrapper">
+                                <div class="product-img">
+                                    <a th:href="@{/shop/products/{id}(id=${product.getId()})}">
+                                        <img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" alt="image">
+                                    </a>
+                                </div>
+                                <div class="product-description d-flex align-items-center justify-content-between">
+                                    <div class="product-meta-data">
+                                        <div class="line"></div>
+                                        <p class="product-price" th:text="${product.getPrice()} + ' ₴'"></p>
+                                        <a th:href="@{/shop/products/{id}(id=${product.getId()})}">
+                                            <h6 th:text="${product.getName()}"></h6>
+                                        </a>
+                                    </div>
+                                    <div class="cart">
+                                        <a th:href="@{/shop/basket/{id}(id=${product.getId()})}" data-toggle="tooltip"
+                                           data-placement="left"
+                                           title="Add to Basket"><img src="/img/core-img/cart.png" alt="basket"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button__more">
+                        <button id="btnMore">Load more</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer>
+    <div class="title__logo">GameShop</div>
+    <div class="info">
+        <div class="mail">Ukraine~Kharkiv</div>
+        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="number">(050)042 4768</div>
+        <div class="number">(099)191 1067</div>
+    </div>
+
+    <nav class="nav">
+        <a href="#" class="nav-link">How it works</a>
+        <a href="#" class="nav-link">Prices</a>
+        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">FAQ</a>
+        <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+
+    </nav>
+    <div class="social">
+        <div><img src="/css2/photo/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/instagram-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/twitter-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/youtube-pink.png" width="50" height="50" alt="Логотип"/></div>
+    </div>
+</footer>
+<script src="/js/jquery/jquery-2.2.4.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins.js"></script>
+<script src="/js/classy-nav.min.js"></script>
+<script src="/js/active.js"></script>
+<script src="/js/jquery.bxslider.js"></script>
+<script src="/js/jquery.bxslider.min.js"></script>
+<script src="/js/new.js"></script>
+<script src="/js/more.js"></script>
+</body>
+</html>

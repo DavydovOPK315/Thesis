@@ -20,4 +20,11 @@ public class Category extends BaseEntity implements Serializable {
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Category[" +
+                "name='" + name + '\'' +
+                ']';
+    }
 }

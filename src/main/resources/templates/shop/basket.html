@@ -45,50 +45,53 @@
 </style>
 </head>
 <body>
-<p>All products:</p>
+<p>Basket:</p>
+<form action="#" th:action="@{/shop/update/basket}" th:object="${basketEditDto}" method="post">
+    <fieldset>
+        Total price:<p th:text="${totalPrice}"></p>
+        <input type="submit" value="Update basket" id="submitButton"/>
+        <a th:href="@{/shop/order/new}">
+            <input type="button" value="Create order">
+        </a>
+        <br/>
+        <br/>
+        <br/>
+        <table class="tg">
+            <thead>
+            <tr>
+                <th width="80">Name</th>
+                <th width="120">Price</th>
+                <!--        <th width="120">Count</th>-->
+                <th width="120">Quantity</th>
+                <th width="150" th:height="150">Image</th>
+            </tr>
+            </thead>
 
-<table class="tg">
-    <tr>
-        <th width="80">Name</th>
-        <th width="120">Description</th>
-        <th width="120">Count</th>
-        <th width="120">Price</th>
-        <th width="120">Year</th>
-        <th width="120">Os</th>
-        <th width="120">Studio</th>
-        <th width="120">Category</th>
-        <th width="150" th:height="150">Image</th>
-    </tr>
+            <tbody>
+            <tr th:each="basket, itemStat : *{baskets}">
+                <td th:text="${basket.getName()}"></td>
+                <td th:text="${basket.getPrice()}"></td>
+                <td>
+                    <label for="quantity">Enter quantity: </label>
+                    <input type="number" id="quantity" th:field="*{baskets[__${itemStat.index}__].quantity}" th:min="1"
+                           th:max="${basket.getCount()}"/>
+                    <input type="hidden" th:field="*{baskets[__${itemStat.index}__].basketId}"/>
+                </td>
+                <td><img th:src="'data:image/jpeg;base64,' + ${basket.getImage()}" width="150" height="150"/></td>
 
-    <div th:each="product : ${resultBasketList}">
-        <tr>
-            <td th:text="${product.getName()}"></td>
-            <td th:text="${product.getPrice()}"></td>
-            <td th:text="${product.getCount()}"></td>
+                <td>
 
-            <td>
-            <label for="quantity">Enter quantity: </label>
-            <input type="text" th:field="*{product.getQuantity()}" id="quantity" min="1", th:max="${product.getCount()}">
-            <div style="color: red" th:if="${#fields.hasErrors('quantity')}" th:errors="*{product.getQuantity()}">Quantity error</div>
-            <br/>
-            <br/>
-            </td>
-            <td th:text="${product.getPrice()}"></td>
+                    <a th:href="@{/shop/delete/basket/{id}(id=${basket.getId()})}">
+                        <input type="button" value="Delete product">
+                    </a>
 
-            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150"/></td>
-        </tr>
-
-
-        <form th:method="POST" th:action="@{/shop/basket/{id}(id=${product.getId()})}">
-            <td>
-                <input type="submit" value="Add to basket"/>
-            </td>
-        </form>
-
-
-
-
-    </div>
-</table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</form>
+<br/>
+<a th:href="@{/shop}">All products</a>
 </body>
 </html>

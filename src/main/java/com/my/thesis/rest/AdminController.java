@@ -113,7 +113,6 @@ public class AdminController {
         Product product = ProductEditDto.toProduct(productEditDto, productService, imageService, osService, studioService, categoryService);
 
         System.out.println("product updated");
-//        productService.update(id, product);
 
         productService.save(product);
         return "redirect:/admin/products";
@@ -134,29 +133,4 @@ public class AdminController {
         model.addAttribute("oss", oss);
         model.addAttribute("studios", studios);
     }
-
-
-
-
-
-
-//    private final UserService userService;
-//
-//    @Autowired
-//    public AdminController(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping(value = "users/{id}")
-//    public ResponseEntity<AdminUserDto> getUserById(@PathVariable(name = "id") Long id){
-//        User user = userService.findById(id);
-//
-//        if (user == null){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//
-//        AdminUserDto result = AdminUserDto.fromUser(user);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 }

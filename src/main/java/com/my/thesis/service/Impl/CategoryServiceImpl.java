@@ -49,6 +49,8 @@ public class CategoryServiceImpl implements CategoryService {
             return null;
         }
 
+        log.info("IN getAll were found {} categories", result.size());
+
         return result;
     }
 }

@@ -6,7 +6,7 @@ import com.my.thesis.model.User;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminUserDto {
     private Long id;
     private String username;

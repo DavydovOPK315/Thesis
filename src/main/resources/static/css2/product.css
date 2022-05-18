@@ -1,0 +1,155 @@
+.description{
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+
+
+}
+
+.all__description{
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 69%;
+  text-align: center;
+}
+
+
+
+.img__desc img{
+
+position: relative;
+width: 450px;
+height: 400px;
+margin: 0;
+padding: 0;
+  z-index: -999999;
+}
+
+.img__desc:before{
+  content: "";
+  position: absolute;
+  z-index: -10;
+  background: rgba(44, 62, 66, 0.6);
+margin: 0;
+  width: 450px;
+  height: 400px;}
+
+
+.title__product{
+  font-size: 26px;
+color: var(--pink-color);
+  background-color: var(--dark--green);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+
+.product{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
+hr{
+
+  color: var(--dark--green);
+margin-top: -5px;
+background:  var(--dark--green);
+border: none;
+height: 3px;
+}
+
+.main__part{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.desc{
+  font-size: 14px;
+  margin-top: 20px;
+}
+.green{
+background:  var(--light-green);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+justify-content: center;
+  width: 80%;
+margin-bottom: 40px;
+    margin-top: 140px;
+
+}
+.form-styling__pr{
+  outline: none;
+  border-radius: 30px;
+text-align: center;
+height: 30px;
+width: 60px;
+  background: rgba(255,255, 255, 0.2);
+}
+
+.title__quantity{
+  font-size: 18px;
+  color: white;
+
+}
+.button__update__pr{
+  color:  var(--dark--green);
+  background: var(--pink-color);
+  height: 35px;
+  width: 120px;
+  border-radius: 30px;
+  letter-spacing: 2px;
+  border: 3px solid var(--dark--green);
+  outline: none;
+}
+.quantity{
+  display: flex;
+padding: 40px;
+justify-content: space-between;
+text-align: center;
+
+width: 100%;
+}
+
+.price {
+  display: flex;
+  font-size: 18px;
+  text-align: center;
+  color:  var(--dark--green);
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.pro__info{
+  font-size: 18px;
+  color:  var(--dark--green);
+  text-align: center;
+  margin-left: 15px;
+}
+
+
+.price p {
+  padding-left: 5px;
+  font-size: 16px;
+  color: var(--pink-color);
+  text-align: center;
+}
+
+:root{
+--pink-color: #be9a9a;
+--light-green: #5f746f;
+--dark--green: #2c3e42;}

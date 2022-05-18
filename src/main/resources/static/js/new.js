@@ -1,5 +1,4 @@
-jQuery(document).ready(function($){
-	
+var main = function() { //главная функция
 
     $('.icon-menu').click(function() { /* выбираем класс icon-menu и
                добавляем метод click с функцией, вызываемой при клике */
@@ -37,5 +36,7 @@ jQuery(document).ready(function($){
 
         }, 500); //скорость движения меню в мс
     });
- 
-});
+};
+
+$(document).ready(main); /* как только страница полностью загрузится, будет
+               вызвана функция main, отвечающая за работу меню */

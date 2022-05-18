@@ -46,6 +46,10 @@ public class User extends BaseEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<CheckoutOrder> orders;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,5 +61,17 @@ public class User extends BaseEntity implements Serializable {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User [" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ']';
     }
 }

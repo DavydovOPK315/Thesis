@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass    // создавать таблицу не нужно
+@MappedSuperclass    // not creating table in db
 @Data // fot getters and setters
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
