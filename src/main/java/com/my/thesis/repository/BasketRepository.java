@@ -25,6 +25,9 @@ public interface BasketRepository extends JpaRepository<Basket, Long> {
     @Query("select b from Basket b where b.userId = ?1")
     List<Basket> findAllByUserId(Long userId);
 
+    @Transactional
+    @Modifying
+    @Query("delete from Basket b where b.userId = ?1")
     void deleteByUserId(Long userId);
 
     @Transactional

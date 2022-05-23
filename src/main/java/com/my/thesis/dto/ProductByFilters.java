@@ -1,6 +1,5 @@
 package com.my.thesis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.Category;
 
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductByFilters {
 
     private List<Category> categoryListFilter;

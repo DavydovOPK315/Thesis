@@ -1,12 +1,10 @@
 package com.my.thesis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.Status;
 import com.my.thesis.model.User;
 import lombok.Data;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminUserDto {
     private Long id;
     private String username;

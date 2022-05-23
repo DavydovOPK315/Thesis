@@ -16,7 +16,7 @@ import java.util.Base64;
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
-    ImageDbRepository imageDbRepository;
+    private ImageDbRepository imageDbRepository;
 
     @Override
     public Image uploadImage(MultipartFile multipartImage) {
@@ -29,17 +29,14 @@ public class ImageServiceImpl implements ImageService {
             log.warn("IN uploadImage - no image found {}", multipartImage);
         }
 
-//            imageDbRepository.save(dbImage);
-
-
+        imageDbRepository.save(dbImage);
+        log.info("IN uploadImage: image saved");
         return dbImage;
     }
 
     @Override
     public String downloadImage(Image image) {
-
         byte[] byteData = image.getContent();
-
         return Base64.getMimeEncoder().encodeToString(byteData);
     }
 
@@ -49,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image findByContent(byte[] content){
+    public Image findByContent(byte[] content) {
         return imageDbRepository.findByContent(content);
     }
 }

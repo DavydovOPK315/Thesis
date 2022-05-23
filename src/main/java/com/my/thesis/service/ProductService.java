@@ -31,7 +31,7 @@ public interface ProductService {
 
     List<ProductDtoOut> findAllOrderByPriceDesc();
 
-    List<ProductDtoOut> findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters);
+    List<ProductDtoOut> findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters);
 
     void updateProductCount(@Param(value = "productId") Long productId, @Param(value = "count") Long count);
 

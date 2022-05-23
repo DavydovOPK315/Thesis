@@ -1,12 +1,10 @@
 package com.my.thesis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.Product;
 import com.my.thesis.service.ImageService;
 import lombok.Data;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class BasketOutDto {
     private Long id;
 

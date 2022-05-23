@@ -48,7 +48,6 @@ public class OsServiceImpl implements OsService {
         }
 
         log.info("IN getAll oss were found {}", result.size());
-
         return result;
     }
 }

@@ -42,7 +42,7 @@
             <div class="errors" th:if="${formError}">
                 <p class="text-error" th:text="${formError}"></p>
             </div>
-            <form class="form-login" th:action="@{/users/auth}" th:method="POST" th:object="${user}" name="form">
+            <form class="form-login" th:action="@{/shop/users/auth}" th:method="POST" th:object="${user}" name="form">
                 <label id="username">Username</label>
                 <input th:field="*{username}" name="username" class="form-styling" type="text" min="4"
                        placeholder="Username"/>
@@ -54,7 +54,7 @@
                     <button type="submit" class="butn-login">Log in</button>
                 </div>
                 <div class="frame-end">
-                    <a class="sign-up" th:href="@{/users/register}">Register</a>
+                    <a class="sign-up" th:href="@{/shop/users/register}">Register</a>
                 </div>
             </form>
         </div>

@@ -10,6 +10,4 @@ import javax.validation.constraints.NotEmpty;
 @Repository
 public interface ImageDbRepository extends JpaRepository<Image, Long> {
     Image findByContent(@NotEmpty byte[] content);
-
-    Long findIdByContent(byte[] content);
 }

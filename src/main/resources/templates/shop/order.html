@@ -3,71 +3,84 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
-
-    <style type="text/css">
-        .tg {
-            border-collapse: collapse;
-            border-spacing: 0;
-            border-color: #ccc;
-        }
-
-        .tg td {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            padding: 10px 5px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-            border-color: #ccc;
-            color: #333;
-            background-color: #fff;
-        }
-
-        .tg th {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: normal;
-            padding: 10px 5px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-            border-color: #ccc;
-            color: #333;
-            background-color: #f0f0f0;
-        }
-
-        .tg .tg-4eph {
-            background-color: #f9f9f9
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css2/core-style.css">
+    <link rel="stylesheet" type="text/css" href="/css2/success.css">
+    <link rel="stylesheet" type="text/css" href="/css2/buy1.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-<p>Your order: </p>
+<header>
+    <div class="content">
+        <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
+        <div class="menu">
+            <div class="icon-close">
+                <img src="/css2/photo/x.png">
+            </div>
+            <nav>
+                <a href="#" class="nav-link">How it works</a>
+                <a href="#" class="nav-link">Prices</a>
+                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">FAQ</a>
+                <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+            </nav>
+        </div>
+        <div class="icon-menu">
+            <img src="css2/photo/Hamburger.png" height="40">
+        </div>
 
-<table class="tg">
-    <tr>
-        <th width="80">Order №</th>
-        <th width="80">Date</th>
-        <th width="80">Address delivery</th>
-        <th width="120">Comment</th>
-        <th width="120">Phone</th>
-        <th width="120">Total price</th>
-    </tr>
+        <div th:if="${userId}">
+            <a th:href="@{/shop}" class=" btn">Profile</a>
+        </div>
+        <div th:unless="${userId}">
+            <a th:href="@{/users/login}" class=" btn">Log In</a>
+        </div>
 
-    <tr>
-        <td th:text="${order.getId()}"></td>
-        <td th:text="${order.getCreated()}"></td>
-        <td th:text="${order.getAddressDelivery()}"></td>
-        <td th:text="${order.getComment()}"></td>
-        <td th:text="${order.getPhone()}"></td>
-        <td th:text="${totalPrice}"></td>
+    </div>
+</header>
+<section>
+    <div class="order">
+        <p th:text="'Your order number: ' + ${order.getId()}"> </p>
+        <p th:text="'Date created: ' + ${order.getCreated()}"> </p>
+        <p th:text="'Total price: ' + ${totalPrice} + ' ₴'"> </p>
+    </div>
+</section>
 
-    </tr>
-</table>
-<br/>
-<a th:href="@{/shop}">All products</a>
+        <footer>
+            <div class="title__logo">GameShop</div>
+            <div class="info">
+                <div class="mail">Ukraine~Kharkiv</div>
+                <div class="mail">E-mail: gameshop@gmail.com</div>
+                <div class="number">(050)042 4768</div>
+                <div class="number">(099)191 1067</div>
+            </div>
+
+            <nav class="nav">
+                <a href="#" class="nav-link">How it works</a>
+                <a href="#" class="nav-link">Prices</a>
+                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">FAQ</a>
+                <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+
+            </nav>
+            <div class="social">
+                <div><img src="/css2/photo/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
+                <div><img src="/css2/photo/instagram-pink.png" width="50" height="50" alt="Логотип"/></div>
+                <div><img src="/css2/photo/twitter-pink.png" width="50" height="50" alt="Логотип"/></div>
+                <div><img src="/css2/photo/youtube-pink.png" width="50" height="50" alt="Логотип"/></div>
+            </div>
+        </footer>
+        <script src="/js/jquery/jquery-2.2.4.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/plugins.js"></script>
+        <script src="/js/classy-nav.min.js"></script>
+        <script src="/js/active.js"></script>
+        <script src="/js/jquery.bxslider.js"></script>
+        <script src="/js/jquery.bxslider.min.js"></script>
+        <script src="/js/new.js"></script>
+        <script src="/js/more.js"></script>
 </body>
 </html>

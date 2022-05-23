@@ -3,91 +3,106 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Product</title>
-
-    <style type="text/css">
-        .tg {
-            border-collapse: collapse;
-            border-spacing: 0;
-            border-color: #ccc;
-        }
-
-        .tg td {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            padding: 10px 5px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-            border-color: #ccc;
-            color: #333;
-            background-color: #fff;
-        }
-
-        .tg th {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: normal;
-            padding: 10px 5px;
-            border-style: solid;
-            border-width: 1px;
-            overflow: hidden;
-            word-break: normal;
-            border-color: #ccc;
-            color: #333;
-            background-color: #f0f0f0;
-        }
-
-        .tg .tg-4eph {
-            background-color: #f9f9f9
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create order</title>
+    <link rel="stylesheet" href="/css2/core-style.css">
+    <link rel="stylesheet" href="/css2/product.css">
+<!--    <link rel="stylesheet" href="/css2/buy1.css">-->
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<p>Product: </p>
+<header>
+    <div class="content">
+        <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
+        <div class="menu">
+            <div class="icon-close">
+                <img src="/css2/photo/x.png">
+            </div>
+            <nav>
+                <a href="#" class="nav-link">How it works</a>
+                <a href="#" class="nav-link">Prices</a>
+                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">FAQ</a>
+                <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+            </nav>
+        </div>
+        <div class="icon-menu">
+            <img src="css2/photo/Hamburger.png" height="40">
+        </div>
 
-<table class="tg">
-    <tr>
-        <th width="80">Name</th>
-        <th width="120">Description</th>
-        <th width="120">Count</th>
-        <th width="120">Price</th>
-        <th width="120">Year</th>
-        <th width="120">Os</th>
-        <th width="120">Studio</th>
-        <th width="120">Category</th>
-        <th width="150" th:height="150">Image</th>
-    </tr>
-
-        <tr>
-            <td th:text="${product.getName()}"></td>
-            <td th:text="${product.getDescription()}"></td>
-            <td th:text="${product.getCount()}"></td>
-            <td th:text="${product.getPrice()}"></td>
-            <td th:text="${product.getYear()}"></td>
-            <td th:text="${product.getOs()}"></td>
-            <td th:text="${product.getStudio()}"></td>
-            <td>
-                <ul th:each="category : ${product.getCategoryList()}">
-                    <p th:text="${category.getName()}"></p>
-                </ul>
-            </td>
-
-            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150" alt="picture"/></td>
-
+        <div th:if="${userId}">
+            <a th:href="@{/shop}" class=" btn">Profile</a>
+        </div>
+        <div th:unless="${userId}">
+            <a th:href="@{/users/login}" class=" btn">Log In</a>
+        </div>
+    </div>
+</header>
+<div class="main__part">
+    <div class="green">
+        <div class="product">
+            <div class="img__desc">
+                <img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150" alt="picture"/>
+            </div>
+            <div class="description">
+                <div class="all__description">
+                    <div class="title__product" th:text="${product.getName()}"></div>
+                    <p class="desc" th:text="${product.getDescription()}"></p>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="quantity">
+            <div class="price">
+                <p th:text="'Price: ' + ${product.getPrice()} + ' ₴'">
+                    <span class="pro__info" th:text="'OS: ' + ${product.getOs()}"></span>
+                    <span class="pro__info" th:text="'Studio: ' + ${product.getStudio()}"></span>
+                    <span class="pro__info" th:text="'Year: ' + ${product.getYear()}"></span>
+                </p>
+            </div>
             <form th:method="POST" th:action="@{/shop/basket/{id}(id=${product.getId()})}" th:object="${basketDto}">
-            <td>
-                <label for="countProduct">Enter count: </label>
-                <input type="number" th:field="*{countProduct}" id="countProduct" th:min="1" th:max="${product.getCount()}">
-            </td>
-            <td>
-                    <input type="submit" value="Add to basket"/>
-            </td>
+                <label for="id_quantity" class="title__quantity">Quantity:</label>
+                <input type="number" th:field="*{countProduct}" name="quantity" id="id_quantity"
+                       class="form-styling__pr" th:min="1" th:max="${product.getCount()}" placeholder="1">
+                <input type="submit" value="Add to basket" class="button__update__pr">
             </form>
-        </tr>
-</table>
-<br/>
-    <a th:href="@{/shop}">All products</a>
+
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="title__logo">GameShop</div>
+    <div class="info">
+        <div class="mail">Ukraine~Kharkiv</div>
+        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="number">(050)042 4768</div>
+        <div class="number">(099)191 1067</div>
+    </div>
+
+    <nav class="nav">
+        <a href="#" class="nav-link">How it works</a>
+        <a href="#" class="nav-link">Prices</a>
+        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">FAQ</a>
+        <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+    </nav>
+    <div class="social">
+        <div><img src="/css2/photo/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/instagram-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/twitter-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/youtube-pink.png" width="50" height="50" alt="Логотип"/></div>
+    </div>
+</footer>
+<script src="/js/jquery/jquery-2.2.4.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins.js"></script>
+<script src="/js/classy-nav.min.js"></script>
+<script src="/js/active.js"></script>
+<script src="/js/jquery.bxslider.js"></script>
+<script src="/js/jquery.bxslider.min.js"></script>
+<script src="/js/new.js"></script>
+<script src="/js/more.js"></script>
 </body>
 </html>

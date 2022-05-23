@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDtoOut> result;
 
         result = transformToProductDtoOut(productList);
-        log.info("IN getALL - {} products found", result.size());
+        log.info("IN getALL - {} products found", result != null ? result.size() : 0);
         return result;
     }
 
@@ -134,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDtoOut> findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters) {
+    public List<ProductDtoOut> findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters) {
         List<Category> categoryListFilter = productByFilters.getCategoryListFilter();
 
         List<Os> oss = new ArrayList<>();
@@ -165,11 +165,6 @@ public class ProductServiceImpl implements ProductService {
         Long yearMax = productByFilters.getYearMax();
         if (yearMax == null) yearMax = 2022L;
 
-        System.out.println("Oss size ==> " + oss.size());
-        System.out.println("Studios size ==> " + studios.size());
-        System.out.println("Price min ==> " + productByFilters.getPriceMin());
-        System.out.println("Count of category ==> " + categoryListFilter.size());
-
         List<Product> productList = productRepository.findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(oss, studios, priceMin, priceMax, yearMin, yearMax);
 
         // compare productList with required categories
@@ -177,15 +172,23 @@ public class ProductServiceImpl implements ProductService {
 
         if (!categoryListFilter.isEmpty()) {
             for (Product product : productList) {
-                if (product.getCategories().size() < categoryListFilter.size()) continue;
-                if (product.getCategories().containsAll(categoryListFilter))
-                    filteredProducts.add(product);
+                for (Category category : categoryListFilter) {
+                    if (product.getCategories().contains(category)){
+                        filteredProducts.add(product);
+                        break;
+                    }
+                }
             }
         } else {
             filteredProducts = productList;
         }
-        List<ProductDtoOut> result = transformToProductDtoOut(filteredProducts.stream().sorted((o1, o2) -> (int) (o1.getPrice() - o2.getPrice())).collect(Collectors.toList()));
 
+        if (filteredProducts.isEmpty()) {
+            log.info("IN findAllByCategoriesInAndOsAndStudioAndPriceBetweenAndYearBetween no product found");
+            return null;
+        }
+
+        List<ProductDtoOut> result = transformToProductDtoOut(filteredProducts.stream().sorted((o1, o2) -> (int) (o1.getPrice() - o2.getPrice())).collect(Collectors.toList()));
         log.info("IN findAllByCategoriesInAndOsAndStudioAndPriceBetweenAndYearBetween was found {} products", productList.size());
         return result;
     }

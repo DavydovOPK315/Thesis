@@ -6,7 +6,6 @@ import com.my.thesis.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,16 +46,17 @@ public class ShopController {
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public String index(Model model, HttpServletRequest request) {
         List<ProductDtoOut> productList = productService.getAll();
-
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
         return "shop/index2";
-//        return "shop/index";
     }
 
     @GetMapping("/products/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
         ProductDtoOut productDtoOut = ProductDtoOut.fromProductToProductDtoOut(productService.findById(id), imageService);
+        model.addAttribute("userId", userId);
         model.addAttribute("product", productDtoOut);
         model.addAttribute("basketDto", new BasketDto());
         return "shop/show";
@@ -67,7 +67,6 @@ public class ShopController {
         List<ProductDtoOut> productList = productService.findAllOrderByPrice();
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
-
         return "shop/index2";
     }
 
@@ -76,7 +75,6 @@ public class ShopController {
         List<ProductDtoOut> productList = productService.findAllOrderByPriceDesc();
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
-
         return "shop/index2";
     }
 
@@ -85,7 +83,6 @@ public class ShopController {
         List<ProductDtoOut> productList = productService.findAllOrderByYearDesc();
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
-
         return "shop/index2";
     }
 
@@ -94,7 +91,6 @@ public class ShopController {
         List<ProductDtoOut> productList = productService.findAllOrderByYear();
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
-
         return "shop/index2";
     }
 
@@ -106,11 +102,9 @@ public class ShopController {
             return "redirect:/shop";
         }
 
-        List<ProductDtoOut> productList = productService.findAllByOsInAndStudioInAndPriceBetweenAndYearBetween(productByFilters);
+        List<ProductDtoOut> productList = productService.findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(productByFilters);
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
-
-        log.info("IN showProductsByCompositeFilters {} products found", productList.size());
         return "shop/index2";
     }
 
@@ -133,7 +127,6 @@ public class ShopController {
 
     @RequestMapping(value = "/basket/{id}", method = RequestMethod.GET)
     public String addProductToBasket(@PathVariable("id") Long productId, HttpServletRequest request) {
-
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
 
@@ -145,16 +138,12 @@ public class ShopController {
         basket.setProductId(productId);
         basket.setUserId(userId);
         basket.setCount(1L);
-
         basketService.save(basket);
-        log.info("Product is added to the basket");
-
         return "redirect:/shop/basket";
     }
 
     @RequestMapping(value = "/basket/{id}", method = RequestMethod.POST)
     public String addProductToBasket(@PathVariable("id") Long productId, @ModelAttribute("basketDto") BasketDto basketDto, BindingResult bindingResult, HttpServletRequest request) {
-
         if (bindingResult.hasErrors()) {
             log.warn("Problem with data in adding product to basket");
             return "shop/show";
@@ -170,60 +159,47 @@ public class ShopController {
         Basket basket = new Basket();
         basket.setProductId(productId);
         basket.setUserId(userId);
+
+        if (basketDto.getCountProduct() < 1) basketDto.setCountProduct(1L);
+
         basket.setCount(basketDto.getCountProduct());
 
         basketService.save(basket);
         log.info("IN addProductToBasket: product with id: {} added to basket", productId);
-
         return "redirect:/shop/basket";
     }
 
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
     public String showBasket(Model model, HttpServletRequest request) {
-        try {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
 
+        List<Basket> basketList = basketService.findAllByUserId(userId);
 
-            HttpSession session = request.getSession();
-            Long userId = (Long) session.getAttribute("userId");
+        // convert to the object for view
+        List<BasketOutDto> resultBasketList = basketList.stream().map(basket -> BasketOutDto.fromProductToBasketOutDto(productService.findById(basket.getProductId()), imageService, basket.getCount(), basket.getId())).collect(Collectors.toList());
 
-            if (userId == null) {
-                return "redirect:/users/login";
-            }
+        // list for editing quantity product for user
+        BasketEditDto basketEditDto = new BasketEditDto();
+        basketEditDto.addBasketList(resultBasketList);
 
-            List<Basket> basketList = basketService.findAllByUserId(userId);
-//        List<Basket> basketList = basketService.findAllByUserId(17L);
+        model.addAttribute("userId", userId);
+        model.addAttribute("basketEditDto", basketEditDto);
 
-            // convert to the object for view
-            List<BasketOutDto> resultBasketList = basketList.stream().map(basket -> BasketOutDto.fromProductToBasketOutDto(productService.findById(basket.getProductId()), imageService, basket.getCount(), basket.getId())).collect(Collectors.toList());
-
-            // list for editing quantity product for user
-            BasketEditDto basketEditDto = new BasketEditDto();
-            basketEditDto.addBasketList(resultBasketList);
-
-
-            model.addAttribute("userId", userId);
-            model.addAttribute("basketEditDto", basketEditDto);
-
-            double totalPrice = 0;
-            for (BasketOutDto product : resultBasketList) {
-                totalPrice += product.getQuantity() * product.getPrice();
-            }
-
-            session.setAttribute("totalPrice", totalPrice);
-            model.addAttribute("totalPrice", totalPrice);
-
-            return "shop/basket";
-        } catch (AuthenticationException e){
-            System.out.println("Im here");
-            model.addAttribute("user", new AuthenticationRequestDto());
-            model.addAttribute("formError", "Your username and password didn't match. Please try again.");
-            return "users/login";
+        double totalPrice = 0;
+        for (BasketOutDto product : resultBasketList) {
+            totalPrice += product.getQuantity() * product.getPrice();
         }
+
+        session.setAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("countError", session.getAttribute("countError"));
+        session.setAttribute("countError", null);
+        return "shop/basket";
     }
 
     @RequestMapping(value = "/update/basket", method = RequestMethod.POST)
-    public String updateBasket(@ModelAttribute("basketEditDto") BasketEditDto basketEditDto, Model model, BindingResult bindingResult) {
-
+    public String updateBasket(@ModelAttribute("basketEditDto") BasketEditDto basketEditDto, BindingResult bindingResult) {
         List<BasketOutDto> resultBasketList = basketEditDto.getBaskets();
 
         if (bindingResult.hasErrors() || resultBasketList.isEmpty()) {
@@ -240,7 +216,6 @@ public class ShopController {
         }
 
         basketService.saveAll(baskets);
-
         return "redirect:/shop/basket";
     }
 
@@ -252,59 +227,64 @@ public class ShopController {
         return "redirect:/shop/basket";
     }
 
+    @RequestMapping("/delete/basket")
+    public String deleteBasket(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        basketService.deleteByUserId(userId);
+        return "redirect:/shop/basket";
+    }
+
     @RequestMapping(value = "/order/new", method = RequestMethod.GET)
     public String newOrder(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+
         CheckoutOrderDto checkoutOrderDto = new CheckoutOrderDto();
+        List<Basket> basketList = basketService.findAllByUserId(userId);
+
+        if (basketList.isEmpty()) {
+            return "redirect:/shop/basket";
+        }
 
         model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
         model.addAttribute("order", checkoutOrderDto);
-
+        model.addAttribute("userId", userId);
         return "shop/orderCreate";
     }
 
     @RequestMapping(value = "/order/save", method = RequestMethod.POST)
     public String saveOrder(@ModelAttribute("order") CheckoutOrderDto checkoutOrderDto, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute("userId");
-        User user = userService.findById(userId);
+        try {
+            Long userId = (Long) session.getAttribute("userId");
+            User user = userService.findById(userId);
+            List<Basket> basketList = basketService.findAllByUserId(userId);
 
-        List<Basket> basketList = basketService.findAllByUserId(userId);
+            CheckoutOrder checkoutOrder = checkoutOrderService.saveOrder(checkoutOrderDto, user, basketList);
+            checkoutOrderDto.setId(checkoutOrder.getId());
+            checkoutOrderDto.setCreated(checkoutOrder.getCreated());
 
-        CheckoutOrder checkoutOrder = checkoutOrderService.saveOrder(checkoutOrderDto, user, basketList);
+            model.addAttribute("order", checkoutOrderDto);
 
-        checkoutOrderDto.setId(checkoutOrder.getId());
-        checkoutOrderDto.setCreated(checkoutOrder.getCreated());
-
-        model.addAttribute("order", checkoutOrderDto);
-
-
-        String address = "redirect:/shop/order/" + checkoutOrder.getId();
-        return address;
+            String address = "redirect:/shop/order/" + checkoutOrder.getId();
+            return address;
+        } catch (Exception e) {
+            session.setAttribute("countError", "This quantity is not in stock. Choose a different quantity.");
+            log.warn("IN saveOrder no count of product available");
+            return "redirect:/shop/basket";
+        }
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
     public String showCompletedOrder(@PathVariable("id") Long orderId, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-
-//        Long userId = (Long) session.getAttribute("userId");
-//        CheckoutOrder checkoutOrder = checkoutOrderService.findFirstByUser_IdOrderByCreatedDesc(userId);
+        Long userId = (Long) session.getAttribute("userId");
         CheckoutOrder checkoutOrder = checkoutOrderService.findById(orderId);
 
+        model.addAttribute("userId", userId);
         model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
         model.addAttribute("order", checkoutOrder);
-
         return "shop/order";
     }
-
-
-//    private void insertInModelCategoryOsStudio(Model model) {
-//        List<Category> categories = categoryService.getAll();
-//        List<Os> oss = osService.getAll();
-//        List<Studio> studios = studioService.getAll();
-//
-//        model.addAttribute("categories", categories);
-//        model.addAttribute("oss", oss);
-//        model.addAttribute("studios", studios);
-//    }
 }

@@ -36,7 +36,7 @@ public class BasketServiceImpl implements BasketService {
         }
 
         basketRepository.updateBasketCount(basket.getProductId(), basket.getUserId(), basket.getCount());
-        log.info("IN save basket count was updated");
+        log.info("IN save basket {} count was updated", basket.getId());
 
         return basket;
     }

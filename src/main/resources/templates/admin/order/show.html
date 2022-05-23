@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>An order</title>
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+        border-color: #ccc;
+    }
+
+    .tg td {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+        border-color: #ccc;
+        color: #333;
+        background-color: #fff;
+    }
+
+    .tg th {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+        border-color: #ccc;
+        color: #333;
+        background-color: #f0f0f0;
+    }
+
+    .tg {
+        background-color: #f9f9f9
+    }
+</style>
+</head>
+<body>
+<p>An order:</p>
+<form action="#" th:action="@{/shop/admin/orders/update/{id}(id=${orderDto.getId()})}" th:object="${orderDto}" method="POST">
+    <input type="submit" value="Update the order!">
+    <br>
+    <br>
+    <fieldset>
+        <a th:href="@{/shop/admin/orders}">All orders</a>
+        <br/>
+        <br/>
+        <br/>
+        <table class="tg">
+            <thead>
+            <tr>
+                <th width="40">ID</th>
+                <th width="120">Phone</th>
+                <th width="120">Address delivery</th>
+                <th width="120">Comment</th>
+                <th width="120">Amount</th>
+                <th width="120">Created</th>
+                <th width="120">Client first name</th>
+                <th width="120">Client last name</th>
+                <th width="120">Email</th>
+                <th width="120">Products</th>
+                <th width="120">Quantity</th>
+                <th width="120">Status</th>
+                <th width="120">New status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${orderDto.getId()}">
+                    <a th:href="@{/shop/admin/orders/{id}(id=${orderDto.getId()})}" th:text="${orderDto.getId()}"></a>
+                </td>
+                <td th:text="${orderDto.getPhone()}"></td>
+                <td th:text="${orderDto.getAddressDelivery()}"></td>
+                <td th:text="${orderDto.getComment()}"></td>
+                <td th:text="${orderDto.getAmount()}"></td>
+                <td th:text="${orderDto.getCreated()}"></td>
+                <td th:text="${orderDto.getUser().getFirstname()}"></td>
+                <td th:text="${orderDto.getUser().getLastname()}"></td>
+                <td th:text="${orderDto.getUser().getEmail()}"></td>
+                <td>
+                    <ul th:each="basket : ${orderDto.getCheckoutOrderHasProducts()}">
+                        <p th:text="${basket.product.getName()}"></p>
+                    </ul>
+                </td>
+                <td>
+                    <ul th:each="basket : ${orderDto.getCheckoutOrderHasProducts()}">
+                        <p th:text="${basket.getQuantity()}"></p>
+                    </ul>
+                </td>
+                <td th:text="${orderDto.status}"></td>
+                <td>
+                    <label for="os"></label>
+                    <select th:field="*{status}" id="os">
+                        <option th:each="item : ${statusList}"
+                                th:field="*{status}"
+                                th:value="${item}"
+                                th:text="${item.name()}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</form>
+</body>
+</html>

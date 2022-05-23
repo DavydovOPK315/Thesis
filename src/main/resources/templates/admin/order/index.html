@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All orders</title>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg {
+            background-color: #f9f9f9
+        }
+    </style>
+</head>
+<body>
+<p>All orders:</p>
+<table class="tg">
+    <thead>
+    <tr>
+        <th width="40">ID</th>
+        <th width="120">Phone</th>
+        <th width="120">Address delivery</th>
+        <th width="120">Comment</th>
+        <th width="120">Amount</th>
+        <th width="120">Created</th>
+        <th width="120">Updated</th>
+        <th width="120">Status</th>
+        <th width="120">Client first name</th>
+        <th width="120">Client last name</th>
+        <th width="120">Email</th>
+        <th width="120">Products</th>
+        <th width="120">Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orderDto}">
+        <td>
+            <a th:href="@{/shop/admin/orders/{id}(id=${order.getId()})}" th:text="${order.getId()}"></a>
+        </td>
+        <td th:text="${order.getPhone()}"></td>
+        <td th:text="${order.getAddressDelivery()}"></td>
+        <td th:text="${order.getComment()}"></td>
+        <td th:text="${order.getAmount()}"></td>
+        <td th:text="${order.getCreated()}"></td>
+        <td th:text="${order.getUpdated()}"></td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${order.getUser().getFirstname()}"></td>
+        <td th:text="${order.getUser().getLastname()}"></td>
+        <td th:text="${order.getUser().getEmail()}"></td>
+        <td>
+            <ul th:each="basket : ${order.getCheckoutOrderHasProducts()}">
+                <p th:text="${basket.product.getName()}"></p>
+            </ul>
+        </td>
+        <td>
+            <ul th:each="basket : ${order.getCheckoutOrderHasProducts()}">
+                <p th:text="${basket.getQuantity()}"></p>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

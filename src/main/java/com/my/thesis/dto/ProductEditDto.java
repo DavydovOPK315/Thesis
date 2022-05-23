@@ -1,6 +1,5 @@
 package com.my.thesis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.my.thesis.model.*;
 import com.my.thesis.service.*;
 import lombok.Data;
@@ -12,7 +11,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductEditDto {
     private Long id;
 

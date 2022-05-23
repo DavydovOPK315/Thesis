@@ -33,7 +33,7 @@
             </ul>
         </div>
 
-        <form class="form-signup" th:method="POST" th:action="@{/users}" th:object="${user}" name="form">
+        <form class="form-signup" th:method="POST" th:action="@{/shop/users}" th:object="${user}" name="form">
             <div class="part1">
 
                 <div class="username">
@@ -88,7 +88,7 @@
                 <button type="submit" class="butn-signup">Register</button>
             </div>
             <div class="frame-end">
-                <a class="login" th:href="@{/users/login}">Log in</a></div>
+                <a class="login" th:href="@{/shop/users/login}">Log in</a></div>
         </form>
     </div>
 </main>

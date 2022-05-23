@@ -34,6 +34,9 @@ public class CheckoutOrder implements Serializable {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "amount")
+    private Double amount;
+
     @CreatedDate
     @Column(name = "created")
     private Date created;
@@ -51,7 +54,6 @@ public class CheckoutOrder implements Serializable {
 
     //foreign key
     @ManyToOne
-//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JoinColumn(name = "user_id")
     private User user;
 }

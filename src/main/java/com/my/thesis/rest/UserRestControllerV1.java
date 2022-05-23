@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+// for testing
 @Controller
 @RequestMapping("/api/v1/users/")
 public class UserRestControllerV1 {
@@ -30,7 +31,6 @@ public class UserRestControllerV1 {
         }
 
         UserDto result = UserDto.fromUser(user);
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
