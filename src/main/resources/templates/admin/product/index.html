@@ -39,17 +39,40 @@
             background-color: #f0f0f0;
         }
 
-        .tg .tg-4eph {
+        .tg {
             background-color: #f9f9f9
         }
     </style>
 </head>
 <body>
-<p>All products:</p>
+
 <p><a th:href="@{/shop/admin/products/new}">Add a new product</a></p>
+
+<p>Sort by:</p>
+
+<a th:href="@{/shop/admin/products}">ID: min - max </a>
+<a th:href="@{/shop/admin/products/filter/IdMax}"> | ID: max - min | </a>
+<a th:href="@{/shop/admin/products/filter/Newest}"> Newest |</a>
+<a th:href="@{/shop/admin/products/filter/Oldest}"> Oldest |</a>
+<a th:href="@{/shop/admin/products/filter/PriceMin}"> Price: min - max |</a>
+<a th:href="@{/shop/admin/products/filter/PriceMax}"> Price: max - min |</a>
+<a th:href="@{/shop/admin/products/filter/CountMin}"> Count: min - max |</a>
+<a th:href="@{/shop/admin/products/filter/CountMax}"> Count: max - min</a>
+<br/>
+<br/>
+
+<form th:action="@{/shop/admin/products/filter/name}" method="get">
+    <label for="productName">Find by name:
+        <input type="text" minlength="2" name="productName" id="productName" placeholder="name">
+    </label>
+    <input type="submit" value="Find the product">
+</form>
+
+<p>All products:</p>
 
 <table class="tg">
     <tr>
+        <th width="80">ID</th>
         <th width="80">Name</th>
         <th width="120">Description</th>
         <th width="120">Count</th>
@@ -63,6 +86,7 @@
 
     <div th:each="product : ${products}">
         <tr>
+            <td> <a th:href="@{/shop/admin/products/{id}(id=${product.getId()})}" th:text="${product.getId()}"></a></td>
             <td> <a th:href="@{/shop/admin/products/{id}(id=${product.getId()})}" th:text="${product.getName()}"></a></td>
             <td th:text="${product.getDescription()}"></td>
             <td th:text="${product.getCount()}"></td>

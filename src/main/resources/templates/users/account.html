@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="/css2/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/css2/account.css"> <!-- account page-->
+    <link rel="stylesheet" href="/css2/buy1.css"> <!-- account page-->
+    <link rel="stylesheet" href="/css2/core-style.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="content">
+        <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
+        <div class="menu">
+            <div class="icon-close">
+                <img src="/css2/photo/x.png">
+            </div>
+            <nav>
+                <a href="#" class="nav-link">How it works</a>
+                <a href="#" class="nav-link">Prices</a>
+                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">FAQ</a>
+                <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+            </nav>
+        </div>
+        <div class="icon-menu">
+            <img src="css2/photo/Hamburger.png" height="40" alt="image">
+        </div>
+        <div th:if="${userId}">
+            <a th:href="@{/shop/account}" class=" btn">Profile</a>
+        </div>
+        <div th:unless="${userId}">
+            <a th:href="@{/shop/users/login}" class=" btn">Log In</a>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="main__greeting">
+        <section>
+            <div class="greeting"><h2 th:text=" 'Hello, ' + ${user.getFirstname()}"></h2><br/>
+                <p>This is your account. Here you can issue tickets, view and change information about yourself, see the
+                    number of tickets purchased, and so on.</p>
+            </div>
+        </section>
+        <aside>
+            <div class="account">
+
+                <div class="name__account surname__account"
+                     th:text="${user.getFirstname()} + ' ' + ${user.getLastname()}"></div>
+                <div class="username__account" th:text="${user.getUsername()}"></div>
+                <div class="infor__account">
+                    <div class="email__account"><p th:text="${user.getEmail()}">
+                        <p></div>
+                </div>
+                <a class="gradient-btn_account" th:href="@{/shop/account/edit}">Edit</a>
+                <a class="gradient-btn_account" th:href="@{/shop/account/logout}">Logout</a>
+            </div>
+        </aside>
+    </div>
+    <div class="tickets owl-carousel">
+        <div class="ticket" th:each="order : ${orders}">
+            <div class="ticket__infor">
+                <div><p>Order: <span class="tick" th:text="${order.getId()}"></span></p></div>
+                <div><p>Status: <span class="tick" th:text="${order.getStatus()}"></span></p></div>
+                <div><p>Amount: <span class="tick" th:text="${order.getAmount()}"></span></p></div>
+            </div>
+            <div class="ticket__infor"><p>Date: <span class="tick" th:text="${order.getCreated()}"></span></p></div>
+            <div class="information">
+                <div class="person__information" th:each="basket : ${order.getCheckoutOrderHasProducts()}">
+                    <div class="person__name__information">Product name:</div>
+                    <a th:href="@{/shop/products/{id}(id=${basket.product.getId()})}">
+                        <div class="name"><p><span class="tick" th:text="${basket.product.getName()}"></span></p></div>
+                    </a>
+                    <div class="all">
+                        <div class="count">
+                            <div class="number__tickets">Quantity:</div>
+                            <div class="number__ticket"><p><span class="tick" th:text="${basket.getQuantity()}"></span>
+                            </p></div>
+                        </div>
+                        <div class="number__tickets">Price:</div>
+                        <div class="number__ticket"><p><span class="tick" th:text="${basket.getPrice()}"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+    </div>
+</article>
+<footer>
+    <div class="title__logo">GameShop</div>
+    <div class="info">
+        <div class="mail">Ukraine~Kharkiv</div>
+        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="number">(050)042 4768</div>
+        <div class="number">(099)191 1067</div>
+    </div>
+    <nav class="nav">
+        <a href="#" class="nav-link">How it works</a>
+        <a href="#" class="nav-link">Prices</a>
+        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">FAQ</a>
+        <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
+    </nav>
+    <div class="social">
+        <div><img src="/css2/photo/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/instagram-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/twitter-pink.png" width="50" height="50" alt="Логотип"/></div>
+        <div><img src="/css2/photo/youtube-pink.png" width="50" height="50" alt="Логотип"/></div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery/jquery-2.2.4.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins.js"></script>
+<script src="/js/classy-nav.min.js"></script>
+<script src="/js/active.js"></script>
+<script src="/js/jquery.bxslider.js"></script>
+<script src="/js/jquery.bxslider.min.js"></script>
+<script src="/js/new.js"></script>
+<script src="/js/more.js"></script>
+</body>
+</html>

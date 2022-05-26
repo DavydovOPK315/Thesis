@@ -98,6 +98,33 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDtoOut> findAllOrderByIdDesc() {
+        List<Product> productList = productRepository.findAllOrderByIdDesc();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByIdDesc was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllOrderByCount() {
+        List<Product> productList = productRepository.findAllOrderByCount();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByCount was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllOrderByCountDesc() {
+        List<Product> productList = productRepository.findAllOrderByCountDesc();
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+
+        log.info("IN findAllOrderByCountDesc was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
     public List<ProductDtoOut> findAllOrderByYear() {
         List<Product> productList = productRepository.findAllOrderByYear();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);

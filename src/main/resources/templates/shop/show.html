@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create order</title>
+    <title>The product</title>
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/product.css">
-<!--    <link rel="stylesheet" href="/css2/buy1.css">-->
+    <link rel="stylesheet" type="text/css" href="/css2/base.css">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
         <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
         <div class="menu">
             <div class="icon-close">
-                <img src="/css2/photo/x.png">
+                <img src="/css2/photo/x.png" alt="image">
             </div>
             <nav>
                 <a href="#" class="nav-link">How it works</a>
@@ -28,14 +28,13 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40">
+            <img src="css2/photo/Hamburger.png" height="40" alt="image">
         </div>
-
         <div th:if="${userId}">
-            <a th:href="@{/shop}" class=" btn">Profile</a>
+            <a th:href="@{/shop/account}" class=" btn">Profile</a>
         </div>
         <div th:unless="${userId}">
-            <a th:href="@{/users/login}" class=" btn">Log In</a>
+            <a th:href="@{/shop/users/login}" class=" btn">Log In</a>
         </div>
     </div>
 </header>
@@ -55,10 +54,14 @@
         <hr/>
         <div class="quantity">
             <div class="price">
-                <p th:text="'Price: ' + ${product.getPrice()} + ' ₴'">
-                    <span class="pro__info" th:text="'OS: ' + ${product.getOs()}"></span>
-                    <span class="pro__info" th:text="'Studio: ' + ${product.getStudio()}"></span>
-                    <span class="pro__info" th:text="'Year: ' + ${product.getYear()}"></span>
+<!--                <p th:text="'Price: ' + ${product.getPrice  ()} + ' ₴' + ' | OS: ' + ${product.getOs()} + ' | Studio: ' + ${product.getStudio()} + ' | Year: ' + ${product.getYear()}">-->
+                <p>
+                    Price: <span class="pro__info" th:text="${product.getPrice()} + ' ₴'"></span>&nbsp;
+                    OS: <span class="pro__info" th:text="${product.getOs()}"></span>&nbsp;
+                    Studio: <span class="pro__info" th:text="${product.getStudio()}"></span>&nbsp;
+                    Year: <span class="pro__info" th:text="${product.getYear()}"></span>
+                    <br/>
+                    Category: <span class="pro__info" th:each="category : ${product.getCategoryList()}" th:text="${category.getName()} + ' '"></span>&nbsp;
                 </p>
             </div>
             <form th:method="POST" th:action="@{/shop/basket/{id}(id=${product.getId()})}" th:object="${basketDto}">

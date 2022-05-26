@@ -28,16 +28,14 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40">
+            <img src="css2/photo/Hamburger.png" height="40" alt="image">
         </div>
-
         <div th:if="${userId}">
-            <a th:href="@{/shop}" class=" btn">Profile</a>
+            <a th:href="@{/shop/account}" class=" btn">Profile</a>
         </div>
         <div th:unless="${userId}">
-            <a th:href="@{/users/login}" class=" btn">Log In</a>
+            <a th:href="@{/shop/users/login}" class=" btn">Log In</a>
         </div>
-
     </div>
 </header>
 <section>

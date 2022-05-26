@@ -17,7 +17,7 @@
         <a th:href="@{/shop}"><img src="/css2/photo/Gameshop.png" alt="Логотип" class="header__logo"/></a>
         <div class="menu">
             <div class="icon-close">
-                <img src="/css2/photo/x.png" alt="x.png">
+                <img src="/css2/photo/x.png">
             </div>
             <nav>
                 <a href="#" class="nav-link">How it works</a>
@@ -28,16 +28,14 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40" alt="Hamburger.png">
+            <img src="css2/photo/Hamburger.png" height="40" alt="image">
         </div>
-
         <div th:if="${userId}">
-            <a th:href="@{/shop}" class=" btn">Profile</a>
+            <a th:href="@{/shop/account}" class=" btn">Profile</a>
         </div>
         <div th:unless="${userId}">
-            <a th:href="@{/users/login}" class=" btn">Log In</a>
+            <a th:href="@{/shop/users/login}" class=" btn">Log In</a>
         </div>
-
     </div>
 </header>
 

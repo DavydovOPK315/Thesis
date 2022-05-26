@@ -31,7 +31,9 @@ public class ProductDtoOut {
 
 
     public static ProductDtoOut fromProductToProductDtoOut(Product product, ImageService imageService) {
-        ProductDtoOut productDtoOut = new com.my.thesis.dto.ProductDtoOut();
+        ProductDtoOut productDtoOut = new ProductDtoOut();
+
+        if (product == null) return null;
 
         productDtoOut.setId(product.getId());
         productDtoOut.setName(product.getName());

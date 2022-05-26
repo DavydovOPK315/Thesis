@@ -22,6 +22,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void updateProductCount(@Param(value = "productId") Long productId,
                            @Param(value = "count") Long count);
 
+    @Query("select p from Product p order by p.id DESC")
+    List<Product> findAllOrderByIdDesc();
+
+    @Query("select p from Product p order by p.count")
+    List<Product> findAllOrderByCount();
+
+    @Query("select p from Product p order by p.count DESC")
+    List<Product> findAllOrderByCountDesc();
+
     @Query("select p from Product p order by p.year")
     List<Product> findAllOrderByYear();
 

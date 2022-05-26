@@ -26,16 +26,14 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40">
+            <img src="css2/photo/Hamburger.png" height="40" alt="image">
         </div>
-
         <div th:if="${userId}">
-            <a th:href="@{/shop}" class=" btn">Profile</a>
+            <a th:href="@{/shop/account}" class=" btn">Profile</a>
         </div>
         <div th:unless="${userId}">
-            <a th:href="@{/users/login}" class=" btn">Log In</a>
+            <a th:href="@{/shop/users/login}" class=" btn">Log In</a>
         </div>
-
     </div>
 </header>
 <div class="container">
@@ -89,6 +87,7 @@
                             <div class="widget-desc">
                                 <input class="form-check-input" type="number" min="0" max="10000" step="0.01"
                                        th:field="*{priceMin}"
+                                       th:value="0"
                                        placeholder="0 ₴"
                                        id="priceMin">
                                 <br>
@@ -192,6 +191,13 @@
                     <a th:href="@{/shop/products/filter/Max}"> Price: max - min</a>
                     <br/>
                     <br/>
+
+                    <form th:action="@{/shop/products/filter/name}" method="get">
+                        <label for="productName">Find by name:
+                            <input type="text" value=" " min="2" name="productName" id="productName" placeholder="name">
+                        </label>
+                        <input type="submit" value="Find the product">
+                    </form>
                     <br/>
 
                     <!--                     list of products-->

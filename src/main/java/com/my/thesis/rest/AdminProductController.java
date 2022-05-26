@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -88,7 +90,6 @@ public class AdminProductController {
         if (bindingResult.hasErrors()) {
             return "admin/product/edit";
         }
-
         Product product = ProductEditDto.toProduct(productEditDto, productService, imageService, osService, studioService, categoryService);
         productService.save(product);
         return "redirect:/shop/admin/products";
@@ -98,6 +99,69 @@ public class AdminProductController {
     public String delete(@PathVariable("id") Long id) {
         productService.delete(id);
         return "redirect:/shop/admin/products";
+    }
+
+    @GetMapping("/filter/name")
+    public String showProductByName(Model model, HttpServletRequest request) {
+        List<ProductDtoOut> productList = new ArrayList<>();
+        String name = request.getParameter("productName");
+        if (name.isEmpty()){
+            model.addAttribute("products", productList);
+            return "admin/product/index";
+        }
+        ProductDtoOut result = ProductDtoOut.fromProductToProductDtoOut(productService.findByName(name.trim().toLowerCase()), imageService);
+        productList.add(result);
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/IdMax")
+    public String showProductsByIdMax(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByIdDesc();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/CountMin")
+    public String showProductsByCountMin(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByCount();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/CountMax")
+    public String showProductsByCountMax(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByCountDesc();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/Newest")
+    public String showProductsByYear(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByYear();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/Oldest")
+    public String showProductsByMaxYear(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByYearDesc();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/PriceMin")
+    public String showProductsByMinPrice(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByPrice();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/PriceMax")
+    public String showProductsByMaxPrice(Model model) {
+        List<ProductDtoOut> productList = productService.findAllOrderByPriceDesc();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
     }
 
     private void insertInModelCategoryOsStudio(Model model) {

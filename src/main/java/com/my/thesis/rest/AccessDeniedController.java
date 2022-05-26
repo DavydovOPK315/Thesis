@@ -16,7 +16,7 @@ public class AccessDeniedController {
     public String accessDeniedNotAuthUsers(Model model) {
 
         model.addAttribute("user", new AuthenticationRequestDto());
-        model.addAttribute("formError", "Log in to add product to cart or create an order");
+        model.addAttribute("formError", "Log in to do that action");
         return "users/login";
     }
 

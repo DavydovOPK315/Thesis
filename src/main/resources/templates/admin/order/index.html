@@ -44,18 +44,39 @@
     </style>
 </head>
 <body>
+<p>Sort by:</p>
+
+<a th:href="@{/shop/admin/orders/filter/Newest}">Newest </a>
+<a th:href="@{/shop/admin/orders/filter/Oldest}"> | Oldest | </a>
+<a th:href="@{/shop/admin/orders/filter/status?key='CONFIRMED'}">  CONFIRMED |</a>
+<a th:href="@{/shop/admin/orders/filter/status?key='SHIPPED'}">  SHIPPED |</a>
+<a th:href="@{/shop/admin/orders/filter/status?key='COMPLETED'}">  COMPLETED |</a>
+<a th:href="@{/shop/admin/orders/filter/status?key='CLOSED'}">  CLOSED |</a>
+<a th:href="@{/shop/admin/orders/filter/status?key='CANCELLED'}">  CANCELLED |</a>
+
+<br/>
+<br/>
+
+<form th:action="@{/shop/admin/orders/filter/username}" method="get">
+    <label for="username">Find orders by username:
+        <input type="text" minlength="2" name="key" id="username" placeholder="username">
+    </label>
+    <input type="submit" value="Find the products">
+</form>
+
 <p>All orders:</p>
 <table class="tg">
     <thead>
     <tr>
-        <th width="40">ID</th>
+        <th width="30">ID</th>
         <th width="120">Phone</th>
         <th width="120">Address delivery</th>
         <th width="120">Comment</th>
-        <th width="120">Amount</th>
+        <th width="80">Amount</th>
         <th width="120">Created</th>
         <th width="120">Updated</th>
         <th width="120">Status</th>
+        <th width="120">Username</th>
         <th width="120">Client first name</th>
         <th width="120">Client last name</th>
         <th width="120">Email</th>
@@ -75,12 +96,15 @@
         <td th:text="${order.getCreated()}"></td>
         <td th:text="${order.getUpdated()}"></td>
         <td th:text="${order.status}"></td>
+        <td th:text="${order.getUser().getUsername()}"></td>
         <td th:text="${order.getUser().getFirstname()}"></td>
         <td th:text="${order.getUser().getLastname()}"></td>
         <td th:text="${order.getUser().getEmail()}"></td>
         <td>
             <ul th:each="basket : ${order.getCheckoutOrderHasProducts()}">
-                <p th:text="${basket.product.getName()}"></p>
+                <a th:href="@{/shop/admin/products/{id}(id=${basket.product.getId()})}">
+                    <p th:text="${basket.product.getName()}"></p>
+                </a>
             </ul>
         </td>
         <td>

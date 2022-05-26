@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,6 +61,22 @@ public class ShopController {
         model.addAttribute("product", productDtoOut);
         model.addAttribute("basketDto", new BasketDto());
         return "shop/show";
+    }
+
+    @GetMapping("/products/filter/name")
+    public String showProductByName(Model model, HttpServletRequest request) {
+        List<ProductDtoOut> productList = new ArrayList<>();
+        String name = request.getParameter("productName");
+        if (name.isEmpty()) {
+            model.addAttribute("products", productList);
+            model.addAttribute("products", productList);
+            return "shop/index2";
+        }
+        ProductDtoOut result = ProductDtoOut.fromProductToProductDtoOut(productService.findByName(name.trim().toLowerCase()), imageService);
+        if (result != null) productList.add(result);
+        model.addAttribute("products", productList);
+        addCompositeFilters(model, request);
+        return "shop/index2";
     }
 
     @GetMapping("/products/filter/Min")
@@ -160,7 +177,7 @@ public class ShopController {
         basket.setProductId(productId);
         basket.setUserId(userId);
 
-        if (basketDto.getCountProduct() < 1) basketDto.setCountProduct(1L);
+        if (basketDto.getCountProduct() == null) basketDto.setCountProduct(1L);
 
         basket.setCount(basketDto.getCountProduct());
 
@@ -267,8 +284,8 @@ public class ShopController {
 
             model.addAttribute("order", checkoutOrderDto);
 
-            String address = "redirect:/shop/order/" + checkoutOrder.getId();
-            return address;
+//            String address = "redirect:/shop/order/" + checkoutOrder.getId();
+            return "redirect:/shop/order";
         } catch (Exception e) {
             session.setAttribute("countError", "This quantity is not in stock. Choose a different quantity.");
             log.warn("IN saveOrder no count of product available");
@@ -276,15 +293,57 @@ public class ShopController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
-    public String showCompletedOrder(@PathVariable("id") Long orderId, Model model, HttpServletRequest request) {
+    @RequestMapping(value = "/order", method = RequestMethod.GET)
+    public String showCompletedOrder(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-        CheckoutOrder checkoutOrder = checkoutOrderService.findById(orderId);
-
+        CheckoutOrder checkoutOrder = checkoutOrderService.findFirstByUser_IdOrderByCreatedDesc(userId);
         model.addAttribute("userId", userId);
         model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
         model.addAttribute("order", checkoutOrder);
         return "shop/order";
+    }
+
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    public String userAccount(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userService.findById(userId);
+        List<CheckoutOrder> checkoutOrderList = checkoutOrderService.findByUserId(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("userId", userId);
+        model.addAttribute("orders", checkoutOrderList);
+        log.info("IN userAccount: info for user with id: {} and his: {} orders", userId, checkoutOrderList.size());
+        return "users/account";
+    }
+
+    @RequestMapping(value = "/account/edit", method = RequestMethod.GET)
+    public String userEditAccount(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userService.findById(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("userId", userId);
+        log.info("IN userEditAccount: user with id: {} found", userId);
+        return "users/editAccount";
+    }
+
+    @RequestMapping(value = "/account/edit/{id}", method = RequestMethod.POST)
+    public String userSaveEditAccount(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long userId, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            log.warn("IN userSaveEditAccount: problem with bindingResult");
+            return "redirect:/shop/account/edit/" + userId;
+        }
+        user.setId(userId);
+        userService.update(user);
+        request.getSession().invalidate();
+        return "redirect:/shop/users/login";
+    }
+
+    @RequestMapping(value = "/account/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        log.info("IN logout: user did logout");
+        return "redirect:/shop/users/login";
     }
 }

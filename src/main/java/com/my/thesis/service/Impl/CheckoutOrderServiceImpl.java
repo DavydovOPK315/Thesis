@@ -52,6 +52,33 @@ public class CheckoutOrderServiceImpl implements CheckoutOrderService {
     }
 
     @Override
+    public List<CheckoutOrder> findAllByUsername(String username) {
+        List<CheckoutOrder> result = checkoutOrderRepository.findAllByUsername(username);
+        log.info("IN findAllByUsername was found: {} orders", result.size());
+        return result;
+    }
+
+    @Override
+    public List<CheckoutOrder> findAllByStatusOrderByCreated(OrderStatus orderStatus) {
+        List<CheckoutOrder> result = checkoutOrderRepository.findAllByStatusOrderByCreated(orderStatus);
+        log.info("IN findAllByStatusOrderByCreated was found: {} orders", result.size());
+        return result;
+    }
+
+    @Override
+    public List<CheckoutOrder> findAllByIdOrderByCreated() {
+        List<CheckoutOrder> result = checkoutOrderRepository.findAllByIdOrderByCreated();
+        log.info("IN findAllByIdOrderByCreated was found: {} orders", result.size());
+        return result;
+    }
+
+    @Override
+    public List<CheckoutOrder> findAllByIdOrderByCreatedDesc() {
+        List<CheckoutOrder> result = checkoutOrderRepository.findAllByIdOrderByCreatedDesc();
+        log.info("IN findAllByIdOrderByCreatedDesc was found: {} orders", result.size());
+        return result;    }
+
+    @Override
     public List<CheckoutOrder> findByUserId(Long userId) {
         List<CheckoutOrder> result = checkoutOrderRepository.findByUserId(userId);
         log.info("IN findByUserId was found: {} orders", result.size());
@@ -110,15 +137,14 @@ public class CheckoutOrderServiceImpl implements CheckoutOrderService {
             checkoutOrderHasProduct.setStatus(Status.ACTIVE);
             checkoutOrderHasProduct.setCheckoutOrder(order);
             product = productService.findById(basket.getProductId());
+            checkoutOrderHasProduct.setPrice(product.getPrice());
             checkoutOrderHasProduct.setProduct(product);
             productList.add(checkoutOrderHasProduct);
         }
-
         checkoutOrderHasProductService.saveAll(productList);
 
         // delete all basket for user id
         basketService.deleteByUserId(user.getId());
-
         log.info("IN saveOrder: order saved");
         return order;
     }

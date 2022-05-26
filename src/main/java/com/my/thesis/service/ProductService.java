@@ -3,10 +3,7 @@ package com.my.thesis.service;
 import com.my.thesis.dto.ProductByFilters;
 import com.my.thesis.dto.ProductDto;
 import com.my.thesis.dto.ProductDtoOut;
-import com.my.thesis.model.Category;
-import com.my.thesis.model.Os;
 import com.my.thesis.model.Product;
-import com.my.thesis.model.Studio;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -22,6 +19,12 @@ public interface ProductService {
     Product findByName(String name);
 
     Product findById(Long id);
+
+    List<ProductDtoOut> findAllOrderByIdDesc();
+
+    List<ProductDtoOut> findAllOrderByCount();
+
+    List<ProductDtoOut> findAllOrderByCountDesc();
 
     List<ProductDtoOut> findAllOrderByYear();
 

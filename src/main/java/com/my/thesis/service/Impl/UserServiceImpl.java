@@ -45,6 +45,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(User user) {
+        User result = userRepository.findById(user.getId()).orElse(null);
+        if (result == null) return null;
+
+        result.setUsername(user.getUsername());
+        result.setEmail(user.getEmail());
+        result.setFirstname(user.getFirstname());
+        result.setLastname(user.getLastname());
+        result.setPassword(passwordEncoder.encode(user.getPassword()));
+        result = userRepository.save(result);
+        log.info("IN register - user {} successfully registered", result.getUsername());
+        return result;
+    }
+
+    @Override
     public List<User> getAll() {
         List<User> result = userRepository.findAll();
         log.info("IN getALL - {} users found", result.size());

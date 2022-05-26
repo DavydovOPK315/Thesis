@@ -39,7 +39,7 @@
             background-color: #f0f0f0;
         }
 
-        .tg .tg-4eph {
+        .tg {
             background-color: #f9f9f9
         }
     </style>
@@ -49,6 +49,7 @@
 
 <table class="tg">
     <tr>
+        <th width="80">ID</th>
         <th width="80">Name</th>
         <th width="120">Description</th>
         <th width="120">Count</th>
@@ -60,35 +61,37 @@
         <th width="150" th:height="150">Image</th>
     </tr>
 
-        <tr>
-            <td th:text="${product.getName()}"></td>
-            <td th:text="${product.getDescription()}"></td>
-            <td th:text="${product.getCount()}"></td>
-            <td th:text="${product.getPrice()}"></td>
-            <td th:text="${product.getYear()}"></td>
-            <td th:text="${product.getOs()}"></td>
-            <td th:text="${product.getStudio()}"></td>
-            <td>
-                <ul th:each="category : ${product.getCategoryList()}">
-                    <p th:text="${category.getName()}"></p>
-                </ul>
-            </td>
+    <tr>
+        <td th:text="${product.getId()}"></td>
+        <td th:text="${product.getName()}"></td>
+        <td th:text="${product.getDescription()}"></td>
+        <td th:text="${product.getCount()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${product.getYear()}"></td>
+        <td th:text="${product.getOs()}"></td>
+        <td th:text="${product.getStudio()}"></td>
+        <td>
+            <ul th:each="category : ${product.getCategoryList()}">
+                <p th:text="${category.getName()}"></p>
+            </ul>
+        </td>
 
-            <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150" alt="picture"/></td>
+        <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150" alt="picture"/>
+        </td>
 
-            <td>
-                <form th:method="Get" th:action="@{/shop/admin/products/{id}/edit(id=${product.getId()})}">
-                    <input type="submit" value="Edit product"/>
-                </form>
-            </td>
-            <td>
-                <form th:method="Get" th:action="@{/shop/admin/products/delete/{id}(id=${product.getId()})}">
-                    <input type="submit" value="Delete"/>
-                </form>
-            </td>
-        </tr>
+        <td>
+            <form th:method="Get" th:action="@{/shop/admin/products/{id}/edit(id=${product.getId()})}">
+                <input type="submit" value="Edit product"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="Get" th:action="@{/shop/admin/products/delete/{id}(id=${product.getId()})}">
+                <input type="submit" value="Delete"/>
+            </form>
+        </td>
+    </tr>
 </table>
 <br/>
-    <a th:href="@{/shop/admin/products}">All products</a>
+<a th:href="@{/shop/admin/products}">All products</a>
 </body>
 </html>

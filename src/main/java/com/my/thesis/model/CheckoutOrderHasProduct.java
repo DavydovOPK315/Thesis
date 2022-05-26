@@ -13,6 +13,9 @@ public class CheckoutOrderHasProduct extends BaseEntity implements Serializable 
     @Column(name = "quantity")
     private Long quantity;
 
+    @Column(name = "price")
+    private Double price;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
