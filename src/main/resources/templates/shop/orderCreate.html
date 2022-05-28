@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/checkout.css">
     <link rel="stylesheet" href="/css2/buy1.css">
-    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <header>
@@ -28,7 +27,7 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40" alt="image">
+            <img src="/css2/photo/Hamburger.png" height="40" alt="image">
         </div>
         <div th:if="${userId}">
             <a th:href="@{/shop/account}" class=" btn">Profile</a>
@@ -47,7 +46,7 @@
             <form th:method="POST" th:action="@{/shop/order/save}" th:object="${order}" class = "info">
                 <input type="text" th:field="*{phone}" name="phone" th:min="10" th:max="45" placeholder="Phone" required id="id_phone" class ="form__ap">
                 <input type="text" th:field="*{addressDelivery}" name="address" th:min="10" th:max="200" placeholder="Address" required id="id_address" class ="form__ap">
-                <input type="text" th:field="*{comment}" name="address" th:max="200" placeholder="Comment" required id="id_commit" class ="form__ap">
+                <input type="text" th:field="*{comment}" name="address" th:max="200" placeholder="Comment" id="id_commit" class ="form__ap">
                 <input type="submit" value="Confirm" class="button__check">
             </form>
         </div>

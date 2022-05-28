@@ -64,16 +64,22 @@ public class ShopController {
     }
 
     @GetMapping("/products/filter/name")
-    public String showProductByName(Model model, HttpServletRequest request) {
+    public String showProductByName(@ModelAttribute("filters") ProductByFilters productByFilters, BindingResult bindingResult,Model model, HttpServletRequest request) {
         List<ProductDtoOut> productList = new ArrayList<>();
-        String name = request.getParameter("productName");
-        if (name.isEmpty()) {
+        if (bindingResult.hasErrors()) {
+            log.warn("Problem with applying filter");
+            return "redirect:/shop";
+        }
+
+        String name = productByFilters.getProductName();
+        if (name == null) {
             model.addAttribute("products", productList);
-            model.addAttribute("products", productList);
+            addCompositeFilters(model, request);
             return "shop/index2";
         }
         ProductDtoOut result = ProductDtoOut.fromProductToProductDtoOut(productService.findByName(name.trim().toLowerCase()), imageService);
         if (result != null) productList.add(result);
+        productByFilters.setProductName(name.trim());
         model.addAttribute("products", productList);
         addCompositeFilters(model, request);
         return "shop/index2";
@@ -127,10 +133,8 @@ public class ShopController {
 
     private void addCompositeFilters(Model model, HttpServletRequest request) {
         ProductByFilters productByFilters = new ProductByFilters();
-
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-
         List<Category> categories = categoryService.getAll();
         List<Os> oss = osService.getAll();
         List<Studio> studios = studioService.getAll();
@@ -139,7 +143,9 @@ public class ShopController {
         model.addAttribute("oss", oss);
         model.addAttribute("studios", studios);
         model.addAttribute("userId", userId);
-        model.addAttribute("filters", productByFilters);
+
+        if (model.getAttribute("filters") == null)
+            model.addAttribute("filters", productByFilters);
     }
 
     @RequestMapping(value = "/basket/{id}", method = RequestMethod.GET)
@@ -150,7 +156,6 @@ public class ShopController {
         if (userId == null) {
             return "redirect:/users/login";
         }
-
         Basket basket = new Basket();
         basket.setProductId(productId);
         basket.setUserId(userId);
@@ -172,7 +177,6 @@ public class ShopController {
         if (userId == null) {
             return "redirect:/users/login";
         }
-
         Basket basket = new Basket();
         basket.setProductId(productId);
         basket.setUserId(userId);
@@ -180,7 +184,6 @@ public class ShopController {
         if (basketDto.getCountProduct() == null) basketDto.setCountProduct(1L);
 
         basket.setCount(basketDto.getCountProduct());
-
         basketService.save(basket);
         log.info("IN addProductToBasket: product with id: {} added to basket", productId);
         return "redirect:/shop/basket";
@@ -190,7 +193,6 @@ public class ShopController {
     public String showBasket(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-
         List<Basket> basketList = basketService.findAllByUserId(userId);
 
         // convert to the object for view
@@ -207,7 +209,6 @@ public class ShopController {
         for (BasketOutDto product : resultBasketList) {
             totalPrice += product.getQuantity() * product.getPrice();
         }
-
         session.setAttribute("totalPrice", totalPrice);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("countError", session.getAttribute("countError"));
@@ -216,9 +217,8 @@ public class ShopController {
     }
 
     @RequestMapping(value = "/update/basket", method = RequestMethod.POST)
-    public String updateBasket(@ModelAttribute("basketEditDto") BasketEditDto basketEditDto, BindingResult bindingResult) {
+    public String updateBasket(@ModelAttribute("basketEditDto") BasketEditDto basketEditDto, BindingResult bindingResult, HttpServletRequest request) {
         List<BasketOutDto> resultBasketList = basketEditDto.getBaskets();
-
         if (bindingResult.hasErrors() || resultBasketList.isEmpty()) {
             return "shop/basket";
         }
@@ -228,10 +228,13 @@ public class ShopController {
 
         for (BasketOutDto temp : resultBasketList) {
             basket = basketService.findById(temp.getBasketId());
+            if (temp.getQuantity() == null){
+                request.getSession().setAttribute("countError", "Quantity cannot be less than 1! Choose a different quantity");
+                return "redirect:/shop/basket";
+            }
             basket.setCount(temp.getQuantity());
             baskets.add(basket);
         }
-
         basketService.saveAll(baskets);
         return "redirect:/shop/basket";
     }
@@ -256,7 +259,6 @@ public class ShopController {
     public String newOrder(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-
         CheckoutOrderDto checkoutOrderDto = new CheckoutOrderDto();
         List<Basket> basketList = basketService.findAllByUserId(userId);
 
@@ -277,14 +279,10 @@ public class ShopController {
             Long userId = (Long) session.getAttribute("userId");
             User user = userService.findById(userId);
             List<Basket> basketList = basketService.findAllByUserId(userId);
-
             CheckoutOrder checkoutOrder = checkoutOrderService.saveOrder(checkoutOrderDto, user, basketList);
             checkoutOrderDto.setId(checkoutOrder.getId());
             checkoutOrderDto.setCreated(checkoutOrder.getCreated());
-
             model.addAttribute("order", checkoutOrderDto);
-
-//            String address = "redirect:/shop/order/" + checkoutOrder.getId();
             return "redirect:/shop/order";
         } catch (Exception e) {
             session.setAttribute("countError", "This quantity is not in stock. Choose a different quantity.");

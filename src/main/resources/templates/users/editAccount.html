@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit an account</title>
-    <link rel="stylesheet" type="text/css" href="/css2/core-style.css">
     <link rel="stylesheet" type="text/css" href="/css2/signup.css">
     <link rel="stylesheet" type="text/css" href="/css2/buy1.css">
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- Common links -->
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css2/style_button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/css2/base.css">
 </head>
 <body>
@@ -29,7 +31,7 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40" alt="image">
+            <img src="/css2/photo/Hamburger.png" height="40" alt="image">
         </div>
         <div th:if="${userId}">
             <a th:href="@{/shop/account}" class=" btn">Profile</a>

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/product.css">
     <link rel="stylesheet" type="text/css" href="/css2/base.css">
-    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <header>
@@ -28,7 +27,7 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40" alt="image">
+            <img src="/css2/photo/Hamburger.png" height="40" alt="image">
         </div>
         <div th:if="${userId}">
             <a th:href="@{/shop/account}" class=" btn">Profile</a>
@@ -54,7 +53,6 @@
         <hr/>
         <div class="quantity">
             <div class="price">
-<!--                <p th:text="'Price: ' + ${product.getPrice  ()} + ' ₴' + ' | OS: ' + ${product.getOs()} + ' | Studio: ' + ${product.getStudio()} + ' | Year: ' + ${product.getYear()}">-->
                 <p>
                     Price: <span class="pro__info" th:text="${product.getPrice()} + ' ₴'"></span>&nbsp;
                     OS: <span class="pro__info" th:text="${product.getOs()}"></span>&nbsp;
@@ -70,7 +68,6 @@
                        class="form-styling__pr" th:min="1" th:max="${product.getCount()}" placeholder="1">
                 <input type="submit" value="Add to basket" class="button__update__pr">
             </form>
-
         </div>
     </div>
 </div>
@@ -82,7 +79,6 @@
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
-
     <nav class="nav">
         <a href="#" class="nav-link">How it works</a>
         <a href="#" class="nav-link">Prices</a>

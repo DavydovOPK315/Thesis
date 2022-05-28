@@ -2,14 +2,15 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet"> <!--Font All pages-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width initial-scale=1.0">
-    <link rel="stylesheet" href="/css2/style_button.css"> <!--Button All pages-->
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css2/style_login.css">
+    <!-- Common links -->
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css2/style_button.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/css2/style_login.css"> <!--login page-->
-    <!--Font All pages-->
-    <link rel="stylesheet" type="text/css" href="/css2/base.css"> <!--All pages-->
+    <link rel="stylesheet" type="text/css" href="/css2/base.css">
     <title>Login</title>
 </head>
 <body>
@@ -26,7 +27,6 @@
         </div>
     </div>
 </header>
-
 <main>
     <div class="frame">
         <div class="nav1">
@@ -45,18 +45,19 @@
                 <label id="password">Password</label>
                 <input th:field="*{password}" class="form-styling" type="password" minlength="4" name="password"
                        placeholder="Password"/>
-
                 <div class="butn-animate">
                     <button type="submit" class="butn-login">Log in</button>
                 </div>
                 <div class="frame-end">
-                    <a class="sign-up" th:href="@{/shop/users/register}">Register</a>
+                    <a class="sign-up" th:href="@{/shop/users/register}">Register</a> |
+                    <a class="sign-up" th:href="@{/shop/users/forgot_password}">Forgot your password</a>
                 </div>
             </form>
         </div>
     </div>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> <!--Menu All pages-->
+<!--Menu All pages-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
 <script src="/js/jquery.bxslider.js"></script>
 <script src="/js/jquery.bxslider.min.js"></script>
 <script src="/js/new.js"></script>

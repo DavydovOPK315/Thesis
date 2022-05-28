@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/basket.css">
     <link rel="stylesheet" href="/css2/buy1.css">
-    <link rel="stylesheet" href="/style.css">
+    <!-- Common links -->
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css2/style_button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css2/base.css">
 </head>
 <body>
 <header>
@@ -28,7 +32,7 @@
             </nav>
         </div>
         <div class="icon-menu">
-            <img src="css2/photo/Hamburger.png" height="40" alt="image">
+            <img src="/css2/photo/Hamburger.png" height="40" alt="image">
         </div>
         <div th:if="${userId}">
             <a th:href="@{/shop/account}" class=" btn">Profile</a>
@@ -39,19 +43,21 @@
     </div>
 </header>
 
-<article>
-    <div class="empty_cart" th:if="${basketEditDto.baskets == null and basketEditDto.baskets.isEmpty()}">
+<article th:if="${#lists.isEmpty(basketEditDto.baskets)}">
+    <div class="empty_cart">
         <h1 class="empty-h">Your basket is empty</h1>
     </div>
+</article>
+
+<article th:unless="${#lists.isEmpty(basketEditDto.baskets)}">
     <div class="basket">
         <div th:if="countError">
-            <h1 th:text="${countError}"></h1>
+            <h1 class="empty-h" th:text="${countError}"></h1>
         </div>
-
         <h1>Your basket</h1>
         <div class="tickets">
             <form action="#" th:action="@{/shop/update/basket}" th:object="${basketEditDto}" method="post">
-                <input type="submit" value="Update basket" id="submitButton"/>
+                <input type="submit" value="Update basket" id="submitButton" class="gradient-btn_Basket"/>
                 <fieldset th:each="basket, itemStat : *{baskets}">
                     <a th:href="@{/shop/delete/basket/{id}(id=${basket.getId()})}">
                         <div class="close">
@@ -70,7 +76,9 @@
                                 <div class="person__surname__information">Unit price:</div>
                                 <div class="surname" th:text="${basket.getPrice()} + ' ₴'"></div>
                                 <div class="person__surname__information">Price:</div>
-                                <div class="surname" th:text="${basket.getPrice()} * ${basket.getQuantity()} + ' ₴'"></div>
+                                <div class="name"
+                                     th:text="${#numbers.formatDecimal(basket.getPrice() * basket.getQuantity(), 1 , 2, 'POINT')} + ' ₴'">
+                                </div>
                             </div>
 
                             <div class="date__information">
@@ -78,15 +86,14 @@
                                 <div class="surname" th:text="${basket.getQuantity()}"></div>
 
                                 <label for="quantity">Enter quantity: </label>
-                                <input type="number" id="quantity" th:field="*{baskets[__${itemStat.index}__].quantity}"
+                                <input type="number" id="quantity" class="form-styling"
+                                       th:field="*{baskets[__${itemStat.index}__].quantity}"
                                        th:min="1"
                                        th:max="${basket.getCount()}"/>
                                 <input type="hidden" th:field="*{baskets[__${itemStat.index}__].basketId}"/>
 
-                                <img th:src="'data:image/jpeg;base64,' + ${basket.getImage()}" th:height="200" th:width="200"/>
-                                <a th:href="@{/shop/delete/basket/{id}(id=${basket.getId()})}">
-                                    <input type="button" value="Delete product">
-                                </a>
+                                <img th:src="'data:image/jpeg;base64,' + ${basket.getImage()}" th:height="200"
+                                     th:width="200" alt="picture"/>
                                 <div class="finish__date"></div>
                             </div>
                         </div>
@@ -102,13 +109,9 @@
             <div class="infor__value__price" th:text="${totalPrice} + ' ₴'"></div>
         </div>
     </div>
-
-
     <div class="buttons">
         <a class="gradient-btn_Basket" th:href="@{/shop/order/new}">Create order</a>
-
         <a class="gradient-btn_Basket" th:href="@{/shop/delete/basket}">Delete all</a>
-
         <a class="gradient-btn_Basket" th:href="@{/shop}">Back</a>
     </div>
 </article>
@@ -127,7 +130,6 @@
         <a href="#" class="nav-link">Guidebook</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
-
     </nav>
     <div class="social">
         <div><img src="/css2/photo/facebook-pink.png" width="50" height="50" alt="Логотип"/></div>
@@ -142,9 +144,9 @@
 <script src="/js/plugins.js"></script>
 <script src="/js/classy-nav.min.js"></script>
 <script src="/js/active.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
 <script src="/js/jquery.bxslider.js"></script>
 <script src="/js/jquery.bxslider.min.js"></script>
 <script src="/js/new.js"></script>
-<script src="/js/more.js"></script>
 </body>
 </html>

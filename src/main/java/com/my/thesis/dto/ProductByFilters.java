@@ -18,4 +18,6 @@ public class ProductByFilters {
 
     private Long yearMin;
     private Long yearMax;
+
+    private String productName;
 }

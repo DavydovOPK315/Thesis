@@ -1,9 +1,10 @@
 section{
-  height: 67vh;
+  height: 68.4vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  background: #2c3e42;
 }
 
 

@@ -10,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -76,12 +78,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         User result = userRepository.findById(id).orElse(null);
-
         if (result == null){
             log.warn("IN findById - no user found {}", id);
             return null;
         }
-
         log.info("IN findById - user: {} successfully found by id", result.getUsername());
         return result;
     }
@@ -90,5 +90,29 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         userRepository.deleteById(id);
         log.info("IN delete - user successfully deleted by id: {}", id);
+    }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email){
+        User user = userRepository.findByEmail(email);
+        if (user != null){
+            log.info("IN updateResetPasswordToken: token updated by email: {}", email);
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        }
+        log.warn("IN updateResetPasswordToken: user not found by email: {}", email);
+    }
+
+    @Override
+    public User getResetPasswordToken(String token){
+        return userRepository.findByReset_password_token(token);
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword){
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetPasswordToken(null);
+        userRepository.save(user);
+        log.info("IN updatePassword: password updated by user: {}", user.getUsername());
     }
 }

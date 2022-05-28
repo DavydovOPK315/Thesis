@@ -4,8 +4,8 @@ section{
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #2c3e42;
 }
-
 
 .all{
 
@@ -14,13 +14,11 @@ justify-content: space-around;
 align-items: center;
 background: var(--light-green);
 height: 48%;
-
 }
 
 .information__block{
   position: absolute;
   top:26%;
-
   left: 26%;
   transform: translate(-50%, -50%);
   font-size: 22px;

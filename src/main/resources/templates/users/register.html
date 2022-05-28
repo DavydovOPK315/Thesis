@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>Register</title>
-    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css2/style_button.css"> <!--Button All pages-->
     <link rel="stylesheet" type="text/css" href="/css2/signup.css">
-    <link rel="stylesheet" type="text/css" href="/css2/base.css">
+    <!-- Common links -->
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet"> <!--Font All pages-->
+    <link rel="stylesheet" href="/css2/style_button.css"> <!--Button All pages-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"><!--Font All pages-->
+    <link rel="stylesheet" type="text/css" href="/css2/base.css"> <!--All pages-->
 </head>
 <body>
 <header>
@@ -24,7 +26,6 @@
         </div>
     </div>
 </header>
-
 <main>
     <div class="framesignup">
         <div class="nav1">
@@ -32,7 +33,6 @@
                 <li class="signup-active"><a class="butn">Sign up</a></li>
             </ul>
         </div>
-
         <form class="form-signup" th:method="POST" th:action="@{/shop/users}" th:object="${user}" name="form">
             <div class="part1">
 
@@ -44,7 +44,6 @@
                         error
                     </div>
                 </div>
-
                 <div class="email">
                     <label for="email">Email: </label>
                     <input type="email" th:field="*{email}" id="email" required
@@ -52,7 +51,6 @@
                     <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
                 </div>
             </div>
-
             <div class="part2">
                 <div class="first_name">
                     <label for="firstname">First name: </label>
@@ -62,7 +60,6 @@
                         First name error
                     </div>
                 </div>
-
                 <div class="last_name">
                     <label for="lastname">Enter last name: </label>
                     <input type="text" th:field="*{lastname}" id="lastname" required
@@ -72,7 +69,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="password">
                 <div class="password1">
                     <label for="password">Enter password: </label>
@@ -87,7 +83,11 @@
                 <button type="submit" class="butn-signup">Register</button>
             </div>
             <div class="frame-end">
-                <a class="login" th:href="@{/shop/users/login}">Log in</a></div>
+                <a class="login" th:href="@{/shop/users/login}">Log in | </a>
+                <a class="login" th:href="@{/shop/users/forgot_password}">Forgot your password</a>
+            </div>
+            <div class="frame-end">
+               </div>
         </form>
     </div>
 </main>
