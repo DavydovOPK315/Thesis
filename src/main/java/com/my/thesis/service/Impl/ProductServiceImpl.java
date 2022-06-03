@@ -35,9 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(ProductDto productDto) {
-
         Product product = productDto.toProduct();
-
         Os os_object = osRepository.findByName(productDto.getOs());
         Studio studio_object = studioRepository.findByName(productDto.getStudio());
         Image image = imageService.uploadImage(productDto.getImage());
@@ -47,25 +45,33 @@ public class ProductServiceImpl implements ProductService {
         product.setStudio(studio_object);
         product.setImage(image);
         product.setCategories(categories);
-        product.setStatus(Status.ACTIVE);
-
-        Product result = productRepository.save(product);
-        log.info("IN save - product was saved {}", result.getName());
-        return result;
+        return save(product);
     }
 
     @Override
     public Product save(Product product) {
         Product result = productRepository.save(product);
+        if (result.getCount() == 0 || result.getStatus().name().equals(Status.NOT_ACTIVE.name())) {
+            result.setStatus(Status.NOT_ACTIVE);
+            result = productRepository.save(result);
+        }
         log.info("IN save - product was saved {}", result.getName());
         return result;
+    }
+
+    @Transactional
+    @Override
+    public void updateProductCount(Long productId, Long count) {
+        Product product = findById(productId);
+        product.setCount(product.getCount() - count);
+        save(product);
+        log.info("IN updateProductCount product count updated on {}", count);
     }
 
     @Override
     public List<ProductDtoOut> getAll() {
         List<Product> productList = productRepository.findAll();
         List<ProductDtoOut> result;
-
         result = transformToProductDtoOut(productList);
         log.info("IN getALL - {} products found", result != null ? result.size() : 0);
         return result;
@@ -74,12 +80,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findByName(String name) {
         Product result = productRepository.findByName(name);
-
         if (result == null) {
             log.warn("IN findByName - no product found {}", name);
             return null;
         }
-
         log.info("IN findByName - product: {} successfully found by name", result.getName());
         return result;
     }
@@ -87,13 +91,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(Long id) {
         Product result = productRepository.findById(id).orElse(null);
-
         if (result == null) {
             log.warn("IN findById - no product found {}", id);
             return null;
         }
-
-        log.info("IN findById - product: {} successfully found by id", result.getName());
+        log.info("IN findById - product: {} successfully found by id: {}", result.getName(), id);
         return result;
     }
 
@@ -101,7 +103,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByIdDesc() {
         List<Product> productList = productRepository.findAllOrderByIdDesc();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByIdDesc was found {} products", productList.size());
         return result;
     }
@@ -110,7 +111,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByCount() {
         List<Product> productList = productRepository.findAllOrderByCount();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByCount was found {} products", productList.size());
         return result;
     }
@@ -119,7 +119,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByCountDesc() {
         List<Product> productList = productRepository.findAllOrderByCountDesc();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByCountDesc was found {} products", productList.size());
         return result;
     }
@@ -128,7 +127,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByYear() {
         List<Product> productList = productRepository.findAllOrderByYear();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByYear was found {} products", productList.size());
         return result;
     }
@@ -137,7 +135,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByYearDesc() {
         List<Product> productList = productRepository.findAllOrderByYearDesc();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByYearDesc was found {} products", productList.size());
         return result;
     }
@@ -146,7 +143,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByPrice() {
         List<Product> productList = productRepository.findAllOrderByPrice();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByPrice was found {} products", productList.size());
         return result;
     }
@@ -155,15 +151,21 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDtoOut> findAllOrderByPriceDesc() {
         List<Product> productList = productRepository.findAllOrderByPriceDesc();
         List<ProductDtoOut> result = transformToProductDtoOut(productList);
-
         log.info("IN findAllOrderByPriceDesc was found {} products", productList.size());
+        return result;
+    }
+
+    @Override
+    public List<ProductDtoOut> findAllByStatus(Status status) {
+        List<Product> productList = productRepository.findAllByStatus(status);
+        List<ProductDtoOut> result = transformToProductDtoOut(productList);
+        log.info("IN findAllByStatus was found {} products", productList.size());
         return result;
     }
 
     @Override
     public List<ProductDtoOut> findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters) {
         List<Category> categoryListFilter = productByFilters.getCategoryListFilter();
-
         List<Os> oss = new ArrayList<>();
         String osName = productByFilters.getOsFilter();
         if (osName == null) {
@@ -200,7 +202,7 @@ public class ProductServiceImpl implements ProductService {
         if (!categoryListFilter.isEmpty()) {
             for (Product product : productList) {
                 for (Category category : categoryListFilter) {
-                    if (product.getCategories().contains(category)){
+                    if (product.getCategories().contains(category)) {
                         filteredProducts.add(product);
                         break;
                     }
@@ -220,13 +222,6 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
-    @Transactional
-    @Override
-    public void updateProductCount(Long productId, Long count) {
-        productRepository.updateProductCount(productId, count);
-        log.info("IN updateProductCount product count updated on {}", count);
-    }
-
     @Override
     public void delete(Long id) {
         productRepository.deleteById(id);
@@ -235,16 +230,13 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductDtoOut> transformToProductDtoOut(List<Product> productList) {
         List<ProductDtoOut> result = new ArrayList<>();
-
         if (productList.isEmpty()) {
             log.warn("IN transformToProductDtoOut - productList is empty");
             return null;
         }
-
         for (Product product : productList) {
             result.add(ProductDtoOut.fromProductToProductDtoOut(product, imageService));
         }
-
         log.info("IN transformToProductDtoOut - result size: {}", result.size());
         return result;
     }

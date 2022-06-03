@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+    <link rel="stylesheet" type="text/css" href="/css2/admin-pages.css">
+</head>
+<body>
+
+<p><a th:href="@{/shop/admin/users}">All users</a></p>
+<hr>
+
+<p>User:</p>
+<hr>
+<div class="errors" th:if="${formError}">
+    <p class="text-error" th:text="${formError}"></p>
+</div>
+<form th:action="@{/shop/admin/users/edit}" th:method="POST" th:object="${user}">
+    <label for="username">Enter username: </label>
+    <input type="text" th:field="*{username}" id="username" required>
+    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</div>
+    <br/>
+    <br/>
+    <label for="firstname">Enter first name: </label>
+    <input type="text" th:field="*{firstname}" id="firstname" required>
+    <div style="color: red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">First name error</div>
+    <br/>
+    <br/>
+    <label for="username">Enter last name: </label>
+    <input type="text" th:field="*{lastname}" id="lastname" required>
+    <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Last name error</div>
+    <br/>
+    <br/>
+    <label for="username">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email" required>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+    <br/>
+    <br/>
+    <td th:text="'Date created: ' + ${#dates.format(user.getCreated(), 'dd/MM/yyyy HH:mm')}"></td>
+    <br/>
+    <br/>
+    <td th:text="'Date updated: ' + ${#dates.format(user.getUpdated(), 'dd/MM/yyyy HH:mm')}"></td>
+    <br/>
+    <br/>
+    <label for="role">Enter roles: </label>
+    <div th:each="temp : ${roleList}" th:field="*{roles}">
+        <input class="form-check-input" id="role" type="checkbox"
+               th:field="*{roles}"
+               th:value="${temp.getId()}"
+               th:text="${temp.getName()}">
+    </div>
+    <br/>
+    <br/>
+    <label for="status">Enter status: </label>
+    <div th:each="temp : ${statusList}">
+        <input class="form-check-input" id="status" type="radio"
+               th:field="*{status}"
+               th:value="${temp}"
+               th:text="${temp.name()}" required>
+    </div>
+    <br/>
+    <br/>
+    <input type="hidden" th:field="*{id}" id="id" required>
+    <input type="hidden" th:field="*{password}" id="password" required>
+    <input type="submit" value="Update user">
+</form>
+</body>
+</html>

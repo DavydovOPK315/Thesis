@@ -32,17 +32,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User save(User user) {
+        User result = userRepository.save(user);
+        log.info("IN save: user saved with username: {}", user.getUsername());
+        return result;
+    }
+
+    @Override
     public User register(User user) {
         Role roleUser = roleRepository.findByName("ROLE_USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(userRoles);
         user.setStatus(Status.ACTIVE);
-
         User registeredUser = userRepository.save(user);
         log.info("IN register - user {} successfully registered", registeredUser);
+        return registeredUser;
+    }
+
+    @Override
+    public User registerByAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User registeredUser = userRepository.save(user);
+        log.info("IN registerByAdmin - user {} successfully registered", registeredUser);
         return registeredUser;
     }
 
@@ -71,7 +84,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         User result = userRepository.findByUsername(username);
-        log.info("IN findByUsername - user: {} successfully found by username: {}", username, result.getUsername());
+        if (result == null){
+            log.warn("IN findByUsername - no user found with username: {}", username);
+            return null;
+        }
+        log.info("IN findByUsername - user: {} successfully found", result.getUsername());
         return result;
     }
 
@@ -83,6 +100,28 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         log.info("IN findById - user: {} successfully found by id", result.getUsername());
+        return result;
+    }
+
+    @Override
+    public List<User> findAllByStatus(Status status) {
+        List<User> result = userRepository.findAllByStatus(status);
+        if (result == null){
+            log.warn("IN findAllByStatus - no user found with status {}", status.name());
+            return new ArrayList<>();
+        }
+        log.info("IN findAllByStatus - {} users found", result.size());
+        return result;
+    }
+
+    @Override
+    public List<User> findAllByRoles(Role role) {
+        List<User> result = userRepository.findAllByRoles(role);
+        if (result == null){
+            log.warn("IN findAllByStatus - no user found with role {}", role.getName());
+            return new ArrayList<>();
+        }
+        log.info("IN findAllByRoles - {} users found", result.size());
         return result;
     }
 

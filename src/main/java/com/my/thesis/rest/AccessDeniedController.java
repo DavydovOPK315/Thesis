@@ -14,7 +14,6 @@ public class AccessDeniedController {
 
     @GetMapping
     public String accessDeniedNotAuthUsers(Model model) {
-
         model.addAttribute("user", new AuthenticationRequestDto());
         model.addAttribute("formError", "Log in to do that action");
         return "users/login";
@@ -22,7 +21,6 @@ public class AccessDeniedController {
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public String accessDeniedAuthUsers(Model model) {
-
         model.addAttribute("user", new AuthenticationRequestDto());
         model.addAttribute("formError", "Access is denied. Try logging in as admin");
         return "users/login";

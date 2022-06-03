@@ -24,15 +24,18 @@ public class ProductEditDto {
 
     private Long year;
 
-    private Long os;
+    private Os os;
 
-    private Long studio;
+    private Studio studio;
 
     private String image;
 
     private MultipartFile imageIn;
 
-    private String categoriesDto;
+    private Status status;
+
+//    private String categoriesDto;
+    private List<Category> categoriesDto;
 
 
     public static ProductEditDto fromProductToProductEditDto(Product product, ImageService imageService) {
@@ -45,15 +48,17 @@ public class ProductEditDto {
         productEditDto.setCount(product.getCount());
         productEditDto.setPrice(product.getPrice());
         productEditDto.setYear(product.getYear());
-        productEditDto.setOs(product.getOs().getId());
-        productEditDto.setStudio(product.getStudio().getId());
+        productEditDto.setOs(product.getOs());
+        productEditDto.setStudio(product.getStudio());
         productEditDto.setImage(imageService.downloadImage(product.getImage()));
 
         List<Category> categoryList = product.getCategories();
 
         categoryList.forEach(category -> resultCategories.append(category.getId()).append(", "));
 
-        productEditDto.setCategoriesDto(resultCategories.substring(0, resultCategories.length() - 2));
+        productEditDto.setStatus(product.getStatus());
+//        productEditDto.setCategoriesDto(resultCategories.substring(0, resultCategories.length() - 2));
+        productEditDto.setCategoriesDto(product.getCategories());
 
         return productEditDto;
     }
@@ -72,19 +77,20 @@ public class ProductEditDto {
             Image imageCheck = imageService.uploadImage(productEditDto.getImageIn());
             product.setImage(imageCheck);
         }
-        Os os = osService.findById(productEditDto.getOs());
-        product.setOs(os);
+//        Os os = osService.findById(productEditDto.getOs());
+        product.setOs(productEditDto.getOs());
 
-        Studio studio = studioService.findById(productEditDto.getStudio());
-        product.setStudio(studio);
+//        Studio studio = studioService.findById(productEditDto.getStudio());
+        product.setStudio(productEditDto.getStudio());
 
-        List<Category> categoryList;
-        categoryList = Arrays.stream(productEditDto.categoriesDto.split(", "))
-                .map(s -> categoryService.findById(Long.valueOf(s)))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        product.setCategories(categoryList);
+//        List<Category> categoryList;
+//        categoryList = Arrays.stream(productEditDto.categoriesDto.split(", "))
+//                .map(s -> categoryService.findById(Long.valueOf(s)))
+//                .filter(Objects::nonNull)
+//                .collect(Collectors.toList());
+        product.setStatus(productEditDto.getStatus());
+//        product.setCategories(categoryList);
+        product.setCategories(productEditDto.getCategoriesDto());
         return product;
     }
 }

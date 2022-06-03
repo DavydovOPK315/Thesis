@@ -1,12 +1,14 @@
 package com.my.thesis.rest;
 
 import com.my.thesis.dto.AuthenticationRequestDto;
+import com.my.thesis.model.Status;
 import com.my.thesis.model.User;
 import com.my.thesis.security.jwt.JwtTokenProvider;
 import com.my.thesis.service.UserService;
 import com.my.thesis.utility.Utility;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -47,44 +49,62 @@ public class UserController {
     }
 
     @GetMapping(value = "/login")
-    public String index(@ModelAttribute("user") AuthenticationRequestDto user) {
+    public String index(@ModelAttribute("user") AuthenticationRequestDto user, HttpServletRequest request, Model model) {
+       model.addAttribute("formError", request.getSession().getAttribute("formError"));
+       request.getSession().setAttribute("formError", null);
         return "users/login";
     }
 
     @PostMapping(value = "/auth")
     public String login(@ModelAttribute("formError") String formError, @ModelAttribute("user") AuthenticationRequestDto requestDto, Model model, HttpServletRequest request) {
+        String username = "";
         try {
-
-            String username = requestDto.getUsername();
+            username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = userService.findByUsername(username);
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             model.addAttribute("token", token);
-
             HttpSession session = request.getSession();
             session.setAttribute("userId", user.getId());
+            session.setAttribute("userToken", user);
             session.setAttribute("token", token);
-
             return "redirect:/shop";
         } catch (AuthenticationException e) {
-            model.addAttribute("formError", "Your username and password didn't match. Please try again.");
+            if (StringUtils.isEmpty(username)) {
+                model.addAttribute("formError", "Your username cannot be empty. Please try again.");
+                return "users/login";
+            }
+            if (userService.findByUsername(username).getStatus().compareTo(Status.BANNED) == 0) {
+                model.addAttribute("formError", "Your account has been blocked. If you want to unblock, you can contact by email: gameshopcontactmail@gmail.com");
+            }else
+                model.addAttribute("formError", "Your username and password didn't match. Please try again.");
             return "users/login";
         }
     }
 
     @GetMapping("/register")
-    public String newRegister(@ModelAttribute("user") User user) {
+    public String newRegister(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        model.addAttribute("formError", session.getAttribute("formError"));
+        session.setAttribute("formError", null);
         return "users/register";
     }
 
     @PostMapping()
-    public String register(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "users/register";
+    public String register(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model, HttpServletRequest request) {
+        try {
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("formError", "Problem with data");
+                return "users/register";
+            }
+            userService.register(user);
+            return "redirect:/users/login";
+        }catch (DataIntegrityViolationException e){
+            HttpSession session = request.getSession();
+            session.setAttribute("formError", "A user with this login or email already exists in the system");
+            return "redirect:/shop/users/register";
         }
-        userService.register(user);
-        return "redirect:/users/login";
     }
 
     @GetMapping("/forgot_password")
@@ -114,13 +134,7 @@ public class UserController {
         helper.setFrom("contact@gameshop.com", "GameShop Support");
         helper.setTo(recipientEmail);
         String subject = "Here's the link to reset your password";
-        String content = "<p>Hello,</p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=\"" + link + "\">Change my password</a></p>"
-                + "<br>"
-                + "<p>Ignore this email if you do remember your password, "
-                + "or you have not made the request.</p>";
+        String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>" + "<p>Click the link below to change your password:</p>" + "<p><a href=\"" + link + "\">Change my password</a></p>" + "<br>" + "<p>Ignore this email if you do remember your password, " + "or you have not made the request.</p>";
         helper.setSubject(subject);
         helper.setText(content, true);
         mailSender.send(message);

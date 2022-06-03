@@ -33,6 +33,9 @@
                 <li class="signup-active"><a class="butn">Sign up</a></li>
             </ul>
         </div>
+        <div class="errors" th:if="${formError}">
+            <p class="text-error" th:text="${formError}"></p>
+        </div>
         <form class="form-signup" th:method="POST" th:action="@{/shop/users}" th:object="${user}" name="form">
             <div class="part1">
 

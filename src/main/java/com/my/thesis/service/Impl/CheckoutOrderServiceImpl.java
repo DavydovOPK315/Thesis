@@ -112,6 +112,9 @@ public class CheckoutOrderServiceImpl implements CheckoutOrderService {
         // increase count of products
         basketList.forEach(basket -> productService.updateProductCount(basket.getProductId(), basket.getCount()));
 
+//        // check status if 0 than NOT_ACTIVE
+//        basketList.forEach(basket -> productService.checkStatusByCount(basket.getProductId()));
+
         // create order
         CheckoutOrder order = new CheckoutOrder();
         order.setPhone(checkoutOrderDto.getPhone());
@@ -145,6 +148,7 @@ public class CheckoutOrderServiceImpl implements CheckoutOrderService {
 
         // delete all basket for user id
         basketService.deleteByUserId(user.getId());
+
         log.info("IN saveOrder: order saved");
         return order;
     }

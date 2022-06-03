@@ -1,0 +1,9 @@
+.errors {
+    text-align: left;
+    color: pink;
+}
+
+.text-error {
+    height: 50px;
+    color: pink;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg {
+            background-color: #f9f9f9
+        }
+    </style>
+</head>
+<body>
+
+<p><a th:href="@{/shop/admin/users/new}">Add new user</a></p>
+
+<p>Status:</p>
+<a th:href="@{/shop/admin/users/filter/status?key='ACTIVE'}"> ACTIVE </a>
+<a th:href="@{/shop/admin/users/filter/status?key='BANNED'}"> | BANNED</a>
+
+<p>Role:</p>
+<a th:href="@{/shop/admin/users/filter/role?key='ROLE_USER'}"> USER </a>
+<a th:href="@{/shop/admin/users/filter/role?key='ROLE_MANAGER'}"> | MANAGER |</a>
+<a th:href="@{/shop/admin/users/filter/role?key='ROLE_ADMIN'}"> ADMIN</a>
+<br/>
+<br/>
+
+<form th:action="@{/shop/admin/users/filter/username}" method="get">
+    <label for="username">Find orders by username:
+        <input type="text" minlength="2" name="key" id="username" placeholder="username">
+    </label>
+    <input type="submit" value="Find the products">
+</form>
+
+<p>All products:</p>
+
+<table class="tg">
+    <tr>
+        <th width="60">ID</th>
+        <th width="80">Username</th>
+        <th width="120">First_name</th>
+        <th width="65">Last_name</th>
+        <th width="120">Email</th>
+        <th width="100">Date added</th>
+        <th width="100">Date updated</th>
+        <th width="170">Roles</th>
+        <th width="120">Status</th>
+    </tr>
+
+    <div th:each="user : ${userList}">
+        <tr>
+            <td> <a th:href="@{/shop/admin/users/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a></td>
+            <td> <a th:href="@{/shop/admin/users/{id}(id=${user.getId()})}" th:text="${user.getUsername()}"></a></td>
+            <td th:text="${user.getFirstname()}"></td>
+            <td th:text="${user.getLastname()}"></td>
+            <td th:text="${user.getEmail()}"></td>
+            <td th:text="${#dates.format(user.getCreated(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(user.getUpdated(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <ul th:each="role : ${user.getRoles()}">
+                    <p th:text="${role.getName()}"></p>
+                </ul>
+            </td>
+            <td th:text="${user.getStatus().name()}"></td>
+        </tr>
+    </div>
+</table>
+</body>
+</html>

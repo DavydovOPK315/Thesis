@@ -58,6 +58,9 @@
 <a th:href="@{/shop/admin/products/filter/PriceMax}"> Price: max - min |</a>
 <a th:href="@{/shop/admin/products/filter/CountMin}"> Count: min - max |</a>
 <a th:href="@{/shop/admin/products/filter/CountMax}"> Count: max - min</a>
+<p>Status:</p>
+<a th:href="@{/shop/admin/products/filter/ACTIVE}"> ACTIVE </a>
+<a th:href="@{/shop/admin/products/filter/NOT_ACTIVE}"> | NOT_ACTIVE</a>
 <br/>
 <br/>
 
@@ -72,16 +75,19 @@
 
 <table class="tg">
     <tr>
-        <th width="80">ID</th>
+        <th width="60">ID</th>
         <th width="80">Name</th>
         <th width="120">Description</th>
-        <th width="120">Count</th>
+        <th width="65">Count</th>
         <th width="120">Price</th>
-        <th width="120">Year</th>
-        <th width="120">Os</th>
-        <th width="120">Studio</th>
+        <th width="85">Year</th>
+        <th width="100">Os</th>
+        <th width="100">Studio</th>
         <th width="120">Category</th>
         <th width="150" th:height="150">Image</th>
+        <th width="100">Date added</th>
+        <th width="100">Date updated</th>
+        <th width="120">Status</th>
     </tr>
 
     <div th:each="product : ${products}">
@@ -101,6 +107,9 @@
             </td>
 
             <td><img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" width="150" height="150"/></td>
+            <td th:text="${#dates.format(product.getCreated(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(product.getUpdated(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${product.getStatus().name()}"></td>
         </tr>
     </div>
 </table>

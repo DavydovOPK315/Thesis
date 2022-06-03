@@ -21,9 +21,7 @@
                 <img src="/css2/photo/x.png">
             </div>
             <nav>
-                <a href="#" class="nav-link">How it works</a>
-                <a href="#" class="nav-link">Prices</a>
-                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">About us</a>
                 <a href="#" class="nav-link">FAQ</a>
                 <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
             </nav>
@@ -166,7 +164,7 @@
                                                 <h6 th:text="${product.getName()}"></h6>
                                             </a>
                                         </div>
-                                        <div class="cart">
+                                        <div class="cart" th:if="${product.getStatus().name().equals('ACTIVE')}">
                                             <a th:href="@{/shop/basket/{id}(id=${product.getId()})}"
                                                data-toggle="tooltip"
                                                data-placement="left"
@@ -189,15 +187,12 @@
     <div class="title__logo">GameShop</div>
     <div class="info">
         <div class="mail">Ukraine~Kharkiv</div>
-        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="mail">E-mail: gameshopcontactmail@gmail.com</div>
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
-
     <nav class="nav">
-        <a href="#" class="nav-link">How it works</a>
-        <a href="#" class="nav-link">Prices</a>
-        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">About us</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
     </nav>

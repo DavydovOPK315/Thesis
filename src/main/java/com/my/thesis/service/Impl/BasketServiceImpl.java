@@ -71,7 +71,13 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public void deleteByUserId(Long id) {
         basketRepository.deleteByUserId(id);
-        log.info("IN deleteByUserId basket was cleared by Userid {}", id);
+        log.info("IN deleteByUserId basket was cleared by userId {}", id);
+    }
+
+    @Override
+    public void deleteByProductId(Long productId) {
+        basketRepository.deleteByProductId(productId);
+        log.info("IN deleteByProductId basket was cleared by productId {}", productId);
     }
 
     @Transactional

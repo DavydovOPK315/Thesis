@@ -9,6 +9,7 @@ public interface BasketService {
     List<Basket> findAllByUserId(Long userId);
     Basket findById(Long id);
     void deleteByUserId(Long id);
+    void deleteByProductId(Long productId);
     void deleteByUserIdAndProductId(Long userId, Long productId);
     void saveAll(List<Basket> baskets);
 }

@@ -93,8 +93,8 @@
         <td th:text="${order.getAddressDelivery()}"></td>
         <td th:text="${order.getComment()}"></td>
         <td th:text="${order.getAmount()}"></td>
-        <td th:text="${order.getCreated()}"></td>
-        <td th:text="${order.getUpdated()}"></td>
+        <td th:text="${#dates.format(order.getCreated(), 'dd/MM/yyyy HH:mm')}"></td>
+        <td th:text="${#dates.format(order.getUpdated(), 'dd/MM/yyyy HH:mm')}"></td>
         <td th:text="${order.status}"></td>
         <td th:text="${order.getUser().getUsername()}"></td>
         <td th:text="${order.getUser().getFirstname()}"></td>

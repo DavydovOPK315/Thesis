@@ -2,6 +2,7 @@ package com.my.thesis.repository;
 
 import com.my.thesis.model.Os;
 import com.my.thesis.model.Product;
+import com.my.thesis.model.Status;
 import com.my.thesis.model.Studio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -42,6 +43,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p order by p.price DESC")
     List<Product> findAllOrderByPriceDesc();
+
+    @Query("select p from Product p where p.status = ?1")
+    List<Product> findAllByStatus(Status status);
 
     @Query("select p from Product p " +
             "where p.os in :oss and p.studio in :studios and p.price between :priceMin and :priceMax and p.year between :yearMin and :yearMax")

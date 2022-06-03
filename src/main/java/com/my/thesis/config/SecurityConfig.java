@@ -25,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ADMIN_ENDPOINT = "/shop/admin/**";
     private static final String LOGIN_ENDPOINT = "/shop/users/**";
     public static final String PRODUCTS_ENDPOINT = "/shop/products/**";
-    public static final String SHOP_ENDPOINT = "/shop";
+    public static final String SHOP_ENDPOINT = "/shop/";
+    public static final String BASKET_ENDPOINT = "/shop/basket/**";
 
     @Autowired
     public SecurityConfig(JwtTokenProvider jwtTokenProvider, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
@@ -48,11 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**", "/css2/**", "/fonts/**", "/js/**", "/scss/**", "/img/**", "/templates/**", "/access-denied/**").permitAll()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(SHOP_ENDPOINT).permitAll()
-                .antMatchers(PRODUCTS_ENDPOINT).permitAll()
+//                .antMatchers(SHOP_ENDPOINT).permitAll()
+//                .antMatchers(PRODUCTS_ENDPOINT).permitAll()
+//                .antMatchers(BASKET_ENDPOINT).hasRole("USER")
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
+//                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint).jwt())
                 // first for auth users, second for not auth users
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler).authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()

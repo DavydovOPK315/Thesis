@@ -82,7 +82,7 @@
                 <td th:text="${orderDto.getAddressDelivery()}"></td>
                 <td th:text="${orderDto.getComment()}"></td>
                 <td th:text="${orderDto.getAmount()}"></td>
-                <td th:text="${orderDto.getCreated()}"></td>
+                <td th:text="${#dates.format(orderDto.getCreated(), 'dd/MM/yyyy HH:mm')}"></td>
                 <td th:text="${orderDto.getUser().getFirstname()}"></td>
                 <td th:text="${orderDto.getUser().getLastname()}"></td>
                 <td th:text="${orderDto.getUser().getEmail()}"></td>

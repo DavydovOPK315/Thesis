@@ -3,16 +3,14 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
     <link rel="stylesheet" href="/css2/owl.carousel.min.css">
-    <link rel="stylesheet" type="text/css" href="/css2/account.css">
+    <link rel="stylesheet" href="/css2/account.css">
     <link rel="stylesheet" href="/css2/buy1.css">
     <!-- Common links -->
     <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css2/style_button.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">-->
     <link rel="stylesheet" type="text/css" href="/css2/base.css">
 </head>
 <body>
@@ -24,9 +22,7 @@
                 <img src="/css2/photo/x.png">
             </div>
             <nav>
-                <a href="#" class="nav-link">How it works</a>
-                <a href="#" class="nav-link">Prices</a>
-                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">About us</a>
                 <a href="#" class="nav-link">FAQ</a>
                 <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
             </nav>
@@ -46,19 +42,17 @@
     <div class="main__greeting">
         <section>
             <div class="greeting"><h2 th:text=" 'Hello, ' + ${user.getFirstname()}"></h2><br/>
-                <p>This is your account. Here you can issue tickets, view and change information about yourself, see the
-                    number of tickets purchased, and so on.</p>
+                <p>This is your account. Here you can view and change information about yourself, see your orders and so on.</p>
             </div>
         </section>
         <aside>
             <div class="account">
-
                 <div class="name__account surname__account"
                      th:text="${user.getFirstname()} + ' ' + ${user.getLastname()}"></div>
                 <div class="username__account" th:text="${user.getUsername()}"></div>
                 <div class="infor__account">
-                    <div class="email__account"><p th:text="${user.getEmail()}">
-                        <p></div>
+                    <div class="email__account">
+                        <p th:text="${user.getEmail()}"><p></div>
                 </div>
                 <a class="gradient-btn_account" th:href="@{/shop/account/edit}">Edit</a>
                 <a class="gradient-btn_account" th:href="@{/shop/account/logout}">Logout</a>
@@ -70,9 +64,9 @@
             <div class="ticket__infor">
                 <div><p>Order: <span class="tick" th:text="${order.getId()}"></span></p></div>
                 <div><p>Status: <span class="tick" th:text="${order.getStatus()}"></span></p></div>
-                <div><p>Amount: <span class="tick" th:text="${order.getAmount()}"></span></p></div>
+                <div><p>Amount: <span class="tick" th:text="${#numbers.formatDecimal(order.getAmount(), 1 , 2, 'POINT')} + ' ₴'"></span></p></div>
             </div>
-            <div class="ticket__infor"><p>Date: <span class="tick" th:text="${order.getCreated()}"></span></p></div>
+            <div class="ticket__infor"><p>Date: <span class="tick" th:text="${#dates.format(order.getCreated(), 'dd/MM/yyyy HH:mm')}"></span></p></div>
             <div class="information">
                 <div class="person__information" th:each="basket : ${order.getCheckoutOrderHasProducts()}">
                     <div class="person__name__information">Product name:</div>
@@ -86,7 +80,7 @@
                             </p></div>
                         </div>
                         <div class="number__tickets">Price:</div>
-                        <div class="number__ticket"><p><span class="tick" th:text="${basket.getPrice()}"></span></p>
+                        <div class="number__ticket"><p><span class="tick" th:text="${#numbers.formatDecimal(basket.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></span></p>
                         </div>
                     </div>
                 </div>
@@ -99,14 +93,12 @@
     <div class="title__logo">GameShop</div>
     <div class="info">
         <div class="mail">Ukraine~Kharkiv</div>
-        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="mail">E-mail: gameshopcontactmail@gmail.com</div>
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
     <nav class="nav">
-        <a href="#" class="nav-link">How it works</a>
-        <a href="#" class="nav-link">Prices</a>
-        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">About us</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
     </nav>

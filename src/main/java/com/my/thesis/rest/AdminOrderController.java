@@ -70,14 +70,14 @@ public class AdminOrderController {
 
     @GetMapping("/filter/Newest")
     public String showProductsByCreated(Model model) {
-        List<CheckoutOrder> result = new ArrayList<>(checkoutOrderService.findAllByIdOrderByCreated());
+        List<CheckoutOrder> result = new ArrayList<>(checkoutOrderService.findAllByIdOrderByCreatedDesc());
         model.addAttribute("orderDto", result);
         return "admin/order/index";
     }
 
     @GetMapping("/filter/Oldest")
     public String showProductsByCreatedDecs(Model model) {
-        List<CheckoutOrder> result = new ArrayList<>(checkoutOrderService.findAllByIdOrderByCreatedDesc());
+        List<CheckoutOrder> result = new ArrayList<>(checkoutOrderService.findAllByIdOrderByCreated());
         model.addAttribute("orderDto", result);
         return "admin/order/index";
     }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The product</title>
+    <title>Product</title>
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/product.css">
     <link rel="stylesheet" type="text/css" href="/css2/base.css">
@@ -19,9 +19,7 @@
                 <img src="/css2/photo/x.png" alt="image">
             </div>
             <nav>
-                <a href="#" class="nav-link">How it works</a>
-                <a href="#" class="nav-link">Prices</a>
-                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">About us</a>
                 <a href="#" class="nav-link">FAQ</a>
                 <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
             </nav>
@@ -62,12 +60,13 @@
                     Category: <span class="pro__info" th:each="category : ${product.getCategoryList()}" th:text="${category.getName()} + ' '"></span>&nbsp;
                 </p>
             </div>
-            <form th:method="POST" th:action="@{/shop/basket/{id}(id=${product.getId()})}" th:object="${basketDto}">
+            <form th:if="${product.getStatus().name().equals('ACTIVE')}" th:method="POST" th:action="@{/shop/basket/{id}(id=${product.getId()})}" th:object="${basketDto}">
                 <label for="id_quantity" class="title__quantity">Quantity:</label>
                 <input type="number" th:field="*{countProduct}" name="quantity" id="id_quantity"
                        class="form-styling__pr" th:min="1" th:max="${product.getCount()}" placeholder="1">
                 <input type="submit" value="Add to basket" class="button__update__pr">
             </form>
+            <label th:unless="${product.getStatus().name().equals('ACTIVE')}" class="title__quantity">NOT AVAILABLE</label>
         </div>
     </div>
 </div>
@@ -75,14 +74,12 @@
     <div class="title__logo">GameShop</div>
     <div class="info">
         <div class="mail">Ukraine~Kharkiv</div>
-        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="mail">E-mail: gameshopcontactmail@gmail.com</div>
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
     <nav class="nav">
-        <a href="#" class="nav-link">How it works</a>
-        <a href="#" class="nav-link">Prices</a>
-        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">About us</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
     </nav>

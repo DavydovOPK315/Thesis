@@ -2,8 +2,11 @@ package com.my.thesis.dto;
 
 import com.my.thesis.model.Category;
 import com.my.thesis.model.Product;
+import com.my.thesis.model.Status;
 import com.my.thesis.service.ImageService;
 import lombok.Data;
+
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -27,6 +30,12 @@ public class ProductDtoOut {
 
     private String image;
 
+    private Date created;
+
+    private Date updated;
+
+    private Status status;
+
     private List<Category> categoryList;
 
 
@@ -44,8 +53,10 @@ public class ProductDtoOut {
         productDtoOut.setOs(product.getOs().getName());
         productDtoOut.setStudio(product.getStudio().getName());
         productDtoOut.setImage(imageService.downloadImage(product.getImage()));
+        productDtoOut.setCreated(product.getCreated());
+        productDtoOut.setUpdated(product.getUpdated());
+        productDtoOut.setStatus(product.getStatus());
         productDtoOut.setCategoryList(product.getCategories());
-
         return productDtoOut;
     }
 }

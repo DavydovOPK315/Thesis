@@ -3,8 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basket</title>
     <link rel="stylesheet" href="/css2/core-style.css">
     <link rel="stylesheet" href="/css2/basket.css">
@@ -24,9 +22,7 @@
                 <img src="/css2/photo/x.png">
             </div>
             <nav>
-                <a href="#" class="nav-link">How it works</a>
-                <a href="#" class="nav-link">Prices</a>
-                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">About us</a>
                 <a href="#" class="nav-link">FAQ</a>
                 <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
             </nav>
@@ -74,7 +70,7 @@
                                     <div class="name" th:text="${basket.getName()}"></div>
                                 </a>
                                 <div class="person__surname__information">Unit price:</div>
-                                <div class="surname" th:text="${basket.getPrice()} + ' ₴'"></div>
+                                <div class="surname"  th:text="${#numbers.formatDecimal(basket.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></div>
                                 <div class="person__surname__information">Price:</div>
                                 <div class="name"
                                      th:text="${#numbers.formatDecimal(basket.getPrice() * basket.getQuantity(), 1 , 2, 'POINT')} + ' ₴'">
@@ -89,7 +85,7 @@
                                 <input type="number" id="quantity" class="form-styling"
                                        th:field="*{baskets[__${itemStat.index}__].quantity}"
                                        th:min="1"
-                                       th:max="${basket.getCount()}"/>
+                                       th:max="${basket.getCount()}" required/>
                                 <input type="hidden" th:field="*{baskets[__${itemStat.index}__].basketId}"/>
 
                                 <img th:src="'data:image/jpeg;base64,' + ${basket.getImage()}" th:height="200"
@@ -106,7 +102,7 @@
         </div>
         <div class="total__price">
             <div class="infor__price">Total price:</div>
-            <div class="infor__value__price" th:text="${totalPrice} + ' ₴'"></div>
+            <div class="infor__value__price" th:text="${#numbers.formatDecimal(totalPrice, 1 , 2, 'POINT')} + ' ₴'"></div>
         </div>
     </div>
     <div class="buttons">
@@ -119,15 +115,12 @@
     <div class="title__logo">GameShop</div>
     <div class="info">
         <div class="mail">Ukraine~Kharkov</div>
-        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="mail">E-mail: gameshopcontactmail@gmail.com</div>
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
-
     <nav class="nav">
-        <a href="#" class="nav-link">How it works</a>
-        <a href="#" class="nav-link">Prices</a>
-        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">About us</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
     </nav>

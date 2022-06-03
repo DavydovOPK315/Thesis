@@ -5,6 +5,7 @@ import com.my.thesis.model.*;
 import com.my.thesis.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +65,7 @@ public class ShopController {
     }
 
     @GetMapping("/products/filter/name")
-    public String showProductByName(@ModelAttribute("filters") ProductByFilters productByFilters, BindingResult bindingResult,Model model, HttpServletRequest request) {
+    public String showProductByName(@ModelAttribute("filters") ProductByFilters productByFilters, BindingResult bindingResult, Model model, HttpServletRequest request) {
         List<ProductDtoOut> productList = new ArrayList<>();
         if (bindingResult.hasErrors()) {
             log.warn("Problem with applying filter");
@@ -154,7 +155,10 @@ public class ShopController {
         Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
-            return "redirect:/users/login";
+            return "redirect:/shop/users/login";
+        }
+        if (!productService.findById(productId).getStatus().name().equals(Status.ACTIVE.name())) {
+            return "redirect:/shop";
         }
         Basket basket = new Basket();
         basket.setProductId(productId);
@@ -175,8 +179,12 @@ public class ShopController {
         Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
-            return "redirect:/users/login";
+            return "redirect:/shop/users/login";
         }
+        if (!productService.findById(productId).getStatus().name().equals(Status.ACTIVE.name())) {
+            return "redirect:/shop/products/" + productId;
+        }
+
         Basket basket = new Basket();
         basket.setProductId(productId);
         basket.setUserId(userId);
@@ -193,7 +201,7 @@ public class ShopController {
     public String showBasket(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-        List<Basket> basketList = basketService.findAllByUserId(userId);
+        List<Basket> basketList = basketService.findAllByUserId(userId).stream().filter(basket -> productService.findById(basket.getProductId()).getStatus().name().equals(Status.ACTIVE.name())).collect(Collectors.toList());
 
         // convert to the object for view
         List<BasketOutDto> resultBasketList = basketList.stream().map(basket -> BasketOutDto.fromProductToBasketOutDto(productService.findById(basket.getProductId()), imageService, basket.getCount(), basket.getId())).collect(Collectors.toList());
@@ -206,10 +214,10 @@ public class ShopController {
         model.addAttribute("basketEditDto", basketEditDto);
 
         double totalPrice = 0;
-        for (BasketOutDto product : resultBasketList) {
-            totalPrice += product.getQuantity() * product.getPrice();
+        for (BasketOutDto basket : resultBasketList) {
+            if (productService.findById(basket.getId()).getStatus().name().equals(Status.ACTIVE.name()))
+                totalPrice += basket.getQuantity() * basket.getPrice();
         }
-        session.setAttribute("totalPrice", totalPrice);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("countError", session.getAttribute("countError"));
         session.setAttribute("countError", null);
@@ -228,7 +236,7 @@ public class ShopController {
 
         for (BasketOutDto temp : resultBasketList) {
             basket = basketService.findById(temp.getBasketId());
-            if (temp.getQuantity() == null){
+            if (temp.getQuantity() == null) {
                 request.getSession().setAttribute("countError", "Quantity cannot be less than 1! Choose a different quantity");
                 return "redirect:/shop/basket";
             }
@@ -260,12 +268,11 @@ public class ShopController {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
         CheckoutOrderDto checkoutOrderDto = new CheckoutOrderDto();
-        List<Basket> basketList = basketService.findAllByUserId(userId);
+        List<Basket> basketList = basketService.findAllByUserId(userId).stream().filter(basket -> productService.findById(basket.getProductId()).getStatus().name().equals(Status.ACTIVE.name())).collect(Collectors.toList());
 
         if (basketList.isEmpty()) {
             return "redirect:/shop/basket";
         }
-
         model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
         model.addAttribute("order", checkoutOrderDto);
         model.addAttribute("userId", userId);
@@ -278,13 +285,18 @@ public class ShopController {
         try {
             Long userId = (Long) session.getAttribute("userId");
             User user = userService.findById(userId);
-            List<Basket> basketList = basketService.findAllByUserId(userId);
+            List<Basket> basketList = basketService.findAllByUserId(userId).stream().filter(basket -> productService.findById(basket.getProductId()).getStatus().name().equals(Status.ACTIVE.name())).collect(Collectors.toList());
+            if (basketList.isEmpty()) {
+                return "redirect:/shop/basket";
+            }
             CheckoutOrder checkoutOrder = checkoutOrderService.saveOrder(checkoutOrderDto, user, basketList);
             checkoutOrderDto.setId(checkoutOrder.getId());
             checkoutOrderDto.setCreated(checkoutOrder.getCreated());
             model.addAttribute("order", checkoutOrderDto);
             return "redirect:/shop/order";
         } catch (Exception e) {
+            System.out.println("error ==> ");
+            e.printStackTrace();
             session.setAttribute("countError", "This quantity is not in stock. Choose a different quantity.");
             log.warn("IN saveOrder no count of product available");
             return "redirect:/shop/basket";
@@ -297,7 +309,8 @@ public class ShopController {
         Long userId = (Long) session.getAttribute("userId");
         CheckoutOrder checkoutOrder = checkoutOrderService.findFirstByUser_IdOrderByCreatedDesc(userId);
         model.addAttribute("userId", userId);
-        model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
+
+        model.addAttribute("totalPrice", checkoutOrder.getAmount());
         model.addAttribute("order", checkoutOrder);
         return "shop/order";
     }
@@ -322,20 +335,28 @@ public class ShopController {
         User user = userService.findById(userId);
         model.addAttribute("user", user);
         model.addAttribute("userId", userId);
+        model.addAttribute("formError", session.getAttribute("formError"));
+        session.setAttribute("formError", null);
         log.info("IN userEditAccount: user with id: {} found", userId);
         return "users/editAccount";
     }
 
     @RequestMapping(value = "/account/edit/{id}", method = RequestMethod.POST)
-    public String userSaveEditAccount(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long userId, BindingResult bindingResult, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            log.warn("IN userSaveEditAccount: problem with bindingResult");
-            return "redirect:/shop/account/edit/" + userId;
+    public String userSaveEditAccount(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long userId, BindingResult bindingResult, HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        try {
+            if (bindingResult.hasErrors()) {
+                log.warn("IN userSaveEditAccount: problem with bindingResult");
+                return "redirect:/shop/account/edit/" + userId;
+            }
+            user.setId(userId);
+            userService.update(user);
+            request.getSession().invalidate();
+            return "redirect:/shop/users/login";
+        } catch (DataIntegrityViolationException e) {
+            session.setAttribute("formError", "A user with this login or email already exists in the system");
+            return "redirect:/shop/account/edit";
         }
-        user.setId(userId);
-        userService.update(user);
-        request.getSession().invalidate();
-        return "redirect:/shop/users/login";
     }
 
     @RequestMapping(value = "/account/logout", method = RequestMethod.GET)

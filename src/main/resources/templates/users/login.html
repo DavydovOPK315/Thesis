@@ -40,10 +40,10 @@
             </div>
             <form class="form-login" th:action="@{/shop/users/auth}" th:method="POST" th:object="${user}" name="form">
                 <label id="username">Username</label>
-                <input th:field="*{username}" name="username" class="form-styling" type="text" min="4"
+                <input th:field="*{username}" name="username" class="form-styling" type="text" min="4" minlength="4" required
                        placeholder="Username"/>
                 <label id="password">Password</label>
-                <input th:field="*{password}" class="form-styling" type="password" minlength="4" name="password"
+                <input th:field="*{password}" class="form-styling" type="password" min="4" minlength="4" name="password" required
                        placeholder="Password"/>
                 <div class="butn-animate">
                     <button type="submit" class="butn-login">Log in</button>

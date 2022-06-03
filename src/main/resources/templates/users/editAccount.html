@@ -23,9 +23,7 @@
                 <img src="/css2/photo/x.png" alt="image">
             </div>
             <nav>
-                <a href="#" class="nav-link">How it works</a>
-                <a href="#" class="nav-link">Prices</a>
-                <a href="#" class="nav-link">Guidebook</a>
+                <a href="#" class="nav-link">About us</a>
                 <a href="#" class="nav-link">FAQ</a>
                 <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
             </nav>
@@ -41,80 +39,151 @@
         </div>
     </div>
 </header>
-<div class="framesignup">
-    <div class="nav1">
-        <ul class="links">
-            <li class="signup-active"><a class="butn">Edit</a></li>
-        </ul>
-    </div>
-    <form class="form-signup" th:action="@{/shop/account/edit/{id}(id=${user.getId()})}" th:object="${user}"
-          method="post" name="form">
-        <div class="part1">
-            <div class="username">
-                <label for="username">Username:</label>
-                <input type="text" th:value="${user.getUsername()}" th:field="*{username}" id="username" name="username"
-                       maxlength="20" autofocus required
-                       class="form-styling form-styling-username">
-                <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username
-                    error
-                </div>
+
+    <main>
+        <div class="framesignup">
+            <div class="nav1">
+                <ul class="links">
+                    <li class="signup-active"><a class="butn">Edit</a></li>
+                </ul>
             </div>
-            <div class="email">
-                <label for="email">Email:</label>
-                <input type="email" th:value="${user.getEmail()}" th:field="*{email}" id="email" name="email"
-                       maxlength="150"
-                       class=" form-styling form-styling-email">
-                <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+            <div class="errors" th:if="${formError}">
+                <p class="text-error" th:text="${formError}"></p>
             </div>
-        </div>
-        <div class="part2">
-            <div class="first_name">
-                <label for="first_name">First name:</label>
-                <input type="text" th:value="${user.getFirstname()}" th:field="*{firstname}" id="first_name"
-                       name="first_name" maxlength="100" required
-                       class="form-styling form-styling-part2">
-                <div style="color: red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Firstname
-                    error
-                </div>
-            </div>
-            <div class="last_name">
-                <label for="last_name">Last name:</label>
-                <input type="text" th:value="${user.getLastname()}" th:field="*{lastname}" id="last_name"
-                       name="last_name" maxlength="100" required
-                       class="form-styling form-styling-part2">
-                <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Lastname
-                    error
-                </div>
-            </div>
-            <div class="password">
-                <div class="password1">
-                    <label for="password">Enter password: </label>
-                    <input type="password" th:value="${user.getPassword()}" th:field="*{password}" id="password"
-                           required
-                           class="form-styling form-styling-password">
-                    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password
-                        error
+            <form class="form-signup" th:method="POST" th:action="@{/shop/account/edit/{id}(id=${user.getId()})}" th:object="${user}" name="form">
+                <div class="part1">
+                    <div class="username">
+                        <label for="username">Username: </label>
+                        <input type="text" th:field="*{username}" id="username" autofocus required
+                               class="form-styling form-styling-username">
+                        <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username
+                            error
+                        </div>
+                    </div>
+                    <div class="email">
+                        <label for="email">Email: </label>
+                        <input type="email" th:field="*{email}" id="email" required
+                               class=" form-styling form-styling-email">
+                        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
                     </div>
                 </div>
-            </div>
+                <div class="part2">
+                    <div class="first_name">
+                        <label for="firstname">First name: </label>
+                        <input type="text" th:field="*{firstname}" id="firstname" required
+                               class="form-styling form-styling-part2">
+                        <div style="color: red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">
+                            First name error
+                        </div>
+                    </div>
+                    <div class="last_name">
+                        <label for="lastname">Enter last name: </label>
+                        <input type="text" th:field="*{lastname}" id="lastname" required
+                               class="form-styling form-styling-part2">
+                        <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">
+                            Last name error
+                        </div>
+                    </div>
+                </div>
+                <div class="password">
+                    <div class="password1">
+                        <label for="password">Enter password: </label>
+                        <input type="password" th:field="*{password}" id="password" required
+                               class="form-styling form-styling-password">
+                        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password
+                            error
+                        </div>
+                    </div>
+                </div>
+                <div class="butn-animate">
+                    <button type="submit" class="butn-signup">Confirm</button>
+                </div>
+                <div class="frame-end">
+                    <a class="login" th:href="@{/shop/users/login}">Log in | </a>
+                    <a class="login" th:href="@{/shop/users/forgot_password}">Forgot your password</a>
+                </div>
+                <div class="frame-end">
+                </div>
+            </form>
         </div>
-        <div class="butn-animate">
-            <button type="submit" class="butn-signup">Confirm</button>
-        </div>
-    </form>
-</div>
+    </main>
+
+
+
+<!--<div class="framesignup">-->
+<!--    <div class="nav1">-->
+<!--        <ul class="links">-->
+<!--            <li class="signup-active"><a class="butn">Edit</a></li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--    <form class="form-signup" th:action="@{/shop/account/edit/{id}(id=${user.getId()})}" th:object="${user}"-->
+<!--          method="post" name="form">-->
+<!--        <div class="part1">-->
+<!--            <div class="username">-->
+<!--                <label for="username">Username:</label>-->
+<!--                <input type="text" th:value="${user.getUsername()}" th:field="*{username}" id="username" name="username"-->
+<!--                       maxlength="20" autofocus required-->
+<!--                       class="form-styling form-styling-username">-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username-->
+<!--                    error-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="email">-->
+<!--                <label for="email">Email:</label>-->
+<!--                <input type="email" th:value="${user.getEmail()}" th:field="*{email}" id="email" name="email"-->
+<!--                       maxlength="150"-->
+<!--                       class=" form-styling form-styling-email">-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="part2">-->
+<!--            <div class="first_name">-->
+<!--                <label for="first_name">First name:</label>-->
+<!--                <input type="text" th:value="${user.getFirstname()}" th:field="*{firstname}" id="first_name"-->
+<!--                       name="first_name" maxlength="100" required-->
+<!--                       class="form-styling form-styling-part2">-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Firstname-->
+<!--                    error-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="last_name">-->
+<!--                <label for="last_name">Last name:</label>-->
+<!--                <input type="text" th:value="${user.getLastname()}" th:field="*{lastname}" id="last_name"-->
+<!--                       name="last_name" maxlength="100" required-->
+<!--                       class="form-styling form-styling-part2">-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Lastname-->
+<!--                    error-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="password">-->
+<!--                <div class="password1">-->
+<!--                    <label for="password">Enter password: </label>-->
+<!--                    <input type="password" th:value="${user.getPassword()}" th:field="*{password}" id="password"-->
+<!--                           required-->
+<!--                           class="form-styling form-styling-password">-->
+<!--                    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password-->
+<!--                        error-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="butn-animate">-->
+<!--            <button type="submit" class="butn-signup">Confirm</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+
 <footer>
     <div class="title__logo">GameShop</div>
     <div class="info">
         <div class="mail">Ukraine~Kharkiv</div>
-        <div class="mail">E-mail: gameshop@gmail.com</div>
+        <div class="mail">E-mail: gameshopcontactmail@gmail.com</div>
         <div class="number">(050)042 4768</div>
         <div class="number">(099)191 1067</div>
     </div>
     <nav class="nav">
-        <a href="#" class="nav-link">How it works</a>
-        <a href="#" class="nav-link">Prices</a>
-        <a href="#" class="nav-link">Guidebook</a>
+        <a href="#" class="nav-link">About us</a>
         <a href="#" class="nav-link">FAQ</a>
         <a th:href="@{/shop/basket}" class="nav-link bag">Basket</a>
     </nav>

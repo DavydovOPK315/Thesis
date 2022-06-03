@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,6 @@ public class AdminProductController {
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public String index(Model model) {
         List<ProductDtoOut> productList = productService.getAll();
-
         model.addAttribute("products", productList);
         return "admin/product/index";
     }
@@ -54,7 +54,6 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String newProduct(Model model){
-
         insertInModelCategoryOsStudio(model);
         model.addAttribute("productDto", new ProductDto());
         return "admin/product/new";
@@ -62,12 +61,10 @@ public class AdminProductController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("productDto") ProductDto productDto, BindingResult bindingResult){
-
         if (bindingResult.hasErrors()){
             log.warn("Problem with data in adding product");
             return "admin/product/new";
         }
-
         productService.save(productDto);
         return "redirect:/shop/admin/products";
     }
@@ -75,10 +72,11 @@ public class AdminProductController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         Product product = productService.findById(id);
-
         ProductEditDto productEditDto = ProductEditDto.fromProductToProductEditDto(product, imageService);
+        List<Status> statusList = Arrays.asList(Status.ACTIVE, Status.NOT_ACTIVE);
+        model.addAttribute("statusList", statusList);
         model.addAttribute("productEditDto", productEditDto);
-
+        insertInModelCategoryOsStudio(model);
         return "admin/product/edit";
     }
 
@@ -160,6 +158,20 @@ public class AdminProductController {
     @GetMapping("/filter/PriceMax")
     public String showProductsByMaxPrice(Model model) {
         List<ProductDtoOut> productList = productService.findAllOrderByPriceDesc();
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/ACTIVE")
+    public String showProductsByStatusActive(Model model) {
+        List<ProductDtoOut> productList = productService.findAllByStatus(Status.ACTIVE);
+        model.addAttribute("products", productList);
+        return "admin/product/index";
+    }
+
+    @GetMapping("/filter/NOT_ACTIVE")
+    public String showProductsByStatusNotActive(Model model) {
+        List<ProductDtoOut> productList = productService.findAllByStatus(Status.NOT_ACTIVE);
         model.addAttribute("products", productList);
         return "admin/product/index";
     }

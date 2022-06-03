@@ -100,8 +100,14 @@ body {
     cursor: pointer;
 }
 
+.errors {
+    text-align: center;
+    color: pink;
+}
+
 .text-error {
     height: 50px;
+    color: pink;
 }
 
 li {

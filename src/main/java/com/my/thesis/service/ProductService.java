@@ -4,6 +4,7 @@ import com.my.thesis.dto.ProductByFilters;
 import com.my.thesis.dto.ProductDto;
 import com.my.thesis.dto.ProductDtoOut;
 import com.my.thesis.model.Product;
+import com.my.thesis.model.Status;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public interface ProductService {
     List<ProductDtoOut> findAllOrderByPrice();
 
     List<ProductDtoOut> findAllOrderByPriceDesc();
+
+    List<ProductDtoOut> findAllByStatus(Status status);
 
     List<ProductDtoOut> findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters);
 
