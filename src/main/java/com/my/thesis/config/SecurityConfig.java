@@ -3,7 +3,6 @@ package com.my.thesis.config;
 import com.my.thesis.security.handler.CustomAccessDeniedHandler;
 import com.my.thesis.security.handler.CustomAuthenticationEntryPoint;
 import com.my.thesis.security.jwt.JwtConfigurer;
-import com.my.thesis.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,19 +17,26 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtConfigurer jwtConfigurer;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    private static final String ADMIN_ENDPOINT = "/shop/admin/**";
-    private static final String LOGIN_ENDPOINT = "/shop/users/**";
-    public static final String PRODUCTS_ENDPOINT = "/shop/products/**";
-    public static final String SHOP_ENDPOINT = "/shop/";
+
+    private static final String ADMIN_PRODUCTS_ENDPOINT = "/shop/admin/products/**";
+    private static final String ADMIN_MANAGER_ORDERS_ENDPOINT = "/shop/admin/orders/**";
+    private static final String ADMIN_MANAGER_USERS_ENDPOINT = "/shop/admin/users/**";
+
+
+    private static final String ALL_LOGIN_REGISTER_ENDPOINT = "/shop/users/**";
+    public static final String ALL_PRODUCTS_ENDPOINT = "/shop/products/**";
+    public static final String ALL_SHOP_FILTERS_ENDPOINT = "/shop/filters/**";
+    public static final String ALL_SHOP_ENDPOINT = "/shop";
+
     public static final String BASKET_ENDPOINT = "/shop/basket/**";
 
     @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public SecurityConfig(JwtConfigurer jwtConfigurer, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+        this.jwtConfigurer = jwtConfigurer;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
@@ -48,17 +54,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/css/**", "/css2/**", "/fonts/**", "/js/**", "/scss/**", "/img/**", "/templates/**", "/access-denied/**").permitAll()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
+                .antMatchers(ALL_LOGIN_REGISTER_ENDPOINT).permitAll()
+                .antMatchers(ALL_PRODUCTS_ENDPOINT).permitAll()
+                .antMatchers(ALL_SHOP_ENDPOINT).permitAll()
+                .antMatchers(ALL_SHOP_FILTERS_ENDPOINT).permitAll()
 //                .antMatchers(SHOP_ENDPOINT).permitAll()
 //                .antMatchers(PRODUCTS_ENDPOINT).permitAll()
 //                .antMatchers(BASKET_ENDPOINT).hasRole("USER")
-                .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_PRODUCTS_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_MANAGER_ORDERS_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_MANAGER_USERS_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-//                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint).jwt())
                 // first for auth users, second for not auth users
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler).authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .apply(jwtConfigurer);
     }
 }

@@ -7,14 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,9 +37,10 @@ public class ShopController {
     private final BasketService basketService;
     private final UserService userService;
     private final CheckoutOrderService checkoutOrderService;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    public ShopController(ProductService productService, CategoryService categoryService, OsService osService, StudioService studioService, ImageService imageService, BasketService basketService, UserService userService, CheckoutOrderService checkoutOrderService) {
+    public ShopController(ProductService productService, CategoryService categoryService, OsService osService, StudioService studioService, ImageService imageService, BasketService basketService, UserService userService, CheckoutOrderService checkoutOrderService, JavaMailSender mailSender) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.osService = osService;
@@ -43,6 +49,7 @@ public class ShopController {
         this.basketService = basketService;
         this.userService = userService;
         this.checkoutOrderService = checkoutOrderService;
+        this.mailSender = mailSender;
     }
 
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
@@ -293,14 +300,31 @@ public class ShopController {
             checkoutOrderDto.setId(checkoutOrder.getId());
             checkoutOrderDto.setCreated(checkoutOrder.getCreated());
             model.addAttribute("order", checkoutOrderDto);
+            sendEmail(user.getEmail(), checkoutOrder, user.getUsername());
             return "redirect:/shop/order";
         } catch (Exception e) {
-            System.out.println("error ==> ");
             e.printStackTrace();
             session.setAttribute("countError", "This quantity is not in stock. Choose a different quantity.");
             log.warn("IN saveOrder no count of product available");
             return "redirect:/shop/basket";
         }
+    }
+
+    private void sendEmail(String recipientEmail, CheckoutOrder checkoutOrder, String username) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom("contact@gameshop.com", "GameShop Support");
+        helper.setTo(recipientEmail);
+        String subject = "Here's your order";
+        String content = "<p>Hello, " + username + "</p>" + "<p>You have made a new order in the GameShop.</p>"
+                + "<p>Your order number: " + checkoutOrder.getId() + "</p>"
+                + "<p>Date created: " + checkoutOrder.getCreated() + "</p>"
+                + "<p>Total price: " + checkoutOrder.getAmount() + "</p>"
+                + "<br>"
+                + "<p>Thanks for your order. You can see more details in your profile.</p>";
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
@@ -342,7 +366,7 @@ public class ShopController {
     }
 
     @RequestMapping(value = "/account/edit/{id}", method = RequestMethod.POST)
-    public String userSaveEditAccount(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long userId, BindingResult bindingResult, HttpServletRequest request, Model model) {
+    public String userSaveEditAccount(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long userId, BindingResult bindingResult, HttpServletRequest request) {
         HttpSession session = request.getSession();
         try {
             if (bindingResult.hasErrors()) {
@@ -361,7 +385,9 @@ public class ShopController {
 
     @RequestMapping(value = "/account/logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
-        request.getSession().invalidate();
+        HttpSession session = request.getSession();
+        request.getServletContext().setAttribute("formError", session.getAttribute("formError"));
+        session.invalidate();
         log.info("IN logout: user did logout");
         return "redirect:/shop/users/login";
     }

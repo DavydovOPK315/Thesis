@@ -42,7 +42,13 @@ main {
 }
 
 p {
-    /*color: #6d6d6d;*/
+    color: #6d6d6d;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.orderCreateText {
     color: whitesmoke;
     font-size: 22px;
     line-height: 1.2;
@@ -202,6 +208,9 @@ input {
     }
 }
 
+.p_order{
+    color: white;
+}
 .mobile-nav {
     position: fixed;
     width: 100%;

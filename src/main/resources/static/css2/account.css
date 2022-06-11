@@ -1,715 +1,765 @@
+.basket-article {
+    background-color: #2c3e42;
+    min-height: 90vh;
+}
 
-.greeting{
-width: 80%;
-margin-top: 110px;
-line-height: 25px;
-background-color: #be9a9a;
-border-radius: 80px;
-height: 200px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
+.greeting {
+    width: 80%;
+    margin-top: 110px;
+    line-height: 25px;
+    background-color: #be9a9a;
+    border-radius: 80px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 
-.greeting p{
-  font-size: 20px;
-  text-align: center;
-  width: 80%;
-
+.greeting p {
+    font-size: 20px;
+    text-align: center;
+    width: 80%;
+    color: whitesmoke;
 }
 
-.email__account{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 85%;
-  height:60px;
-  background-color: rgba(190, 154, 154, 0.5);
-  border-radius: 30px;
-  margin: 15px 15px;
-  font-size: 14px;
+.email__account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    background-color: rgba(190, 154, 154, 0.5);
+    border-radius: 30px;
+    margin: 15px 0px;
+    font-size: 14px;
 }
 
-.main__greeting{
-  display: flex;
-  justify-content:space-around;
+.email__account p {
+    color: whitesmoke;
 }
 
-
-.infor__account{
-  width: 100%;
-}
-
-
-
-aside{
-  width: 30%;
-  height: 100%;
-
-}
-
-.gradient_btn_Prices{
-
- display:none;
-
+.main__greeting {
+    display: flex;
+    justify-content: space-around;
 }
 
 
-.account{
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 110px;
-min-height: 120%;
-  color: #2c3e42;
-  line-height: 30px;
+.infor__account {
+    width: 100%;
 }
 
-.purchased__tickets{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 50px;
-  padding: 60px 0px;
-}
 
-.tick{
-  font-size: 18px;
-  color: #2c3e42;
-}
-
-.ticket__infor{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  color:   #5f746f;
-margin-bottom: 10px;
-
-font-size: 15px;
-}
-
-.information{
-display: flex;
-justify-content: center;
-align-items: center;
-text-align: center;
-  flex-direction: column;
+aside {
+    width: 30%;
+    height: 100%;
 
 }
 
-.all{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+.gradient_btn_Prices {
+    display: none;
 }
 
-.count{
-  display: flex;
-  flex-direction: row;
-  margin-right: 15px;
-  justify-content: center;
-  align-items: center;
-}
-.person__information{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  flex-direction: column;
+
+.account {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    margin-top: 110px;
+    min-height: 120%;
+    color: #2c3e42;
+    line-height: 30px;
 }
 
-.amount{
-  display: flex;
-  flex-direction: row;
-text-align: center;
-  align-items: center;
+.purchased__tickets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    padding: 60px 0px;
 }
 
-.amount__quant{
-  font-size: 16px;
+.tick {
+    font-size: 18px;
+    color: #2c3e42;
 }
 
-.amount__title{
-  margin-right: 10px;
-  margin-left: 20px;
-  font-size: 18px;
+.ticket__infor {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: #5f746f;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
-.ticket{
- box-shadow: 0 10px 18px #5f746f, 0 10px 10px #5f746f;
-	flex-direction: column;
+
+.information {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+
+}
+
+.all {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.count {
+    display: flex;
+    flex-direction: row;
+    margin-right: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.person__information {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.amount {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+}
+
+.amount__quant {
+    font-size: 16px;
+}
+
+.amount__title {
+    margin-right: 10px;
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+.ticket {
+    box-shadow: 0 10px 18px #5f746f, 0 10px 10px #5f746f;
+    flex-direction: column;
     border-radius: 40px;
-	display: flex;
-  padding: 30px;
-box-shadow: 10px 8px 8px   #5f746f, 0 10px 10px #5f746f;
-	width: 450px;
-	margin-right: 25px ;
-	margin-bottom: 25px ;
-	color: #000;
-background-color: #ffffff;
+    display: flex;
+    padding: 30px;
+    box-shadow: 10px 8px 8px #5f746f, 0 10px 10px #5f746f;
+    width: 450px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    color: #000;
+    background-color: #ffffff;
 }
 
-.name_info{
-  font-size: 30px;
-  color: #2c3e42;
+.name_info {
+    font-size: 30px;
+    color: #2c3e42;
 }
 
 .person__name__information, .person__surname__information,
-.date__start__information, .date__finish__information{
-color: #2c3e42;
-font-size: 20px;
-margin: 0px 0px 3px 0px;
+.date__start__information, .date__finish__information {
+    color: #2c3e42;
+    font-size: 20px;
+    margin: 0px 0px 3px 0px;
 }
 
-.name, .surname, .start__date, .finish__date{
-  color: #be9a9a;
-  font-size: 17px;
-  margin-bottom: 15px;
+.name, .surname, .start__date, .finish__date {
+    color: #be9a9a;
+    font-size: 17px;
+    margin-bottom: 15px;
 }
-.num{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
+
+.num {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
     margin: 8px 20px 20px 0px;
 }
-.number__tickets{
-  font-size: 18px;
-  color: #5f746f;
+
+.number__tickets {
+    font-size: 18px;
+    color: #5f746f;
 }
 
-.number__ticket{
-  font-size: 20px;
-  color: #2c3e42;
-
+.number__ticket {
+    font-size: 20px;
+    color: #2c3e42;
 }
 
-hr{
-  background-color: #be9a9a;
-  height:2px;
-  border: none;
-  margin: 12px 35px 12px 35px;
-
+.number__ticket p {
+    margin: 0 5px;
 }
 
-section{
-  display: flex;
-  flex-direction: column;
-justify-content: center;
-align-items: center;
-  width:65%;
-  height: 100%;
+hr {
+    background-color: #be9a9a;
+    height: 2px;
+    border: none;
+    margin: 12px 35px 12px 35px;
 
 }
 
-.tickets{
-  margin-top: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-left: 80px;
-  z-index: -99999;
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 100%;
+
+}
+
+.tickets {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 80px;
+    z-index: -99999;
 
 }
 
 
-.sect__history{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0px 50px 50px 50px;
+.sect__history {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0px 50px 50px 50px;
 }
+
 .slider__nav--left {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent url('left.svg') no-repeat center;
-  margin-right: 15px;
-  cursor: pointer;
-  outline: none; /*убрать контур*/
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent url('left.svg') no-repeat center;
+    margin-right: 15px;
+    cursor: pointer;
+    outline: none; /*убрать контур*/
 }
 
-button {outline:none;}
+button {
+    outline: none;
+}
 
 .slider__nav--right {
-  width: 32px;
-  height: 27px;
-  border: none;
-  cursor: pointer; /*чтобы стрелочка менялась на пальчик*/
-  outline: none; /*убрать контур*/
-  background: transparent url('right.svg') no-repeat center;
+    width: 32px;
+    height: 27px;
+    border: none;
+    cursor: pointer; /*чтобы стрелочка менялась на пальчик*/
+    outline: none; /*убрать контур*/
+    background: transparent url('right.svg') no-repeat center;
 
 }
+
 .slider__nav--left span,
 .slider__nav--right span {
-  display: none;
+    display: none;
 }
 
-.logo__image{width: 100px;}
-
-.img__kharkiv{
-  width: 130px;
+.logo__image {
+    width: 100px;
 }
 
-.history__list{
-  display: flex;
-  flex-direction: column;
+.img__kharkiv {
+    width: 130px;
+}
 
-align-items: center;
-  justify-content: center;
+.history__list {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
 
 }
+
 #text__history {
-  display:none;
+    display: none;
 }
+
 #text__history {
-  position: relative;
-  max-width: 400px;
-  margin: 50px auto 0;
-  background: white;
-  border-radius: 30px;
+    position: relative;
+    max-width: 400px;
+    margin: 50px auto 0;
+    background: white;
+    border-radius: 30px;
 }
+
 .form-left-decoration,
 .form-right-decoration {
-  content: "";
-  position: absolute;
-  width: 50px;
-  height: 20px;
-  background: #be9a9a;
-  border-radius: 20px;
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    background: #be9a9a;
+    border-radius: 20px;
 }
+
 .form-left-decoration {
-  bottom: 60px;
-  left: -30px;
+    bottom: 60px;
+    left: -30px;
 }
+
 .form-right-decoration {
-  top: 60px;
-  right: -30px;
+    top: 60px;
+    right: -30px;
 }
+
 .form-left-decoration:before,
 .form-left-decoration:after,
 .form-right-decoration:before,
 .form-right-decoration:after {
-  content: "";
-  position: absolute;
-  width: 50px;
-  height: 20px;
-  border-radius: 30px;
-  background: white;
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    border-radius: 30px;
+    background: white;
 }
-.form-left-decoration:before {top: -20px;}
+
+.form-left-decoration:before {
+    top: -20px;
+}
+
 .form-left-decoration:after {
-  top: 20px;
-  left: 10px;
+    top: 20px;
+    left: 10px;
 }
+
 .form-right-decoration:before {
-  top: -20px;
-  right: 0;
+    top: -20px;
+    right: 0;
 }
+
 .form-right-decoration:after {
-  top: 20px;
-  right: 10px;
+    top: 20px;
+    right: 10px;
 }
+
 .circle {
-  position: absolute;
-  bottom: 80px;
-  left: -55px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
+    position: absolute;
+    bottom: 80px;
+    left: -55px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
 }
-.form-inner {padding: 50px;}
+
+.form-inner {
+    padding: 50px;
+}
+
 .form-inner input,
 .form-inner textarea {
-  display: block;
-  width: 100%;
-  padding: 0 20px;
-  margin-bottom: 10px;
-  outline:none;
-  background: #E9EFF6;
-  font-size: 15px;
-  line-height: 40px;
-  border-width: 0;
-  border-radius: 20px;
-
-}
-.form-inner input[type="submit"] {
-  margin-top: 30px;
-  background: #be9a9a;
-  border-bottom: 4px solid #9e7e7e;
-  color: white;
-  font-size: 17px;
-}
-.form-inner textarea {resize: none;}
-.form-inner h3 {
-  margin-top: 0;
+    display: block;
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    outline: none;
+    background: #E9EFF6;
+    font-size: 15px;
     line-height: 40px;
-  font-weight: 500;
-  font-size: 20px;
-  color: #707981;
-}
-
-
-
-
-
-
-.history{
-  width: 100%;
+    border-width: 0;
+    border-radius: 20px;
 
 }
 
-.history h2{
-  text-align: center;
-  font-size: 40px;
-  margin-bottom: 30px;
+.form-inner input[type="submit"] {
+    margin-top: 30px;
+    background: #be9a9a;
+    border-bottom: 4px solid #9e7e7e;
+    color: white;
+    font-size: 17px;
 }
 
-.history__information{
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  width: 100%;
-  margin: 0px 20px 0px 20px ;
+.form-inner textarea {
+    resize: none;
 }
 
-.name_info_history{
-  font-size:35px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
+.form-inner h3 {
+    margin-top: 0;
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 20px;
+    color: #707981;
 }
 
-.name__history, .surname__history{
-font-size: 20px;
+
+.history {
+    width: 100%;
 
 }
 
-.money__history{
-  display: flex;
-  align-items: center;
-  border: 4px inset #5f746f;
-  margin: 10px 20px;
+.history h2 {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+.history__information {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin: 0px 20px 0px 20px;
+}
+
+.name_info_history {
+    font-size: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.name__history, .surname__history {
+    font-size: 20px;
+
+}
+
+.money__history {
+    display: flex;
+    align-items: center;
+    border: 4px inset #5f746f;
+    margin: 10px 20px;
     height: 100px;
     width: 500px;
-  text-align: center;
+    text-align: center;
 
 }
 
-.image__history{
+.image__history {
     margin-left: 10px;
 }
 
-.gradient_btn_account{
-  display: none;
-}
-
-@media screen and (max-width: 500px) and (min-width: 100px)
-{
-.main__date{
-  display: none;
-}
-.gradient-btn_account{
-  display: none;
-}
-
-.form-inner input[type="submit"] {
-
-  font-size: 14px;
-}
-.form-inner h3 {
-
-  font-size: 18px;
-
-}
-
-.main__greeting{
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-.form-inner input
-{
-  width: 180px;
-
-
-  font-size: 15px;
-  line-height: 22px;
-}
-.form-inner textarea {
-  height: 120px;
-  width: 180px;
-  font-size: 15px;
-  line-height: 22px;
-
-
-}
-aside{width: 100%;}
-
-.birthday__account{
-  font-size: 15px;
-  width:60%;
-}
-
-.email__account{
-font-size: 0.8em;
-  width:90%;
-}
-
-.image__email{
-  width: 20px;
-  height: 15px;
-}
-.image__cake{
-  width: 40px;
-  height: 35px;
-}
-
-
 .gradient_btn_account {
-display: inline;
-  transform: translate(0, 10%);
-  width: 90px;
-  height: 30px;
-  text-align: center;
-  line-height:20px;
-  font-size: 10px;
-margin-bottom: 12px;
-margin-top: 20px;
-margin-left: 10px;
-  color: #be9a9a;
-  background: #2c3e42;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 6px;
-  transition: .5s;
-  border: 4px solid #2c3e42;
-  border-radius: 60px;
-  box-shadow: 10px 5px 10px #5f746f;
-  overflow: hidden;
-  z-index: 9999;
+    display: none;
 }
 
-.greeting h2{
-  font-size: 20px;
-}
-.greeting p{
-  font-size: 15px;
-}
+@media screen and (max-width: 500px) and (min-width: 100px) {
+    .main__date {
+        display: none;
+    }
 
-.greeting{
-  text-align: center;
-  width: 300px;
-}
-section{
-  width: 100%;
-}
+    .gradient-btn_account {
+        display: none;
+    }
 
-.ticket{
-  width: 300px;
-}
+    .form-inner input[type="submit"] {
 
-.logo__image{width: 80px;}
+        font-size: 14px;
+    }
 
-.img__kharkiv_map{
-  width: 50px;
-  height: 50px;
-}
-.img__kharkiv{
-  width: 50px;
-  height: 50px;
-}
-.ticket__infor{
-  margin-bottom: 10px;
-  margin-top: 0px;
-}
-.num{
-  margin-bottom: 0px;
-}
-.person__name__information, .person__surname__information,
-.date__start__information, .date__finish__information{
+    .form-inner h3 {
 
-font-size: 13px;
-margin: 0px 0px 3px 0px;
-}
+        font-size: 18px;
 
-.name, .surname, .start__date, .finish__date{
+    }
 
-  font-size: 13px;
-  margin-bottom: 15px;
-}
+    .main__greeting {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 
-section{
-  width: 100%;
-}
-
-.sect__history{
-  flex-wrap: wrap;
-}
+    .form-inner input {
+        width: 180px;
 
 
+        font-size: 15px;
+        line-height: 22px;
+    }
 
-#text__history{
-  margin-top: 100px;
-  width: 300px;
-
-}
-
-
-
-.money__history{
-  width: 300px;
-}
-
-.name__history, .surname__history{
-  font-size: 15px;
-}
-
-.name_info_history{
-  align-items: center;
-
-}
-}
+    .form-inner textarea {
+        height: 120px;
+        width: 180px;
+        font-size: 15px;
+        line-height: 22px;
 
 
-@media screen and (max-width: 900px) and (min-width: 500px)
-{
+    }
 
-  .greeting h2{
-    font-size: 20px;
-  }
-  .greeting p{
-    font-size: 15px;
-  }
+    aside {
+        width: 100%;
+    }
 
-  .greeting{
-    text-align: center;
-    width: 500px;
-  }
-  section{
-    width: 100%;
-  }
+    .birthday__account {
+        font-size: 15px;
+        width: 60%;
+    }
 
-  .sect__history{
-    flex-wrap: wrap;
-  }
+    .email__account {
+        font-size: 0.8em;
+        width: 90%;
+    }
 
-  .money__history{
-    width: 480px;
-  }
+    .image__email {
+        width: 20px;
+        height: 15px;
+    }
 
-  #text__history p{
-    font-size: 18px;
-  }
-
-  #text__history h1{
-    font-size: 22px;
-  }
-
-  #text__history{
-    margin-top: 100px;
-  }
-
-.main__greeting{
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-aside{width: 100%;}
-
-.birthday__account{
-  font-size: 15px;
-  width:30%;
-}
-
-.email__account{
-font-size: 14px;
-  width:60%;
-}
-}
-@media screen and (max-width: 1200px) and (min-width: 900px)
-{
-
-.birthday__account{
-  font-size: 16px;
-}
-
-.account{
-  width: 350px;
-}
-
-.sect__history{
-  display: flex;
-  flex-direction: column;
-
-  margin-top: 100px;
-}
+    .image__cake {
+        width: 40px;
+        height: 35px;
+    }
 
 
+    .gradient_btn_account {
+        display: inline;
+        transform: translate(0, 10%);
+        width: 90px;
+        height: 30px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 10px;
+        margin-bottom: 12px;
+        margin-top: 20px;
+        margin-left: 10px;
+        color: #be9a9a;
+        background: #2c3e42;
+        text-transform: uppercase;
+        text-decoration: none;
+        letter-spacing: 6px;
+        transition: .5s;
+        border: 4px solid #2c3e42;
+        border-radius: 60px;
+        box-shadow: 10px 5px 10px #5f746f;
+        overflow: hidden;
+        z-index: 9999;
+    }
 
-#text__history{
-  margin-top: 100px;
-    margin-bottom: 50px;
-}
+    .greeting h2 {
+        font-size: 20px;
+    }
 
-section{
-  width: 55%;
-}
-aside{
-  width: 350px;
+    .greeting p {
+        font-size: 15px;
+    }
+
+    .greeting {
+        text-align: center;
+        width: 300px;
+    }
+
+    section {
+        width: 100%;
+    }
+
+    .ticket {
+        width: 300px;
+    }
+
+    .logo__image {
+        width: 80px;
+    }
+
+    .img__kharkiv_map {
+        width: 50px;
+        height: 50px;
+    }
+
+    .img__kharkiv {
+        width: 50px;
+        height: 50px;
+    }
+
+    .ticket__infor {
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+
+    .num {
+        margin-bottom: 0px;
+    }
+
+    .person__name__information, .person__surname__information,
+    .date__start__information, .date__finish__information {
+
+        font-size: 13px;
+        margin: 0px 0px 3px 0px;
+    }
+
+    .name, .surname, .start__date, .finish__date {
+
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    section {
+        width: 100%;
+    }
+
+    .sect__history {
+        flex-wrap: wrap;
+    }
+
+
+    #text__history {
+        margin-top: 100px;
+        width: 300px;
+
+    }
+
+
+    .money__history {
+        width: 300px;
+    }
+
+    .name__history, .surname__history {
+        font-size: 15px;
+    }
+
+    .name_info_history {
+        align-items: center;
+
+    }
 }
 
 
-.ticket{
-  width: 400px;
+@media screen and (max-width: 900px) and (min-width: 500px) {
+
+    .greeting h2 {
+        font-size: 20px;
+    }
+
+    .greeting p {
+        font-size: 15px;
+    }
+
+    .greeting {
+        text-align: center;
+        width: 500px;
+    }
+
+    section {
+        width: 100%;
+    }
+
+    .sect__history {
+        flex-wrap: wrap;
+    }
+
+    .money__history {
+        width: 480px;
+    }
+
+    #text__history p {
+        font-size: 18px;
+    }
+
+    #text__history h1 {
+        font-size: 22px;
+    }
+
+    #text__history {
+        margin-top: 100px;
+    }
+
+    .main__greeting {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    aside {
+        width: 100%;
+    }
+
+    .birthday__account {
+        font-size: 15px;
+        width: 30%;
+    }
+
+    .email__account {
+        font-size: 14px;
+        width: 60%;
+    }
 }
 
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+
+    .birthday__account {
+        font-size: 16px;
+    }
+
+    .account {
+        width: 350px;
+    }
+
+    .sect__history {
+        display: flex;
+        flex-direction: column;
+
+        margin-top: 100px;
+    }
 
 
-.img__kharkiv_map, .img__kharkiv{
-  width: 90px;
-  height: 90px;
-}
+    #text__history {
+        margin-top: 100px;
+        margin-bottom: 50px;
+    }
 
-.ticket__infor{
-  margin-bottom: 10px;
-  margin-top: 0px;
-}
-.num{
-  margin-bottom: 0px;
-}
-.person__name__information, .person__surname__information,
-.date__start__information, .date__finish__information{
+    section {
+        width: 55%;
+    }
 
-font-size: 16px;
-margin: 0px 0px 3px 0px;
-}
+    aside {
+        width: 350px;
+    }
 
-.name, .surname, .start__date, .finish__date{
 
-  font-size: 16px;
-  margin-bottom: 15px;
-}
+    .ticket {
+        width: 400px;
+    }
 
-.image__email{
-  width: 30px;
-  height: 25px;
-}
-.image__cake{
-  width: 40px;
-  height: 35px;
-}
 
+    .img__kharkiv_map, .img__kharkiv {
+        width: 90px;
+        height: 90px;
+    }
+
+    .ticket__infor {
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+
+    .num {
+        margin-bottom: 0px;
+    }
+
+    .person__name__information, .person__surname__information,
+    .date__start__information, .date__finish__information {
+
+        font-size: 16px;
+        margin: 0px 0px 3px 0px;
+    }
+
+    .name, .surname, .start__date, .finish__date {
+
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .image__email {
+        width: 30px;
+        height: 25px;
+    }
+
+    .image__cake {
+        width: 40px;
+        height: 35px;
+    }
 
 
 }

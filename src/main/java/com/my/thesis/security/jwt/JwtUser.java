@@ -54,11 +54,6 @@ public class JwtUser implements UserDetails {
         return email;
     }
 
-    @JsonIgnore
-    public Date getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

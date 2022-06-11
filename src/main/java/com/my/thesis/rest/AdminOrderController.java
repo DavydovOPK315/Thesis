@@ -8,12 +8,17 @@ import com.my.thesis.service.CheckoutOrderService;
 import com.my.thesis.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +29,13 @@ public class AdminOrderController {
 
     private final CheckoutOrderService checkoutOrderService;
     private final ProductService productService;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    public AdminOrderController(CheckoutOrderService checkoutOrderService, ProductService productService) {
+    public AdminOrderController(CheckoutOrderService checkoutOrderService, ProductService productService, JavaMailSender mailSender) {
         this.checkoutOrderService = checkoutOrderService;
         this.productService = productService;
+        this.mailSender = mailSender;
     }
 
     @GetMapping
@@ -64,8 +71,36 @@ public class AdminOrderController {
                     productService.save(product);
                 }
             checkoutOrderService.save(checkoutOrder);
+            try {
+                sendEmail(checkoutOrder);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                log.warn("Exception with sending email");
+            }
         }
         return "redirect:/shop/admin/orders";
+    }
+
+    private void sendEmail(CheckoutOrder checkoutOrder) throws MessagingException, UnsupportedEncodingException {
+
+        String recipientEmail = checkoutOrder.getUser().getEmail();
+        String username = checkoutOrder.getUser().getUsername();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom("contact@gameshop.com", "GameShop Support");
+        helper.setTo(recipientEmail);
+        String subject = "Your order status";
+        String content = "<p>Hello, " + username + "</p>"
+                + "<p>Your order status has changed in the GameShop.</p>"
+                + "<p>Status:" + checkoutOrder.getStatus().name() + "</p>"
+                + "<p>Your order number: " + checkoutOrder.getId() + "</p>"
+                + "<p>Date created: " + checkoutOrder.getCreated() + "</p>"
+                + "<p>Total price: " + checkoutOrder.getAmount() + "</p>"
+                + "<br>"
+                + "<p>Thanks for your order. You can see more details in your profile.</p>";
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 
     @GetMapping("/filter/Newest")

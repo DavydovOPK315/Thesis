@@ -72,6 +72,16 @@
     <br/>
     <br/>
 
+    <label for="status">Enter status: </label>
+    <div th:each="temp : ${statusList}">
+        <input class="form-check-input" id="status" type="radio"
+               th:field="*{status}"
+               th:value="${temp}"
+               th:text="${temp.name()}">
+    </div>
+    <br/>
+    <br/>
+
     <input type="submit" value="Create the product!">
 </form>
 </body>

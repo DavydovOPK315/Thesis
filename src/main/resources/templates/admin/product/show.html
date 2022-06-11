@@ -65,7 +65,7 @@
     <tr>
         <td th:text="${product.getId()}"></td>
         <td th:text="${product.getName()}"></td>
-        <td th:text="${product.getDescription()}"></td>
+        <td> <div style="height:120px; overflow:hidden" th:text="${product.getDescription()}"></div></td>
         <td th:text="${product.getCount()}"></td>
         <td th:text="${product.getPrice()}"></td>
         <td th:text="${product.getYear()}"></td>

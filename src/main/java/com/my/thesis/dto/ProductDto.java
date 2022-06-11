@@ -27,6 +27,8 @@ public class ProductDto {
 
     private MultipartFile image;
 
+    private Status status;
+
     private List<Category> categoriesDto;
 
     public Product toProduct() {
@@ -37,6 +39,7 @@ public class ProductDto {
         product.setCount(Long.valueOf(count));
         product.setPrice(Double.valueOf(price));
         product.setYear(Long.valueOf(year));
+        product.setStatus(status);
 
         return product;
     }

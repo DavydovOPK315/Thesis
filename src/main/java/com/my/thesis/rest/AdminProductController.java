@@ -54,6 +54,8 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String newProduct(Model model){
+        List<Status> statusList = Arrays.asList(Status.ACTIVE, Status.NOT_ACTIVE);
+        model.addAttribute("statusList", statusList);
         insertInModelCategoryOsStudio(model);
         model.addAttribute("productDto", new ProductDto());
         return "admin/product/new";

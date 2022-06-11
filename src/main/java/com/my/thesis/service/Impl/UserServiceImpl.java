@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
             log.info("IN updateResetPasswordToken: token updated by email: {}", email);
             user.setResetPasswordToken(token);
             userRepository.save(user);
-        }
+        }else
         log.warn("IN updateResetPasswordToken: user not found by email: {}", email);
     }
 

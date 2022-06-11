@@ -39,7 +39,7 @@
     <div class="information__block">Confirm</div>
     <div class="all">
         <div class="text">
-            <p>In order to place an order, please fill in the fields. Specify information about the person who will receive the goods</p></div>
+            <p class="orderCreateText">In order to place an order, please fill in the fields. Specify information about the person who will receive the goods</p></div>
         <div class="forms">
             <form th:method="POST" th:action="@{/shop/order/save}" th:object="${order}" class = "info">
                 <input type="text" th:field="*{phone}" name="phone" th:min="10" th:max="45" placeholder="Phone" required id="id_phone" class ="form__ap">

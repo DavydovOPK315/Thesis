@@ -77,7 +77,7 @@
     <tr>
         <th width="60">ID</th>
         <th width="80">Name</th>
-        <th width="120">Description</th>
+        <th width="170">Description</th>
         <th width="65">Count</th>
         <th width="120">Price</th>
         <th width="85">Year</th>
@@ -94,7 +94,7 @@
         <tr>
             <td> <a th:href="@{/shop/admin/products/{id}(id=${product.getId()})}" th:text="${product.getId()}"></a></td>
             <td> <a th:href="@{/shop/admin/products/{id}(id=${product.getId()})}" th:text="${product.getName()}"></a></td>
-            <td th:text="${product.getDescription()}"></td>
+            <td> <div style="height:120px; overflow:hidden" th:text="${product.getDescription()}"></div></td>
             <td th:text="${product.getCount()}"></td>
             <td th:text="${product.getPrice()}"></td>
             <td th:text="${product.getYear()}"></td>

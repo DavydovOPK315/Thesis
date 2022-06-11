@@ -70,7 +70,7 @@
                                     <div class="name" th:text="${basket.getName()}"></div>
                                 </a>
                                 <div class="person__surname__information">Unit price:</div>
-                                <div class="surname"  th:text="${#numbers.formatDecimal(basket.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></div>
+                                <div class="surname" th:text="${#numbers.formatDecimal(basket.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></div>
                                 <div class="person__surname__information">Price:</div>
                                 <div class="name"
                                      th:text="${#numbers.formatDecimal(basket.getPrice() * basket.getQuantity(), 1 , 2, 'POINT')} + ' ₴'">

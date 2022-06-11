@@ -5,7 +5,6 @@ import com.my.thesis.dto.ProductDto;
 import com.my.thesis.dto.ProductDtoOut;
 import com.my.thesis.model.Product;
 import com.my.thesis.model.Status;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public interface ProductService {
 
     List<ProductDtoOut> findAllByCategoriesOsInAndStudioInAndPriceBetweenAndYearBetween(ProductByFilters productByFilters);
 
-    void updateProductCount(@Param(value = "productId") Long productId, @Param(value = "count") Long count);
+    void updateProductCount(Long productId, Long count);
 
     void delete(Long id);
 }

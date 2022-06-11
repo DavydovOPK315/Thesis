@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="button__more">
-                            <input type="submit" value="Search" id="btnSubmit">
+                            <input type="submit" value="Search" id="btnSubmitMainPage">
                         </div>
                     </form>
                 </div>
@@ -159,7 +159,7 @@
                                     <div class="product-description d-flex align-items-center justify-content-between">
                                         <div class="product-meta-data">
                                             <div class="line"></div>
-                                            <p class="product-price" th:text="${product.getPrice()} + ' ₴'"></p>
+                                            <p class="product-price" th:text="${#numbers.formatDecimal(product.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></p>
                                             <a th:href="@{/shop/products/{id}(id=${product.getId()})}">
                                                 <h6 th:text="${product.getName()}"></h6>
                                             </a>

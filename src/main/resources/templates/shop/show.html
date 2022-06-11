@@ -52,7 +52,7 @@
         <div class="quantity">
             <div class="price">
                 <p>
-                    Price: <span class="pro__info" th:text="${product.getPrice()} + ' ₴'"></span>&nbsp;
+                    Price: <span class="pro__info" th:text="${#numbers.formatDecimal(product.getPrice(), 1 , 2, 'POINT')} + ' ₴'"></span>&nbsp;
                     OS: <span class="pro__info" th:text="${product.getOs()}"></span>&nbsp;
                     Studio: <span class="pro__info" th:text="${product.getStudio()}"></span>&nbsp;
                     Year: <span class="pro__info" th:text="${product.getYear()}"></span>

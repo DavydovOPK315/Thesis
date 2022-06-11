@@ -1,8 +1,10 @@
 spring:
   mail:
+#    host: imap.gmail.com
     host: smtp.gmail.com
     username: gameShopContactMail
-    password: gameShopContactMail2000
+    password: rqapzljcxguzyasz
+#    password: gameShopContactMail2000
     port: 587
     properties:
       mail:

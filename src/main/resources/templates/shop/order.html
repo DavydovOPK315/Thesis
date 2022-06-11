@@ -37,9 +37,9 @@
 </header>
 <section>
     <div class="order">
-        <p th:text="'Your order number: ' + ${order.getId()}"></p>
-        <p th:text="'Date created: ' + ${#dates.format(order.getCreated(), 'dd/MM/yyyy')}"></p>
-        <p th:text="'Total price: ' + ${totalPrice} + ' ₴'"></p>
+        <p class="p_order" th:text="'Your order number: ' + ${order.getId()}"></p>
+        <p class="p_order" th:text="'Date created: ' + ${#dates.format(order.getCreated(), 'dd/MM/yyyy')}"></p>
+        <p class="p_order" th:text="'Total price: ' + ${totalPrice} + ' ₴'"></p>
     </div>
 </section>
 <footer>

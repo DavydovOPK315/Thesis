@@ -50,8 +50,13 @@ public class UserController {
 
     @GetMapping(value = "/login")
     public String index(@ModelAttribute("user") AuthenticationRequestDto user, HttpServletRequest request, Model model) {
-       model.addAttribute("formError", request.getSession().getAttribute("formError"));
-       request.getSession().setAttribute("formError", null);
+
+        if (request.getServletContext().getAttribute("formError") != null) {
+            model.addAttribute("formError", request.getServletContext().getAttribute("formError"));
+        } else {
+            model.addAttribute("formError", request.getSession().getAttribute("formError"));
+            request.getSession().setAttribute("formError", null);
+        }
         return "users/login";
     }
 
@@ -67,7 +72,6 @@ public class UserController {
             model.addAttribute("token", token);
             HttpSession session = request.getSession();
             session.setAttribute("userId", user.getId());
-            session.setAttribute("userToken", user);
             session.setAttribute("token", token);
             return "redirect:/shop";
         } catch (AuthenticationException e) {
@@ -77,7 +81,7 @@ public class UserController {
             }
             if (userService.findByUsername(username).getStatus().compareTo(Status.BANNED) == 0) {
                 model.addAttribute("formError", "Your account has been blocked. If you want to unblock, you can contact by email: gameshopcontactmail@gmail.com");
-            }else
+            } else
                 model.addAttribute("formError", "Your username and password didn't match. Please try again.");
             return "users/login";
         }
@@ -100,7 +104,7 @@ public class UserController {
             }
             userService.register(user);
             return "redirect:/users/login";
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             HttpSession session = request.getSession();
             session.setAttribute("formError", "A user with this login or email already exists in the system");
             return "redirect:/shop/users/register";
@@ -123,12 +127,13 @@ public class UserController {
             sendEmail(email, resetPasswordLink);
             model.addAttribute("message", "Have sent a reset password link to your email. Please check");
         } catch (Exception e) {
+            e.printStackTrace();
             model.addAttribute("error", "Error while sending email");
         }
         return "users/forgot_password_form";
     }
 
-    public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
+    private void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom("contact@gameshop.com", "GameShop Support");
@@ -163,7 +168,6 @@ public class UserController {
         String password = request.getParameter("password");
         User result = userService.getResetPasswordToken(token);
         model.addAttribute("title", "Reset your password");
-
         if (result == null) {
             model.addAttribute("formError", "Invalid Token");
             return "redirect:/shop/users/login";
