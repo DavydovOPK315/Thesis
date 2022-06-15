@@ -21,18 +21,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-
-    private static final String ADMIN_PRODUCTS_ENDPOINT = "/shop/admin/products/**";
+    private static final String ADMIN_MANAGER_PRODUCTS_ENDPOINT = "/shop/admin/products/**";
     private static final String ADMIN_MANAGER_ORDERS_ENDPOINT = "/shop/admin/orders/**";
     private static final String ADMIN_MANAGER_USERS_ENDPOINT = "/shop/admin/users/**";
 
+    private static final String ADMIN_PRODUCTS_NEW_ENDPOINT = "/shop/admin/products/new";
+    private static final String ADMIN_PRODUCTS_UPDATE_ENDPOINT = "/shop/admin/products/update/**";
+    private static final String ADMIN_USERS_NEW_ENDPOINT = "/shop/admin/users/new";
+    private static final String ADMIN_USERS_EDIT_ENDPOINT = "/shop/admin/users/edit";
 
     private static final String ALL_LOGIN_REGISTER_ENDPOINT = "/shop/users/**";
     public static final String ALL_PRODUCTS_ENDPOINT = "/shop/products/**";
     public static final String ALL_SHOP_FILTERS_ENDPOINT = "/shop/filters/**";
     public static final String ALL_SHOP_ENDPOINT = "/shop";
-
-    public static final String BASKET_ENDPOINT = "/shop/basket/**";
 
     @Autowired
     public SecurityConfig(JwtConfigurer jwtConfigurer, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
@@ -58,12 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ALL_PRODUCTS_ENDPOINT).permitAll()
                 .antMatchers(ALL_SHOP_ENDPOINT).permitAll()
                 .antMatchers(ALL_SHOP_FILTERS_ENDPOINT).permitAll()
-//                .antMatchers(SHOP_ENDPOINT).permitAll()
-//                .antMatchers(PRODUCTS_ENDPOINT).permitAll()
-//                .antMatchers(BASKET_ENDPOINT).hasRole("USER")
-                .antMatchers(ADMIN_PRODUCTS_ENDPOINT).hasRole("ADMIN")
-                .antMatchers(ADMIN_MANAGER_ORDERS_ENDPOINT).hasRole("ADMIN")
-                .antMatchers(ADMIN_MANAGER_USERS_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_PRODUCTS_NEW_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_PRODUCTS_UPDATE_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_USERS_NEW_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_USERS_EDIT_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ADMIN_MANAGER_PRODUCTS_ENDPOINT).hasAnyRole("ADMIN","MANAGER")
+                .antMatchers(ADMIN_MANAGER_ORDERS_ENDPOINT).hasAnyRole("ADMIN","MANAGER")
+                .antMatchers(ADMIN_MANAGER_USERS_ENDPOINT).hasAnyRole("ADMIN","MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 // first for auth users, second for not auth users

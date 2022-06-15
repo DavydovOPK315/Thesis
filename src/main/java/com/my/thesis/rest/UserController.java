@@ -103,7 +103,7 @@ public class UserController {
                 return "users/register";
             }
             userService.register(user);
-            return "redirect:/users/login";
+            return "redirect:/shop/users/login";
         } catch (DataIntegrityViolationException e) {
             HttpSession session = request.getSession();
             session.setAttribute("formError", "A user with this login or email already exists in the system");
