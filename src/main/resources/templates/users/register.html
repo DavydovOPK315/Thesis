@@ -50,7 +50,7 @@
                 <div class="email">
                     <label for="email">Email: </label>
                     <input type="email" th:field="*{email}" id="email" required
-                           class=" form-styling form-styling-email">
+                           class="form-styling form-styling-email">
                     <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
                 </div>
             </div>

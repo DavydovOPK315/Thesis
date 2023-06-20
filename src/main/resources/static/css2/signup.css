@@ -156,7 +156,6 @@ li {
 }
 
 .form-styling {
-
     height: 35px;
     padding-left: 15px;
     border: none;
@@ -194,9 +193,7 @@ li {
 
 .birth_date, .form-styling-part2, .form-styling-password, .form-styling-username, .form-styling-email {
     width: 100%;
-
 }
-
 
 label {
     font-weight: 400;
@@ -211,7 +208,6 @@ label {
 :focus {
     outline: none;
 }
-
 
 .butn-signup {
     float: left;
@@ -240,13 +236,11 @@ label {
     border: none;
     border-radius: 20px;
     margin-top: 23px;
-
     left: 0px;
     top: 0px;
     -webkit-transition: all .5s ease, top .5s ease .5s, height .5s ease .5s, background-color .5s ease .75s;
     transition: all .5s ease, top .5s ease .5s, height .5s ease .5s, background-color .5s ease .75s;
 }
-
 
 .butn-signup:hover {
     cursor: pointer;
@@ -357,8 +351,6 @@ label {
     .last_name, .first_name, .gender, .password1, .password2 {
         width: 100%;
     }
-
-
 }
 
 @media screen and (max-width: 700px) and (min-width: 400px) {
